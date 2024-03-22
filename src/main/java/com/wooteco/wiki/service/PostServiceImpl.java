@@ -5,6 +5,7 @@ import com.wooteco.wiki.dto.PostResponse;
 import com.wooteco.wiki.entity.Post;
 import com.wooteco.wiki.repository.PostRepository;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,12 @@ public class PostServiceImpl implements PostService {
                 .build();
         Post save = postRepository.save(post);
         return mapToResponse(save);
+    }
+
+    @Override
+    public Optional<PostResponse> get(String title) {
+        Optional<Post> byTitle = postRepository.findByTitle(title);
+        return byTitle.map(this::mapToResponse);
     }
 
     private PostResponse mapToResponse(Post post) {
