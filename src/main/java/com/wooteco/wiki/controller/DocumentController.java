@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import com.wooteco.wiki.dto.DocumentCreateRequest;
 import com.wooteco.wiki.dto.DocumentResponse;
+import com.wooteco.wiki.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.dto.ErrorResponse;
 import com.wooteco.wiki.service.DocumentService;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,10 +25,9 @@ public class DocumentController {
 
     private final DocumentService documentService;
 
-    @PostMapping("/{title}")
-    public ResponseEntity<DocumentResponse> post(@PathVariable String title,
-                                                 @RequestBody DocumentCreateRequest documentCreateRequest) {
-        DocumentResponse response = documentService.post(title, documentCreateRequest);
+    @PostMapping("")
+    public ResponseEntity<DocumentResponse> post(@RequestBody DocumentCreateRequest documentCreateRequest) {
+        DocumentResponse response = documentService.post(documentCreateRequest);
         return ResponseEntity.ok(response);
     }
 
@@ -42,5 +43,12 @@ public class DocumentController {
     private ResponseEntity<ErrorResponse> notFound() {
         return ResponseEntity.status(NOT_FOUND)
                 .body(new ErrorResponse("없는 문서입니다."));
+    }
+
+    @PutMapping("/{title}")
+    public ResponseEntity<DocumentResponse> put(@PathVariable String title,
+                                                @RequestBody DocumentUpdateRequest documentUpdateRequest) {
+        DocumentResponse response = documentService.put(title, documentUpdateRequest);
+        return ResponseEntity.ok(response);
     }
 }
