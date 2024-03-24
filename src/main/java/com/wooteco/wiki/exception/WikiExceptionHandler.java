@@ -21,6 +21,10 @@ public class WikiExceptionHandler {
             return ResponseEntity.status(NOT_FOUND)
                     .body(new ErrorResponse("존재하지 않는 제목의 문서입니다."));
         }
+        if (exception.getMessage().equals("해당 로그가 존재하지 않습니다.")) {
+            return ResponseEntity.status(NOT_FOUND)
+                    .body(new ErrorResponse("해당 로그가 존재하지 않습니다."));
+        }
         return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("알 수 없는 에러가 발생했습니다."));
     }
