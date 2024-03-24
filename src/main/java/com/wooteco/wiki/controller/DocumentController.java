@@ -6,6 +6,7 @@ import com.wooteco.wiki.dto.DocumentCreateRequest;
 import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.dto.ErrorResponse;
+import com.wooteco.wiki.dto.LogFindAllResponse;
 import com.wooteco.wiki.service.DocumentService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,12 @@ public class DocumentController {
     public ResponseEntity<DocumentResponse> put(@PathVariable String title,
                                                 @RequestBody DocumentUpdateRequest documentUpdateRequest) {
         DocumentResponse response = documentService.put(title, documentUpdateRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/log")
+    public ResponseEntity<LogFindAllResponse> getLogs() {
+        LogFindAllResponse response = documentService.getLogs();
         return ResponseEntity.ok(response);
     }
 }

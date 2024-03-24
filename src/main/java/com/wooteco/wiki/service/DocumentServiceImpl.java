@@ -3,11 +3,13 @@ package com.wooteco.wiki.service;
 import com.wooteco.wiki.dto.DocumentCreateRequest;
 import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
+import com.wooteco.wiki.dto.LogFindAllResponse;
 import com.wooteco.wiki.entity.Document;
 import com.wooteco.wiki.entity.Log;
 import com.wooteco.wiki.repository.DocumentRepository;
 import com.wooteco.wiki.repository.LogRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -73,6 +75,12 @@ public class DocumentServiceImpl implements DocumentService {
         logRepository.save(log);
 
         return mapToResponse(document);
+    }
+
+    @Override
+    public LogFindAllResponse getLogs() {
+        List<Document> documents = documentRepository.findAllByOrderByGenerateTimeDesc();
+        return LogFindAllResponse.of(documents);
     }
 
     private DocumentResponse mapToResponse(Document document) {
