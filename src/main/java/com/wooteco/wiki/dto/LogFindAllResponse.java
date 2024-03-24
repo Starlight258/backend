@@ -3,10 +3,10 @@ package com.wooteco.wiki.dto;
 import com.wooteco.wiki.entity.Document;
 import java.util.List;
 
-public record LogFindAllResponse(List<LogResponse2> logs) {
+public record LogFindAllResponse(List<LogDetailResponse> logs) {
     public static LogFindAllResponse of(List<Document> documents) {
-        List<LogResponse2> logs = documents.stream()
-                .map(LogResponse2::of)
+        List<LogDetailResponse> logs = documents.stream()
+                .map(LogDetailResponse::of)
                 .toList();
         return new LogFindAllResponse(logs);
     }
