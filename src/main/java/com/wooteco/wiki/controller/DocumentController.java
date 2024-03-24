@@ -7,6 +7,7 @@ import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.dto.ErrorResponse;
 import com.wooteco.wiki.dto.LogDetailResponse;
+import com.wooteco.wiki.dto.LogFindAllResponse;
 import com.wooteco.wiki.service.DocumentService;
 import com.wooteco.wiki.service.LogService;
 import java.util.Optional;
@@ -46,7 +47,6 @@ public class DocumentController {
     @GetMapping("/log/{logId}")
     public ResponseEntity<LogDetailResponse> getDocumentLogs(@PathVariable Long logId) {
         LogDetailResponse logDetail = logService.getLogDetail(logId);
-
         return ResponseEntity.ok(logDetail);
     }
 
@@ -54,6 +54,12 @@ public class DocumentController {
     public ResponseEntity<DocumentResponse> put(@PathVariable String title,
                                                 @RequestBody DocumentUpdateRequest documentUpdateRequest) {
         DocumentResponse response = documentService.put(title, documentUpdateRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/log")
+    public ResponseEntity<LogFindAllResponse> getLogs() {
+        LogFindAllResponse response = documentService.getLogs();
         return ResponseEntity.ok(response);
     }
 
