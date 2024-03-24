@@ -6,7 +6,9 @@ import com.wooteco.wiki.dto.DocumentCreateRequest;
 import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.dto.ErrorResponse;
+import com.wooteco.wiki.dto.LogDetailResponse;
 import com.wooteco.wiki.service.DocumentService;
+import com.wooteco.wiki.service.LogService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DocumentController {
 
     private final DocumentService documentService;
+    private final LogService logService;
 
     @PostMapping("")
     public ResponseEntity<DocumentResponse> post(@RequestBody DocumentCreateRequest documentCreateRequest) {
@@ -40,9 +43,11 @@ public class DocumentController {
         return ResponseEntity.ok(response.get());
     }
 
-    private ResponseEntity<ErrorResponse> notFound() {
-        return ResponseEntity.status(NOT_FOUND)
-                .body(new ErrorResponse("없는 문서입니다."));
+    @GetMapping("/log/{logId}")
+    public ResponseEntity<LogDetailResponse> getDocumentLogs(@PathVariable Long logId) {
+        LogDetailResponse logDetail = logService.getLogDetail(logId);
+
+        return ResponseEntity.ok(logDetail);
     }
 
     @PutMapping("/{title}")
@@ -50,5 +55,10 @@ public class DocumentController {
                                                 @RequestBody DocumentUpdateRequest documentUpdateRequest) {
         DocumentResponse response = documentService.put(title, documentUpdateRequest);
         return ResponseEntity.ok(response);
+    }
+
+    private ResponseEntity<ErrorResponse> notFound() {
+        return ResponseEntity.status(NOT_FOUND)
+                .body(new ErrorResponse("없는 문서입니다."));
     }
 }
