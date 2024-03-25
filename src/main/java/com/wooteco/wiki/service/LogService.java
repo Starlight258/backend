@@ -1,8 +1,10 @@
 package com.wooteco.wiki.service;
 
 import com.wooteco.wiki.dto.LogDetailResponse;
+import com.wooteco.wiki.dto.LogResponse;
 import com.wooteco.wiki.entity.Log;
 import com.wooteco.wiki.repository.LogRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,5 +20,13 @@ public class LogService {
         Log log = logRepository.findById(logId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 로그가 존재하지 않습니다."));
         return new LogDetailResponse(logId, log.getTitle(), log.getContents(), log.getWriter(), log.getGenerateTime());
+    }
+
+    public List<LogResponse> getLogs(String title) {
+        List<Log> logs = logRepository.findAllByTitle(title);
+
+        return logs.stream()
+                .map(log -> new LogResponse(log.getTitle(), log.getGenerateTime()))
+                .toList();
     }
 }

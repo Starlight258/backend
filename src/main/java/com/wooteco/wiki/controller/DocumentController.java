@@ -44,6 +44,11 @@ public class DocumentController {
         return ResponseEntity.ok(response.get());
     }
 
+    @GetMapping("/{title}/log")
+    public ResponseEntity<?> getLogs(@PathVariable String title) {
+        return ResponseEntity.ok(logService.getLogs(title));
+    }
+
     @GetMapping("/log/{logId}")
     public ResponseEntity<LogDetailResponse> getDocumentLogs(@PathVariable Long logId) {
         LogDetailResponse logDetail = logService.getLogDetail(logId);
