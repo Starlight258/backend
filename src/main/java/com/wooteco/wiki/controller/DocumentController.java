@@ -1,25 +1,15 @@
 package com.wooteco.wiki.controller;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-import com.wooteco.wiki.dto.DocumentCreateRequest;
-import com.wooteco.wiki.dto.DocumentFindAllByRecentResponse;
-import com.wooteco.wiki.dto.DocumentResponse;
-import com.wooteco.wiki.dto.DocumentUpdateRequest;
-import com.wooteco.wiki.dto.ErrorResponse;
-import com.wooteco.wiki.dto.LogDetailResponse;
+import com.wooteco.wiki.dto.*;
 import com.wooteco.wiki.service.DocumentService;
 import com.wooteco.wiki.service.LogService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/document")
@@ -33,6 +23,15 @@ public class DocumentController {
     public ResponseEntity<DocumentResponse> post(@RequestBody DocumentCreateRequest documentCreateRequest) {
         DocumentResponse response = documentService.post(documentCreateRequest);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getRandom() {
+        Optional<DocumentResponse> response = documentService.getRandom();
+        if (response.isEmpty()) {
+            return notFound();
+        }
+        return ResponseEntity.ok(response.get());
     }
 
     @GetMapping("/{title}")
