@@ -8,12 +8,14 @@ import com.wooteco.wiki.entity.Document;
 import com.wooteco.wiki.entity.Log;
 import com.wooteco.wiki.repository.DocumentRepository;
 import com.wooteco.wiki.repository.LogRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final LogRepository logRepository;
+    private final Random random = new Random();
 
     @Override
     public DocumentResponse post(DocumentCreateRequest documentCreateRequest) {
@@ -49,6 +52,18 @@ public class DocumentServiceImpl implements DocumentService {
         logRepository.save(log);
 
         return mapToResponse(save);
+    }
+
+    @Override
+    public Optional<DocumentResponse> getRandom() {
+        List<Document> allDocuments = documentRepository.findAll();
+        int allDocumentsCount = allDocuments.size();
+        if (allDocumentsCount == 0) {
+            return Optional.empty();
+        }
+        int randomIndex = random.nextInt(allDocumentsCount);
+        Document document = allDocuments.get(randomIndex);
+        return Optional.of(mapToResponse(document));
     }
 
     @Override
