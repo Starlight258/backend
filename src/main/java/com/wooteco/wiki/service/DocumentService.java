@@ -6,6 +6,8 @@ import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.entity.Document;
 import com.wooteco.wiki.entity.Log;
+import com.wooteco.wiki.exception.DocumentNotFoundException;
+import com.wooteco.wiki.exception.DuplicateDocumentException;
 import com.wooteco.wiki.repository.DocumentRepository;
 import com.wooteco.wiki.repository.LogRepository;
 import java.time.LocalDateTime;
@@ -31,7 +33,7 @@ public class DocumentService {
         Long documentBytes = documentCreateRequest.documentBytes();
 
         if (documentRepository.existsByTitle(title)) {
-            throw new IllegalStateException("제목이 겹치는 문서가 있습니다.");
+            throw new DuplicateDocumentException("제목이 겹치는 문서가 있습니다.");
         }
 
         Document document = Document.builder()
@@ -64,15 +66,15 @@ public class DocumentService {
         return new DocumentResponse(documentId, title, contents, writer, generateTime);
     }
 
-    public Optional<DocumentResponse> getRandom() {
+    public DocumentResponse getRandom() {
         List<Document> allDocuments = documentRepository.findAll();
         int allDocumentsCount = allDocuments.size();
         if (allDocumentsCount == 0) {
-            return Optional.empty();
+            throw new DocumentNotFoundException("문서가 없습니다.");
         }
         int randomIndex = random.nextInt(allDocumentsCount);
         Document document = allDocuments.get(randomIndex);
-        return Optional.of(mapToResponse(document));
+        return mapToResponse(document);
     }
 
     public Optional<DocumentResponse> get(String title) {
@@ -86,7 +88,7 @@ public class DocumentService {
         Long documentBytes = documentUpdateRequest.documentBytes();
 
         Document document = documentRepository.findByTitle(title)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 제목의 문서입니다."));
+                .orElseThrow(() -> new DocumentNotFoundException("존재하지 않는 제목의 문서입니다."));
         document.update(contents, writer, documentBytes, LocalDateTime.now());
 
         Log log = Log.builder()

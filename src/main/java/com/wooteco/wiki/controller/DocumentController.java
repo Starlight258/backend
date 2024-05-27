@@ -42,16 +42,8 @@ public class DocumentController {
 
     @GetMapping("")
     public ResponseEntity<?> getRandom() {
-        Optional<DocumentResponse> response = documentService.getRandom();
-        if (response.isEmpty()) {
-            return notFound();
-        }
-        return ResponseEntity.ok(response.get());
-    }
-
-    private ResponseEntity<ErrorResponse> notFound() {
-        return ResponseEntity.status(NOT_FOUND)
-                .body(new ErrorResponse("없는 문서입니다."));
+        DocumentResponse response = documentService.getRandom();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{title}")
@@ -61,6 +53,11 @@ public class DocumentController {
             return notFound();
         }
         return ResponseEntity.ok(response.get());
+    }
+
+    private ResponseEntity<ErrorResponse> notFound() {
+        return ResponseEntity.status(NOT_FOUND)
+                .body(new ErrorResponse("없는 문서입니다."));
     }
 
     @GetMapping("/{title}/log")
