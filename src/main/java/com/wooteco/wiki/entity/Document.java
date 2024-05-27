@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,8 @@ public class Document {
     private String writer;
     private Long documentBytes;
     private LocalDateTime generateTime;
+    @ManyToOne
+    private Member member;
 
     public void update(String contents, String writer, Long documentBytes, LocalDateTime generateTime) {
         this.contents = contents;

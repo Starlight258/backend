@@ -1,11 +1,11 @@
 package com.wooteco.wiki.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +16,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Builder
-public class Log {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long logId;
-    private String title;
-    private String contents;
-    private String writer;
-    private Long documentBytes;
-    private LocalDateTime generateTime;
-    @ManyToOne
-    private Member member;
+    private Long memberId;
+    private String nickname;
+    private String email;
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private MemberState state;
 }
