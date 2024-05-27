@@ -1,7 +1,14 @@
 package com.wooteco.wiki.exception;
 
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
 public class WikiException extends RuntimeException {
-    public WikiException(String message) {
+    private final HttpStatus httpStatus;
+
+    public WikiException(String message, HttpStatus httpStatus) {
         super(message);
+        this.httpStatus = httpStatus;
     }
 }
