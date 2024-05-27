@@ -1,4 +1,4 @@
-package com.wooteco.wiki.entity;
+package com.wooteco.wiki.domain;
 
 public interface Title {
     String getTitle();

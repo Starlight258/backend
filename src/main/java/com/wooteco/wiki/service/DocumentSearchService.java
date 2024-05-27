@@ -1,6 +1,6 @@
 package com.wooteco.wiki.service;
 
-import com.wooteco.wiki.entity.Title;
+import com.wooteco.wiki.domain.Title;
 import com.wooteco.wiki.repository.DocumentRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,11 @@
 package com.wooteco.wiki.service;
 
+import com.wooteco.wiki.domain.Document;
+import com.wooteco.wiki.domain.Log;
 import com.wooteco.wiki.dto.DocumentCreateRequest;
 import com.wooteco.wiki.dto.DocumentFindAllByRecentResponse;
 import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
-import com.wooteco.wiki.entity.Document;
-import com.wooteco.wiki.entity.Log;
 import com.wooteco.wiki.exception.DocumentNotFoundException;
 import com.wooteco.wiki.exception.DuplicateDocumentException;
 import com.wooteco.wiki.repository.DocumentRepository;

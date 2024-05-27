@@ -1,6 +1,6 @@
 package com.wooteco.wiki.dto;
 
-import com.wooteco.wiki.entity.Log;
+import com.wooteco.wiki.domain.Log;
 import java.time.LocalDateTime;
 
 public record LogResponse(Long logId, Long version, String writer, Long documentBytes, LocalDateTime generateTime) {

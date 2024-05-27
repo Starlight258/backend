@@ -1,7 +1,7 @@
 package com.wooteco.wiki.repository;
 
-import com.wooteco.wiki.entity.Document;
-import com.wooteco.wiki.entity.Title;
+import com.wooteco.wiki.domain.Document;
+import com.wooteco.wiki.domain.Title;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

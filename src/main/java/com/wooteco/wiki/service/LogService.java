@@ -1,8 +1,8 @@
 package com.wooteco.wiki.service;
 
+import com.wooteco.wiki.domain.Log;
 import com.wooteco.wiki.dto.LogDetailResponse;
 import com.wooteco.wiki.dto.LogResponse;
-import com.wooteco.wiki.entity.Log;
 import com.wooteco.wiki.exception.DocumentNotFoundException;
 import com.wooteco.wiki.repository.LogRepository;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.wooteco.wiki.dto;
 
-import com.wooteco.wiki.entity.Document;
+import com.wooteco.wiki.domain.Document;
 import java.time.LocalDateTime;
 
 public record DocumentRecentResponse(Long documentId, String title, LocalDateTime generateTime) {
