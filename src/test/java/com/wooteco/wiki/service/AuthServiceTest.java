@@ -26,9 +26,9 @@ class AuthServiceTest extends ActiveProfileSpringBootTest {
     @Test
     @DisplayName("로그인 성공 시 엑세스 토큰이 잘 생성되는지 확인")
     void login() {
-        authService.join(new JoinRequest("email@email.com", "nickname", "password"));
+        authService.join(new JoinRequest("email@email.com", "nickname", "qwer1234!"));
 
-        AuthTokens authTokens = authService.login(new LoginRequest("email@email.com", "password"));
+        AuthTokens authTokens = authService.login(new LoginRequest("email@email.com", "qwer1234!"));
 
         long extractMemberId = tokenManager.extractMemberId(authTokens.accessToken());
 
@@ -39,14 +39,14 @@ class AuthServiceTest extends ActiveProfileSpringBootTest {
     @Test
     @DisplayName("이메일 혹은 비밀번호가 잘못되어 로그인 실패시 예외가 발생하는지 확인")
     void loginFailWhenWrongAuthInfo() {
-        Assertions.assertThatThrownBy(() -> authService.login(new LoginRequest("email@email.com", "password")))
+        Assertions.assertThatThrownBy(() -> authService.login(new LoginRequest("email@email.com", "qwer1234!")))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
     @Test
     @DisplayName("회원가입 시 엑세스 토큰이 잘 생성되는지 확인")
     void join() {
-        AuthTokens authTokens = authService.join(new JoinRequest("email@email.com", "nickname", "password"));
+        AuthTokens authTokens = authService.join(new JoinRequest("email@email.com", "nickname", "qwer1234!"));
 
         long extractMemberId = tokenManager.extractMemberId(authTokens.accessToken());
 
@@ -57,10 +57,10 @@ class AuthServiceTest extends ActiveProfileSpringBootTest {
     @Test
     @DisplayName("미리 생성해둔 닉네임의 회원으로 회원가입 시도 시 회원가입이 잘 되는지 확인")
     void joinWithInitial() {
-        String sql = "INSERT INTO member (nickname, email, password, state) VALUES ('켈리', 'kelly@example.com', 'password1', 'INITIAL')";
+        String sql = "INSERT INTO member (nickname, email, password, state) VALUES ('켈리', 'kelly@example.com', 'qwer1234!', 'INITIAL')";
         jdbcTemplate.update(sql);
 
-        AuthTokens authTokens = authService.join(new JoinRequest("kelly@example.com", "켈리", "password"));
+        AuthTokens authTokens = authService.join(new JoinRequest("kelly@example.com", "켈리", "qwer1234!"));
 
         long extractMemberId = tokenManager.extractMemberId(authTokens.accessToken());
 
@@ -72,11 +72,11 @@ class AuthServiceTest extends ActiveProfileSpringBootTest {
     @ValueSource(strings = {"WAITING", "ALLOWED"})
     @DisplayName("이미 있는 이메일로 회원가입 시도 시 예외가 발생하는지 확인")
     void joinFailWhenDuplicate(String memberState) {
-        String sql = "INSERT INTO member (nickname, email, password, state) VALUES ('켈리', 'kelly@example.com', 'password1', '%s')"
+        String sql = "INSERT INTO member (nickname, email, password, state) VALUES ('켈리', 'kelly@example.com', 'qwer1234!', '%s')"
                 .formatted(memberState);
         jdbcTemplate.update(sql);
 
-        Assertions.assertThatThrownBy(() -> authService.join(new JoinRequest("kelly@example.com", "켈리", "password")))
+        Assertions.assertThatThrownBy(() -> authService.join(new JoinRequest("kelly@example.com", "켈리", "qwer1234!")))
                 .isInstanceOf(DuplicateEmailException.class);
     }
 }

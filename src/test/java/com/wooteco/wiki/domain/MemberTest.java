@@ -24,15 +24,15 @@ class MemberTest {
         Member member = Member.builder()
                 .memberId(1L)
                 .email("email@email.com")
-                .password("1234")
+                .password("qwer1234!")
                 .nickname("nickname")
                 .state(memberState)
                 .build();
 
         String changedEmail = "change@chnage.com";
-        member.updateEmailAndPasswordWhenINITIAL(changedEmail, "changePassword");
+        member.updateEmailAndPasswordWhenINITIAL(changedEmail, "qwer1234!!");
 
-        Assertions.assertThat(member.getEmail().equals(changedEmail))
+        Assertions.assertThat(member.getRawEmail().equals(changedEmail))
                 .isEqualTo(isChanged);
     }
 }

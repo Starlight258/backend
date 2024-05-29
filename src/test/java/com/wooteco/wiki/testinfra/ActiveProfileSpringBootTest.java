@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles(profiles = {"local"})
+@ActiveProfiles(profiles = {"local", "info-logging"})
 public class ActiveProfileSpringBootTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;

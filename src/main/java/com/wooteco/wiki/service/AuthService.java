@@ -3,7 +3,9 @@ package com.wooteco.wiki.service;
 import static com.wooteco.wiki.domain.MemberState.INITIAL;
 import static com.wooteco.wiki.domain.MemberState.WAITING;
 
+import com.wooteco.wiki.domain.Email;
 import com.wooteco.wiki.domain.Member;
+import com.wooteco.wiki.domain.Password;
 import com.wooteco.wiki.domain.TokenManager;
 import com.wooteco.wiki.dto.AuthTokens;
 import com.wooteco.wiki.dto.JoinRequest;
@@ -11,7 +13,6 @@ import com.wooteco.wiki.dto.LoginRequest;
 import com.wooteco.wiki.exception.DuplicateEmailException;
 import com.wooteco.wiki.exception.MemberNotFoundException;
 import com.wooteco.wiki.repository.MemberRepository;
-import com.wooteco.wiki.util.Sha256Encryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +25,9 @@ public class AuthService {
     private final MemberRepository memberRepository;
 
     public AuthTokens login(LoginRequest loginRequest) {
-        String encryptedPassword = Sha256Encryptor.encrypt(loginRequest.password());
-        Member member = memberRepository.findByEmailAndPassword(loginRequest.email(), encryptedPassword)
+        Email email = new Email(loginRequest.email());
+        Password password = new Password(loginRequest.password());
+        Member member = memberRepository.findByEmailAndPassword(email, password)
                 .orElseThrow(() -> new MemberNotFoundException("아이디 혹은 비밀번호가 잘못되었습니다."));
         return generateAuthTokens(member);
     }
@@ -46,7 +48,7 @@ public class AuthService {
     }
 
     private Member makeNewMember(JoinRequest joinRequest) {
-        if (memberRepository.findByEmail(joinRequest.email()).isPresent()) {
+        if (memberRepository.findByEmail(new Email(joinRequest.email())).isPresent()) {
             throw new DuplicateEmailException("이미 가입된 이메일입니다.");
         }
         return Member.builder()
