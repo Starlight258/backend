@@ -4,6 +4,7 @@ import static com.wooteco.wiki.domain.MemberState.INITIAL;
 import static com.wooteco.wiki.domain.MemberState.WAITING;
 import static com.wooteco.wiki.exception.ExceptionType.EMAIL_DUPLICATE;
 import static com.wooteco.wiki.exception.ExceptionType.LOGIN_FAIL;
+import static com.wooteco.wiki.exception.ExceptionType.MEMBER_NOT_FOUNT;
 
 import com.wooteco.wiki.domain.Email;
 import com.wooteco.wiki.domain.Member;
@@ -58,5 +59,12 @@ public class AuthService {
                 .state(WAITING)
                 .nickname(joinRequest.nickname())
                 .build();
+    }
+
+    public AuthTokens refresh(String refreshToken) {
+        long memberId = tokenManager.extractMemberIdFromRefreshToken(refreshToken);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new WikiException(MEMBER_NOT_FOUNT));
+        return generateAuthTokens(member);
     }
 }

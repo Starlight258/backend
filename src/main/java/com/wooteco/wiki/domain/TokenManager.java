@@ -86,9 +86,31 @@ public class TokenManager {
         }
     }
 
-    private static void validateTokenIsAccessToken(Claims payload) {
+    private void validateTokenIsAccessToken(Claims payload) {
         String tokenType = payload.get(TOKEN_TYPE, String.class);
         if (!tokenType.equals("access")) {
+            throw new WikiException(TOKEN_INVALID);
+        }
+    }
+
+    public long extractMemberIdFromRefreshToken(String refreshToken) throws WikiException {
+        try {
+            Jws<Claims> claimsJws = Jwts.parser()
+                    .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
+                    .build()
+                    .parseSignedClaims(refreshToken);
+
+            Claims payload = claimsJws.getPayload();
+            validateTokenIsRefreshToken(payload);
+            return payload.get(MEMBER_ID, Long.class);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new WikiException(TOKEN_INVALID);
+        }
+    }
+
+    private void validateTokenIsRefreshToken(Claims payload) {
+        String tokenType = payload.get(TOKEN_TYPE, String.class);
+        if (!tokenType.equals("refresh")) {
             throw new WikiException(TOKEN_INVALID);
         }
     }

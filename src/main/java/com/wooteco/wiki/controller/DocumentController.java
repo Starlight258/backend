@@ -3,6 +3,7 @@ package com.wooteco.wiki.controller;
 import static com.wooteco.wiki.exception.ExceptionType.DOCUMENT_DUPLICATE;
 import static com.wooteco.wiki.exception.ExceptionType.DOCUMENT_NOT_FOUND;
 import static com.wooteco.wiki.exception.ExceptionType.MEMBER_NOT_FOUNT;
+import static com.wooteco.wiki.exception.ExceptionType.TOKEN_INVALID;
 
 import com.wooteco.wiki.annotation.ApiSuccessResponse;
 import com.wooteco.wiki.annotation.Auth;
@@ -44,7 +45,7 @@ public class DocumentController {
 
     @PostMapping("")
     @Operation(description = "문서를 작성한다. 로그인 API 호출을 통해 쿠키에 엑세스 토큰이 있어야 한다.")
-    @ErrorApiResponse({MEMBER_NOT_FOUNT, DOCUMENT_DUPLICATE})
+    @ErrorApiResponse({MEMBER_NOT_FOUNT, DOCUMENT_DUPLICATE, TOKEN_INVALID})
     @ApiSuccessResponse(bodyType = DocumentResponse.class, body = """
             {
                "documentId": 1,
@@ -137,7 +138,7 @@ public class DocumentController {
 
     @PutMapping("/{title}")
     @Operation(description = "특정 제목의 문서를 수정한다. 로그인 API 호출을 통해 쿠키에 엑세스 토큰이 있어야 한다.")
-    @ErrorApiResponse({MEMBER_NOT_FOUNT, DOCUMENT_NOT_FOUND})
+    @ErrorApiResponse({MEMBER_NOT_FOUNT, DOCUMENT_NOT_FOUND, TOKEN_INVALID})
     @ApiSuccessResponse(bodyType = DocumentResponse.class, body = """
             {
               "logId": 4,
