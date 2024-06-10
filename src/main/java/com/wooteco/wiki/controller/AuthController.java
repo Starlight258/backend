@@ -27,7 +27,7 @@ public class AuthController {
 
     private ResponseEntity<AuthTokens> makeResponseEntityWithTokenCookie(AuthTokens authTokens) {
         LocalDateTime now = LocalDateTime.now();
-        Duration tokenLifeTime = Duration.between(now, now.plusHours(1));
+        Duration tokenLifeTime = Duration.between(now, now.plusMinutes(30));
         String accessToken = authTokens.accessToken();
         ResponseCookie cookie = ResponseCookie.from("token", accessToken)
                 .httpOnly(true)

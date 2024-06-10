@@ -17,20 +17,20 @@ import org.springframework.stereotype.Component;
 public class TokenManager {
     private static final String MEMBER_ID = "member_id";
     private static final String TOKEN_TYPE = "token_type";
-    private static final long ACCESS_TOKEN_LIFE_TIME_AS_HOUR = 1;
-    private static final long REFRESH_TOKEN_LIFE_TIME_AS_HOUR = 24;
+    private static final long ACCESS_TOKEN_LIFE_TIME_AS_MINUTE = 30;
+    private static final long REFRESH_TOKEN_LIFE_TIME_AS_HOUR = 24 * 7;
     @Value("${jwt.key}")
     private String secretKey;
 
     /**
-     * 생성된 엑세스 토큰은 리프레쉬 토큰으로 사용할 수 없어야 함. 엑세스 토큰에는 회원의 식별자를 제외한 다른 개인 정보가 포함되면 안됨. 우선 엑세스 토큰 유효 시간은 발급 시점으로부터 1시간으로 설정함.
-     * 논의 후 조정하기로!
+     * 생성된 엑세스 토큰은 리프레쉬 토큰으로 사용할 수 없어야 함. 엑세스 토큰에는 회원의 식별자를 제외한 다른 개인 정보가 포함되면 안됨. 엑세스 토큰 유효 시간은 발급 시점으로부터 30분으로 설정함.
      *
      * @param member 회원 도메인
      * @return 엑세스 토큰
      */
     public String generateAccessToken(Member member) {
-        LocalDateTime rawExpiredTime = LocalDateTime.now().plusHours(ACCESS_TOKEN_LIFE_TIME_AS_HOUR);
+
+        LocalDateTime rawExpiredTime = LocalDateTime.now().plusMinutes(ACCESS_TOKEN_LIFE_TIME_AS_MINUTE);
         Date expiredTime = localDateTimeToDate(rawExpiredTime);
         return Jwts.builder()
                 .expiration(expiredTime)
@@ -46,7 +46,7 @@ public class TokenManager {
     }
 
     /**
-     * 생성된 리프레쉬 토큰은 엑세스 토큰으로 사용할 수 없어야 함. 우선 리프레쉬 토큰 유효 시간은 발급 시점으로부터 1일로 설정함. 논의 후 조정하기로!
+     * 생성된 리프레쉬 토큰은 엑세스 토큰으로 사용할 수 없어야 함. 리프레쉬 토큰 유효 시간은 발급 시점으로부터 7일로 설정함.
      *
      * @param member 회원 도메인
      * @return 리프레쉬 토큰
