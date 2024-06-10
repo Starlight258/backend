@@ -1,7 +1,9 @@
 package com.wooteco.wiki.service;
 
+import static com.wooteco.wiki.exception.ExceptionType.DOCUMENT_NOT_FOUND;
+
 import com.wooteco.wiki.dto.LogResponse;
-import com.wooteco.wiki.exception.DocumentNotFoundException;
+import com.wooteco.wiki.exception.WikiException;
 import com.wooteco.wiki.testinfra.ActiveProfileSpringBootTest;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -17,7 +19,8 @@ class LogServiceTest extends ActiveProfileSpringBootTest {
     @DisplayName("없는 아이디로 로그를 조회했을 때 예외가 발생하는지 확인")
     void getLogDetail() {
         Assertions.assertThatThrownBy(() -> logService.getLogDetail(1L))
-                .isInstanceOf(DocumentNotFoundException.class);
+                .isInstanceOf(WikiException.class)
+                .hasMessage(DOCUMENT_NOT_FOUND.getErrorMessage());
     }
 
     @Test

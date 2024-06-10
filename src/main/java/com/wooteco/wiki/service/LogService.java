@@ -3,7 +3,8 @@ package com.wooteco.wiki.service;
 import com.wooteco.wiki.domain.Log;
 import com.wooteco.wiki.dto.LogDetailResponse;
 import com.wooteco.wiki.dto.LogResponse;
-import com.wooteco.wiki.exception.DocumentNotFoundException;
+import com.wooteco.wiki.exception.ExceptionType;
+import com.wooteco.wiki.exception.WikiException;
 import com.wooteco.wiki.repository.LogRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class LogService {
 
     public LogDetailResponse getLogDetail(Long logId) {
         Log log = logRepository.findById(logId)
-                .orElseThrow(() -> new DocumentNotFoundException("해당 로그가 존재하지 않습니다."));
+                .orElseThrow(() -> new WikiException(ExceptionType.DOCUMENT_NOT_FOUND));
         return new LogDetailResponse(logId, log.getTitle(), log.getContents(), log.getWriter().getNickname(),
                 log.getGenerateTime());
     }

@@ -13,7 +13,7 @@ public class WikiExceptionHandler {
     @ExceptionHandler(WikiException.class)
     public ResponseEntity<ErrorResponse> handle(WikiException exception) {
         log.error(exception.getMessage(), exception);
-        HttpStatus httpStatus = exception.getHttpStatus();
+        HttpStatus httpStatus = exception.getStatus();
         return ResponseEntity.status(httpStatus)
                 .body(new ErrorResponse(exception.getMessage()));
     }

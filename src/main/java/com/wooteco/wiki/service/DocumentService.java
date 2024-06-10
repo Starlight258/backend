@@ -1,5 +1,9 @@
 package com.wooteco.wiki.service;
 
+import static com.wooteco.wiki.exception.ExceptionType.DOCUMENT_DUPLICATE;
+import static com.wooteco.wiki.exception.ExceptionType.DOCUMENT_NOT_FOUND;
+import static com.wooteco.wiki.exception.ExceptionType.MEMBER_NOT_FOUNT;
+
 import com.wooteco.wiki.domain.Document;
 import com.wooteco.wiki.domain.Log;
 import com.wooteco.wiki.domain.Member;
@@ -7,9 +11,7 @@ import com.wooteco.wiki.dto.DocumentCreateRequest;
 import com.wooteco.wiki.dto.DocumentFindAllByRecentResponse;
 import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
-import com.wooteco.wiki.exception.DocumentNotFoundException;
-import com.wooteco.wiki.exception.DuplicateDocumentException;
-import com.wooteco.wiki.exception.MemberNotFoundException;
+import com.wooteco.wiki.exception.WikiException;
 import com.wooteco.wiki.repository.DocumentRepository;
 import com.wooteco.wiki.repository.LogRepository;
 import com.wooteco.wiki.repository.MemberRepository;
@@ -32,13 +34,13 @@ public class DocumentService {
 
     public DocumentResponse post(long memberId, DocumentCreateRequest documentCreateRequest) {
         Member writer = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("없는 회원입니다."));
+                .orElseThrow(() -> new WikiException(MEMBER_NOT_FOUNT));
         String title = documentCreateRequest.title();
         String contents = documentCreateRequest.contents();
         Long documentBytes = documentCreateRequest.documentBytes();
 
         if (documentRepository.existsByTitle(title)) {
-            throw new DuplicateDocumentException("제목이 겹치는 문서가 있습니다.");
+            throw new WikiException(DOCUMENT_DUPLICATE);
         }
 
         Document document = Document.builder()
@@ -75,7 +77,7 @@ public class DocumentService {
         List<Document> allDocuments = documentRepository.findAll();
         int allDocumentsCount = allDocuments.size();
         if (allDocumentsCount == 0) {
-            throw new DocumentNotFoundException("문서가 없습니다.");
+            throw new WikiException(DOCUMENT_NOT_FOUND);
         }
         int randomIndex = random.nextInt(allDocumentsCount);
         Document document = allDocuments.get(randomIndex);
@@ -85,17 +87,17 @@ public class DocumentService {
     public DocumentResponse get(String title) {
         Optional<Document> byTitle = documentRepository.findByTitle(title);
         return byTitle.map(this::mapToResponse)
-                .orElseThrow(() -> new DocumentNotFoundException("없는 문서입니다."));
+                .orElseThrow(() -> new WikiException(DOCUMENT_NOT_FOUND));
     }
 
     public DocumentResponse put(long memberId, String title, DocumentUpdateRequest documentUpdateRequest) {
         String contents = documentUpdateRequest.contents();
         Member writer = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("없는 회원입니다."));
+                .orElseThrow(() -> new WikiException(MEMBER_NOT_FOUNT));
         Long documentBytes = documentUpdateRequest.documentBytes();
 
         Document document = documentRepository.findByTitle(title)
-                .orElseThrow(() -> new DocumentNotFoundException("존재하지 않는 제목의 문서입니다."));
+                .orElseThrow(() -> new WikiException(DOCUMENT_NOT_FOUND));
         document.update(contents, writer, documentBytes, LocalDateTime.now());
 
         Log log = Log.builder()

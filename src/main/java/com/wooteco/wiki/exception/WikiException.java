@@ -5,14 +5,18 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class WikiException extends RuntimeException {
-    private final HttpStatus httpStatus;
+    private final ExceptionType exceptionType;
 
-    public WikiException(String message) {
-        this(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    public WikiException(ExceptionType exceptionType) {
+        this.exceptionType = exceptionType;
     }
 
-    WikiException(String message, HttpStatus httpStatus) {
-        super(message);
-        this.httpStatus = httpStatus;
+    @Override
+    public String getMessage() {
+        return exceptionType.getErrorMessage();
+    }
+
+    public HttpStatus getStatus() {
+        return exceptionType.getHttpStatus();
     }
 }

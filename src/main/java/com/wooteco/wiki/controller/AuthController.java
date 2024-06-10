@@ -1,5 +1,12 @@
 package com.wooteco.wiki.controller;
 
+import static com.wooteco.wiki.exception.ExceptionType.EMAIL_DUPLICATE;
+import static com.wooteco.wiki.exception.ExceptionType.EMAIL_INVALID;
+import static com.wooteco.wiki.exception.ExceptionType.LOGIN_FAIL;
+import static com.wooteco.wiki.exception.ExceptionType.PASSWORD_INVALID;
+
+import com.wooteco.wiki.annotation.ApiSuccessResponse;
+import com.wooteco.wiki.annotation.ErrorApiResponse;
 import com.wooteco.wiki.dto.AuthTokens;
 import com.wooteco.wiki.dto.JoinRequest;
 import com.wooteco.wiki.dto.LoginRequest;
@@ -20,6 +27,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
+    @ErrorApiResponse({LOGIN_FAIL, EMAIL_INVALID, PASSWORD_INVALID})
+    @ApiSuccessResponse(bodyType = AuthTokens.class, body = """
+            {
+                "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3MTgwMDIzODAsInRva2VuX3R5cGUiOiJhY2Nlc3MiLCJtZW1iZXJfaWQiOjJ9.9cxQ2XFgdXApD8aqE4a74kJsJ37luCW34ptXl2VGaQ6t-vEhvgLyd8gnTB162iJPZhhbFb9OP9J_Bagjmo7Qmw",
+                "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3MTgwODUxODAsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwibWVtYmVyX2lkIjoyfQ.MozmvIX38mBfjzVwA2ehBat9hrizUIKzNbh2hDozQeDwLVxgaH0KcHzBic3pvLHINaYOvf2TpH9q4vUKa9QR4w"
+            }
+            """)
     public ResponseEntity<AuthTokens> login(@RequestBody LoginRequest loginRequest) {
         AuthTokens authTokens = authService.login(loginRequest);
         return makeResponseEntityWithTokenCookie(authTokens);
@@ -39,6 +53,13 @@ public class AuthController {
     }
 
     @PostMapping("/join")
+    @ErrorApiResponse({EMAIL_DUPLICATE, EMAIL_INVALID, PASSWORD_INVALID})
+    @ApiSuccessResponse(bodyType = AuthTokens.class, body = """
+            {
+                "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3MTgwMDIzODAsInRva2VuX3R5cGUiOiJhY2Nlc3MiLCJtZW1iZXJfaWQiOjJ9.9cxQ2XFgdXApD8aqE4a74kJsJ37luCW34ptXl2VGaQ6t-vEhvgLyd8gnTB162iJPZhhbFb9OP9J_Bagjmo7Qmw",
+                "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3MTgwODUxODAsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwibWVtYmVyX2lkIjoyfQ.MozmvIX38mBfjzVwA2ehBat9hrizUIKzNbh2hDozQeDwLVxgaH0KcHzBic3pvLHINaYOvf2TpH9q4vUKa9QR4w"
+            }
+            """)
     public ResponseEntity<AuthTokens> join(@RequestBody JoinRequest joinRequest) {
         AuthTokens authTokens = authService.join(joinRequest);
         return makeResponseEntityWithTokenCookie(authTokens);

@@ -1,6 +1,8 @@
 package com.wooteco.wiki.domain;
 
-import com.wooteco.wiki.exception.WrongEmailException;
+import static com.wooteco.wiki.exception.ExceptionType.EMAIL_INVALID;
+
+import com.wooteco.wiki.exception.WikiException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.util.regex.Matcher;
@@ -23,7 +25,7 @@ public class Email {
     private void validateEmail(String rawEmail) {
         Matcher matcher = PATTERN.matcher(rawEmail);
         if (!matcher.matches()) {
-            throw new WrongEmailException("잘못된 이메일입니다.");
+            throw new WikiException(EMAIL_INVALID);
         }
     }
 

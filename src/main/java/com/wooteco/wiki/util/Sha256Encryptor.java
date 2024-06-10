@@ -1,6 +1,5 @@
 package com.wooteco.wiki.util;
 
-import com.wooteco.wiki.exception.WikiException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -19,7 +18,7 @@ public class Sha256Encryptor {
             }
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new WikiException("암호화 과정에 문제가 발생했습니다.");
+            throw new RuntimeException("암호화 과정에 문제가 발생했습니다.", e);
         }
     }
 }

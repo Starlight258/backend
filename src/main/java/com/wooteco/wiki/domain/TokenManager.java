@@ -1,6 +1,8 @@
 package com.wooteco.wiki.domain;
 
-import com.wooteco.wiki.exception.WrongTokenException;
+import static com.wooteco.wiki.exception.ExceptionType.TOKEN_INVALID;
+
+import com.wooteco.wiki.exception.WikiException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -67,9 +69,9 @@ public class TokenManager {
      *
      * @param accessToken 엑세스 토큰
      * @return 회원의 식별자.
-     * @throws WrongTokenException 엑세스 토큰에 문제(잘못된 토큰, 기간 만료 등)가 있어 회원 식별자를 추출할 수 없는 경우
+     * @throws WikiException 엑세스 토큰에 문제(잘못된 토큰, 기간 만료 등)가 있어 회원 식별자를 추출할 수 없는 경우
      */
-    public long extractMemberId(String accessToken) throws WrongTokenException {
+    public long extractMemberId(String accessToken) throws WikiException {
         try {
             Jws<Claims> claimsJws = Jwts.parser()
                     .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
@@ -80,14 +82,14 @@ public class TokenManager {
             validateTokenIsAccessToken(payload);
             return payload.get(MEMBER_ID, Long.class);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new WrongTokenException("잘못된 토큰입니다.");
+            throw new WikiException(TOKEN_INVALID);
         }
     }
 
     private static void validateTokenIsAccessToken(Claims payload) {
         String tokenType = payload.get(TOKEN_TYPE, String.class);
         if (!tokenType.equals("access")) {
-            throw new WrongTokenException("엑세스 토큰이 아닙니다.");
+            throw new WikiException(TOKEN_INVALID);
         }
     }
 }

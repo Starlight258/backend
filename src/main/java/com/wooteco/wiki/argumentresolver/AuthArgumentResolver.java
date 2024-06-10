@@ -1,8 +1,10 @@
 package com.wooteco.wiki.argumentresolver;
 
+import static com.wooteco.wiki.exception.ExceptionType.TOKEN_INVALID;
+
 import com.wooteco.wiki.annotation.Auth;
 import com.wooteco.wiki.domain.TokenManager;
-import com.wooteco.wiki.exception.WrongTokenException;
+import com.wooteco.wiki.exception.WikiException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -36,7 +38,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
                 .limit(VALID_TOKEN_COOKIE_COUNT)
                 .findAny()
                 .map(Cookie::getValue)
-                .orElseThrow(() -> new WrongTokenException("토큰이 잘못되었습니다."));
+                .orElseThrow(() -> new WikiException(TOKEN_INVALID));
         return tokenManager.extractMemberId(accessToken);
     }
 
@@ -45,7 +47,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
                 .filter(this::isTokenCookie)
                 .count();
         if (tokenCookieCount != VALID_TOKEN_COOKIE_COUNT) {
-            throw new WrongTokenException("토큰이 잘못되었습니다.");
+            throw new WikiException(TOKEN_INVALID);
         }
     }
 

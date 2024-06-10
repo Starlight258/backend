@@ -1,11 +1,13 @@
 package com.wooteco.wiki.service;
 
+import static com.wooteco.wiki.exception.ExceptionType.EMAIL_DUPLICATE;
+import static com.wooteco.wiki.exception.ExceptionType.LOGIN_FAIL;
+
 import com.wooteco.wiki.domain.TokenManager;
 import com.wooteco.wiki.dto.AuthTokens;
 import com.wooteco.wiki.dto.JoinRequest;
 import com.wooteco.wiki.dto.LoginRequest;
-import com.wooteco.wiki.exception.DuplicateEmailException;
-import com.wooteco.wiki.exception.MemberNotFoundException;
+import com.wooteco.wiki.exception.WikiException;
 import com.wooteco.wiki.testinfra.ActiveProfileSpringBootTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +42,8 @@ class AuthServiceTest extends ActiveProfileSpringBootTest {
     @DisplayName("이메일 혹은 비밀번호가 잘못되어 로그인 실패시 예외가 발생하는지 확인")
     void loginFailWhenWrongAuthInfo() {
         Assertions.assertThatThrownBy(() -> authService.login(new LoginRequest("email@email.com", "qwer1234!")))
-                .isInstanceOf(MemberNotFoundException.class);
+                .isInstanceOf(WikiException.class)
+                .hasMessage(LOGIN_FAIL.getErrorMessage());
     }
 
     @Test
@@ -77,6 +80,7 @@ class AuthServiceTest extends ActiveProfileSpringBootTest {
         jdbcTemplate.update(sql);
 
         Assertions.assertThatThrownBy(() -> authService.join(new JoinRequest("kelly@example.com", "켈리", "qwer1234!")))
-                .isInstanceOf(DuplicateEmailException.class);
+                .isInstanceOf(WikiException.class)
+                .hasMessage(EMAIL_DUPLICATE.getErrorMessage());
     }
 }

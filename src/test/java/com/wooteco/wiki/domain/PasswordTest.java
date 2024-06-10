@@ -1,6 +1,8 @@
 package com.wooteco.wiki.domain;
 
-import com.wooteco.wiki.exception.WrongPasswordException;
+import static com.wooteco.wiki.exception.ExceptionType.PASSWORD_INVALID;
+
+import com.wooteco.wiki.exception.WikiException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +14,7 @@ class PasswordTest {
     @DisplayName("비밀번호 정책에 맞지 않는 것이 생성되지 않는지 확인")
     void failWhenWrongPassword(String password) {
         Assertions.assertThatThrownBy(() -> new Password(password))
-                .isInstanceOf(WrongPasswordException.class);
+                .isInstanceOf(WikiException.class)
+                .hasMessage(PASSWORD_INVALID.getErrorMessage());
     }
 }
