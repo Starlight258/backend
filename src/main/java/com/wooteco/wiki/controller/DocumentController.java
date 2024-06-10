@@ -16,6 +16,7 @@ import com.wooteco.wiki.dto.LogResponse;
 import com.wooteco.wiki.service.DocumentSearchService;
 import com.wooteco.wiki.service.DocumentService;
 import com.wooteco.wiki.service.LogService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -42,6 +43,7 @@ public class DocumentController {
     private final DocumentSearchService documentSearchService;
 
     @PostMapping("")
+    @Operation(description = "문서를 작성한다. 로그인 API 호출을 통해 쿠키에 엑세스 토큰이 있어야 한다.")
     @ErrorApiResponse({MEMBER_NOT_FOUNT, DOCUMENT_DUPLICATE})
     @ApiSuccessResponse(bodyType = DocumentResponse.class, body = """
             {
@@ -59,6 +61,7 @@ public class DocumentController {
     }
 
     @GetMapping("")
+    @Operation(description = "랜덤 문서를 조회 한다.")
     @ErrorApiResponse(DOCUMENT_NOT_FOUND)
     @ApiSuccessResponse(bodyType = DocumentResponse.class, body = """
             {
@@ -75,6 +78,7 @@ public class DocumentController {
     }
 
     @GetMapping("/{title}")
+    @Operation(description = "특정 제목의 문서를 조회한다.")
     @ErrorApiResponse(DOCUMENT_NOT_FOUND)
     @ApiSuccessResponse(bodyType = DocumentResponse.class, body = """
             {
@@ -91,6 +95,7 @@ public class DocumentController {
     }
 
     @GetMapping("/{title}/log")
+    @Operation(description = "특정 제목의 문서의 수정 로그를 조회한다.")
     @ApiSuccessResponse(bodyType = LogResponse.class, body = """
             [
                 {
@@ -114,6 +119,7 @@ public class DocumentController {
     }
 
     @GetMapping("/log/{logId}")
+    @Operation(description = "문서의 수정 로그의 식별자를 통해 수정 로그를 조회한다.")
     @ErrorApiResponse(DOCUMENT_DUPLICATE)
     @ApiSuccessResponse(bodyType = LogDetailResponse.class, body = """
             {
@@ -130,6 +136,7 @@ public class DocumentController {
     }
 
     @PutMapping("/{title}")
+    @Operation(description = "특정 제목의 문서를 수정한다. 로그인 API 호출을 통해 쿠키에 엑세스 토큰이 있어야 한다.")
     @ErrorApiResponse({MEMBER_NOT_FOUNT, DOCUMENT_NOT_FOUND})
     @ApiSuccessResponse(bodyType = DocumentResponse.class, body = """
             {
@@ -147,6 +154,7 @@ public class DocumentController {
     }
 
     @GetMapping("/recent")
+    @Operation(description = "최근 변경된 순서로 문서 목록을 조회한다.")
     @ApiSuccessResponse(bodyType = DocumentFindAllByRecentResponse.class, body = """
             {
               "documents": [
@@ -194,6 +202,7 @@ public class DocumentController {
     }
 
     @GetMapping("/search")
+    @Operation(description = "문서의 제목을 이용해 검색한다.")
     @ApiResponse(responseCode = "200", description = "요청이 정상적으로 처리된 경우", content = @Content(schema = @Schema(implementation = String[].class), examples = @ExampleObject("""
             [
               "폴라바",

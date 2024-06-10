@@ -11,6 +11,7 @@ import com.wooteco.wiki.dto.AuthTokens;
 import com.wooteco.wiki.dto.JoinRequest;
 import com.wooteco.wiki.dto.LoginRequest;
 import com.wooteco.wiki.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
+    @Operation(description = "회원 가입 API. 응답으로 엑세스 토큰과 리프레쉬 토큰을 반환한다. 쿠키에 httpOnly 엑세스 토큰이 저장되어있다.")
     @ErrorApiResponse({LOGIN_FAIL, EMAIL_INVALID, PASSWORD_INVALID})
     @ApiSuccessResponse(bodyType = AuthTokens.class, body = """
             {
@@ -53,6 +55,7 @@ public class AuthController {
     }
 
     @PostMapping("/join")
+    @Operation(description = "회원 가입 API. 응답으로 엑세스 토큰과 리프레쉬 토큰을 반환한다. 쿠키에 httpOnly 엑세스 토큰이 저장되어있다.")
     @ErrorApiResponse({EMAIL_DUPLICATE, EMAIL_INVALID, PASSWORD_INVALID})
     @ApiSuccessResponse(bodyType = AuthTokens.class, body = """
             {
