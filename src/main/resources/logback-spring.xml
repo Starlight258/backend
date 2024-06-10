@@ -21,6 +21,19 @@
         </root>
     </springProfile>
 
+    <!-- Log Appender Module -->
+    <springProfile name="dev">
+        <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>${logPattern}</pattern>
+            </encoder>
+        </appender>
+        <root>
+            <appender-ref ref="console"/>
+        </root>
+    </springProfile>
+
     <!-- file Appender Module -->
     <springProfile name="product">
         <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">

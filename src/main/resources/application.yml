@@ -5,3 +5,4 @@ spring:
     group:
       local: local, common
       product: product, common
+      doc: dev
