@@ -2,5 +2,5 @@ package com.wooteco.wiki.dto;
 
 import lombok.NonNull;
 
-public record DocumentUpdateRequest(@NonNull String contents, @NonNull String writer, @NonNull Long documentBytes) {
+public record DocumentUpdateRequest(@NonNull String contents, @NonNull Long documentBytes) {
 }

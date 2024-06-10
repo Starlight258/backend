@@ -25,13 +25,12 @@ public class Document {
     @Column(unique = true)
     private String title;
     private String contents;
-    private String writer;
     private Long documentBytes;
     private LocalDateTime generateTime;
     @ManyToOne
-    private Member member;
+    private Member writer;
 
-    public void update(String contents, String writer, Long documentBytes, LocalDateTime generateTime) {
+    public void update(String contents, Member writer, Long documentBytes, LocalDateTime generateTime) {
         this.contents = contents;
         this.writer = writer;
         this.documentBytes = documentBytes;

@@ -8,7 +8,7 @@ public record LogResponse(Long logId, Long version, String writer, Long document
         return new LogResponse(
                 log.getLogId(),
                 version,
-                log.getWriter(),
+                log.getWriter().getNickname(),
                 log.getDocumentBytes(),
                 log.getGenerateTime()
         );

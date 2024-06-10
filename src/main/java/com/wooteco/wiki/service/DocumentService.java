@@ -2,14 +2,17 @@ package com.wooteco.wiki.service;
 
 import com.wooteco.wiki.domain.Document;
 import com.wooteco.wiki.domain.Log;
+import com.wooteco.wiki.domain.Member;
 import com.wooteco.wiki.dto.DocumentCreateRequest;
 import com.wooteco.wiki.dto.DocumentFindAllByRecentResponse;
 import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.exception.DocumentNotFoundException;
 import com.wooteco.wiki.exception.DuplicateDocumentException;
+import com.wooteco.wiki.exception.MemberNotFoundException;
 import com.wooteco.wiki.repository.DocumentRepository;
 import com.wooteco.wiki.repository.LogRepository;
+import com.wooteco.wiki.repository.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final LogRepository logRepository;
+    private final MemberRepository memberRepository;
     private final Random random = new Random();
 
-    public DocumentResponse post(DocumentCreateRequest documentCreateRequest) {
+    public DocumentResponse post(long memberId, DocumentCreateRequest documentCreateRequest) {
+        Member writer = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("없는 회원입니다."));
         String title = documentCreateRequest.title();
         String contents = documentCreateRequest.contents();
-        String writer = documentCreateRequest.writer();
         Long documentBytes = documentCreateRequest.documentBytes();
 
         if (documentRepository.existsByTitle(title)) {
@@ -61,7 +66,7 @@ public class DocumentService {
         long documentId = document.getDocumentId();
         String title = document.getTitle();
         String contents = document.getContents();
-        String writer = document.getWriter();
+        String writer = document.getWriter().getNickname();
         LocalDateTime generateTime = document.getGenerateTime();
         return new DocumentResponse(documentId, title, contents, writer, generateTime);
     }
@@ -77,14 +82,16 @@ public class DocumentService {
         return mapToResponse(document);
     }
 
-    public Optional<DocumentResponse> get(String title) {
+    public DocumentResponse get(String title) {
         Optional<Document> byTitle = documentRepository.findByTitle(title);
-        return byTitle.map(this::mapToResponse);
+        return byTitle.map(this::mapToResponse)
+                .orElseThrow(() -> new DocumentNotFoundException("없는 문서입니다."));
     }
 
-    public DocumentResponse put(String title, DocumentUpdateRequest documentUpdateRequest) {
+    public DocumentResponse put(long memberId, String title, DocumentUpdateRequest documentUpdateRequest) {
         String contents = documentUpdateRequest.contents();
-        String writer = documentUpdateRequest.writer();
+        Member writer = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("없는 회원입니다."));
         Long documentBytes = documentUpdateRequest.documentBytes();
 
         Document document = documentRepository.findByTitle(title)

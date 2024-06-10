@@ -22,9 +22,8 @@ public class Log {
     private Long logId;
     private String title;
     private String contents;
-    private String writer;
     private Long documentBytes;
     private LocalDateTime generateTime;
     @ManyToOne
-    private Member member;
+    private Member writer;
 }

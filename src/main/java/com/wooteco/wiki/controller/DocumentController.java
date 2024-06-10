@@ -1,19 +1,16 @@
 package com.wooteco.wiki.controller;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
+import com.wooteco.wiki.annotation.Auth;
 import com.wooteco.wiki.dto.DocumentCreateRequest;
 import com.wooteco.wiki.dto.DocumentFindAllByRecentResponse;
 import com.wooteco.wiki.dto.DocumentResponse;
 import com.wooteco.wiki.dto.DocumentUpdateRequest;
-import com.wooteco.wiki.dto.ErrorResponse;
 import com.wooteco.wiki.dto.LogDetailResponse;
 import com.wooteco.wiki.dto.LogResponse;
 import com.wooteco.wiki.service.DocumentSearchService;
 import com.wooteco.wiki.service.DocumentService;
 import com.wooteco.wiki.service.LogService;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +32,9 @@ public class DocumentController {
     private final DocumentSearchService documentSearchService;
 
     @PostMapping("")
-    public ResponseEntity<DocumentResponse> post(@RequestBody DocumentCreateRequest documentCreateRequest) {
-        DocumentResponse response = documentService.post(documentCreateRequest);
+    public ResponseEntity<DocumentResponse> post(@Auth Long memberId,
+                                                 @RequestBody DocumentCreateRequest documentCreateRequest) {
+        DocumentResponse response = documentService.post(memberId, documentCreateRequest);
         return ResponseEntity.ok(response);
     }
 
@@ -48,16 +46,8 @@ public class DocumentController {
 
     @GetMapping("/{title}")
     public ResponseEntity<?> get(@PathVariable String title) {
-        Optional<DocumentResponse> response = documentService.get(title);
-        if (response.isEmpty()) {
-            return notFound();
-        }
-        return ResponseEntity.ok(response.get());
-    }
-
-    private ResponseEntity<ErrorResponse> notFound() {
-        return ResponseEntity.status(NOT_FOUND)
-                .body(new ErrorResponse("없는 문서입니다."));
+        DocumentResponse response = documentService.get(title);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{title}/log")
@@ -72,9 +62,9 @@ public class DocumentController {
     }
 
     @PutMapping("/{title}")
-    public ResponseEntity<DocumentResponse> put(@PathVariable String title,
+    public ResponseEntity<DocumentResponse> put(@Auth long memberId, @PathVariable String title,
                                                 @RequestBody DocumentUpdateRequest documentUpdateRequest) {
-        DocumentResponse response = documentService.put(title, documentUpdateRequest);
+        DocumentResponse response = documentService.put(memberId, title, documentUpdateRequest);
         return ResponseEntity.ok(response);
     }
 
