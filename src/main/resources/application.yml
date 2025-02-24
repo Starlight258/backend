@@ -1,7 +1,24 @@
+server:
+  port: 8080
+
 spring:
-  application:
-    name: wiki
-  profiles:
-    group:
-      local: local, common
-      product: product, common
+  main:
+    allow-bean-definition-overriding: true
+
+  datasource:
+    url: jdbc:h2:mem:database;MODE=MySQL;
+
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+
+jwt:
+  key: 012345678901234567890123456789012345678901234567890123456789
