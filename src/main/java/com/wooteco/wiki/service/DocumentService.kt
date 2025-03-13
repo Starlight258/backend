@@ -50,8 +50,10 @@ class DocumentService(
         return mapToResponse(document)
     }
 
-    fun get(title: String): Optional<DocumentResponse> =
-        documentRepository.findByTitle(title).map { mapToResponse(it) }
+    fun get(title: String): DocumentResponse =
+        documentRepository.findByTitle(title)
+            .map { mapToResponse(it) }
+            .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
 
     fun put(title: String, request: DocumentUpdateRequest): DocumentResponse {
         val (contents, writer, documentBytes) = request
