@@ -105,6 +105,6 @@ public class DocumentService {
 
     public DocumentFindAllByRecentResponse getRecentDocuments() {
         List<Document> documents = documentRepository.findAllByOrderByGenerateTimeDesc();
-        return DocumentFindAllByRecentResponse.of(documents);
+        return DocumentFindAllByRecentResponse.Companion.of(documents);
     }
 }
