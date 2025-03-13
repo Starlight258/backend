@@ -10,13 +10,14 @@ import com.wooteco.wiki.exception.DocumentNotFoundException;
 import com.wooteco.wiki.exception.DuplicateDocumentException;
 import com.wooteco.wiki.repository.DocumentRepository;
 import com.wooteco.wiki.repository.LogRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -35,14 +36,8 @@ public class DocumentService {
         if (documentRepository.existsByTitle(title)) {
             throw new DuplicateDocumentException("제목이 겹치는 문서가 있습니다.");
         }
+        Document document = new Document(title, contents, writer, documentBytes, LocalDateTime.now());
 
-        Document document = Document.builder()
-                .title(title)
-                .contents(contents)
-                .writer(writer)
-                .documentBytes(documentBytes)
-                .generateTime(LocalDateTime.now())
-                .build();
         Document save = documentRepository.save(document);
 
         Log log = Log.builder()
