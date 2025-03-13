@@ -29,7 +29,7 @@ class DocumentController(
 
     @PostMapping("")
     fun post(@RequestBody documentCreateRequest: DocumentCreateRequest): ResponseEntity<DocumentResponse> {
-        val response = documentService!!.post(documentCreateRequest)
+        val response = documentService.post(documentCreateRequest)
         return ResponseEntity.ok(response)
     }
 
