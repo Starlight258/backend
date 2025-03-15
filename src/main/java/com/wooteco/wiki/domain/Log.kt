@@ -18,8 +18,6 @@ class Log(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val logId: Long? = null
 ) {
-    constructor(title: String, contents: String, writer: String, documentBytes: Long, generateTime: LocalDateTime)
-            : this(title, contents, writer.toString(), documentBytes, generateTime, null)
 
     override fun equals(other: Any?): Boolean =
         other is Log && this.logId == other.logId;

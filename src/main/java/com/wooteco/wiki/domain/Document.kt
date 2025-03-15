@@ -20,8 +20,6 @@ class Document(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val documentId: Long? = null,
 ) {
-    constructor(title: String, contents: String, writer: String, documentBytes: Long, generateTime: LocalDateTime)
-            : this(title, contents, writer.toString(), documentBytes, generateTime, null)
 
     fun update(
         contents: String,
