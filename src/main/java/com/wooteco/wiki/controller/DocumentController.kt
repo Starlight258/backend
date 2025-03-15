@@ -46,12 +46,12 @@ class DocumentController(
     }
 
     @GetMapping("/{title}/log")
-    fun getLogs(@PathVariable title: String?): ResponseEntity<List<LogResponse>> {
+    fun getLogs(@PathVariable title: String): ResponseEntity<List<LogResponse>> {
         return ResponseEntity.ok(logService.getLogs(title))
     }
 
     @GetMapping("/log/{logId}")
-    fun getDocumentLogs(@PathVariable logId: Long?): ResponseEntity<LogDetailResponse> {
+    fun getDocumentLogs(@PathVariable logId: Long): ResponseEntity<LogDetailResponse> {
         val logDetail = logService.getLogDetail(logId)
         return ResponseEntity.ok(logDetail)
     }
