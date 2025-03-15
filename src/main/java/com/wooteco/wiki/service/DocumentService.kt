@@ -13,15 +13,15 @@ import com.wooteco.wiki.repository.LogRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
-import java.util.Random
+import kotlin.random.Random
 
 @Service
 @Transactional
 class DocumentService(
     private val documentRepository: DocumentRepository,
     private val logRepository: LogRepository,
+    private val random: Random,
 ) {
-    private val random: Random = Random()
 
     fun post(request: DocumentCreateRequest): DocumentResponse {
         val (title, contents, writer, documentBytes) = request
