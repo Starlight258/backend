@@ -7,13 +7,12 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 
 @Entity
+@Getter
 public class Admin {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Getter
     private String loginId;
-    @Getter
     private String password;
 
     protected Admin() {
