@@ -41,7 +41,7 @@ class AuthServiceTest {
             TokenResponse tokenResponse = authService.createToken(tokenInfoDto);
 
             // then
-            org.assertj.core.api.Assertions.assertThat(tokenResponse).isNotNull();
+            Assertions.assertThat(tokenResponse).isNotNull();
             System.out.println(tokenResponse);
         }
     }
@@ -61,7 +61,7 @@ class AuthServiceTest {
             TokenResponse tokenResponse = authService.login(loginRequest);
 
             // then
-            org.assertj.core.api.Assertions.assertThat(tokenResponse).isNotNull();
+            Assertions.assertThat(tokenResponse).isNotNull();
             System.out.println(tokenResponse);
         }
 
