@@ -57,7 +57,7 @@ class AuthControllerTest {
                     .given().log().all()
                     .contentType(ContentType.JSON)
                     .body(requestDto)
-                    .when().post("/login")
+                    .when().post("/admin/login")
                     .then().log().all()
                     .statusCode(HttpStatus.OK.value())
                     .extract().response();
@@ -75,7 +75,7 @@ class AuthControllerTest {
                     .given().log().all()
                     .contentType(ContentType.JSON)
                     .body(requestDto)
-                    .when().post("/login")
+                    .when().post("/admin/login")
                     .then().log().all()
                     .statusCode(HttpStatus.NOT_FOUND.value())
                     .extract().response();
@@ -101,7 +101,7 @@ class AuthControllerTest {
             RestAssured
                     .given().log().all()
                     .cookie(TOKEN_NAME_FILED, token)
-                    .when().get("/login/check")
+                    .when().get("/admin/login/check")
                     .then().log().all()
                     .statusCode(HttpStatus.OK.value());
         }
