@@ -13,6 +13,7 @@ import com.wooteco.wiki.repository.LogRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.util.UUID
 import kotlin.random.Random
 
 @Service
@@ -54,6 +55,11 @@ class DocumentService(
             .map { mapToResponse(it) }
             .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
 
+    fun getByUuid(uuid: UUID): DocumentResponse =
+        documentRepository.findByUuid(uuid)
+            .map { mapToResponse(it) }
+            .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
+
     fun put(title: String, request: DocumentUpdateRequest): DocumentResponse {
         val (contents, writer, documentBytes) = request
 
@@ -76,9 +82,10 @@ class DocumentService(
     private fun mapToResponse(document: Document): DocumentResponse =
         DocumentResponse(
             document.documentId ?: throw DocumentNotFoundException("문서 ID가 없습니다."),
+            document.uuid,
             document.title,
             document.contents,
             document.writer,
-            document.generateTime,
+            document.generateTime
         )
 }

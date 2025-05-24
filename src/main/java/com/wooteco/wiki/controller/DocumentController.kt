@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/document")
@@ -42,6 +43,13 @@ class DocumentController(
     @GetMapping("/{title}")
     fun get(@PathVariable title: String): ResponseEntity<Any> {
         val response = documentService.get(title)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("uuid/{uuidText}")
+    fun getByUuid(@PathVariable uuidText: String): ResponseEntity<Any> {
+        val uuid = UUID.fromString(uuidText)
+        val response = documentService.getByUuid(uuid)
         return ResponseEntity.ok(response)
     }
 
