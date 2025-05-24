@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Entity
 class Document(
@@ -15,6 +16,7 @@ class Document(
     var writer: String = "",
     var documentBytes: Long = 0,
     var generateTime: LocalDateTime = LocalDateTime.now(),
+    var uuid: UUID = UUID.randomUUID(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
