@@ -1,10 +1,10 @@
 package com.wooteco.wiki.controller;
 
-import com.wooteco.wiki.domain.Admin;
-import com.wooteco.wiki.dto.LoginRequest;
-import com.wooteco.wiki.dto.TokenResponse;
-import com.wooteco.wiki.repository.AdminRepository;
-import com.wooteco.wiki.service.AuthService;
+import com.wooteco.wiki.admin.domain.Admin;
+import com.wooteco.wiki.admin.domain.dto.LoginRequest;
+import com.wooteco.wiki.global.auth.domain.dto.TokenResponse;
+import com.wooteco.wiki.admin.repository.AdminRepository;
+import com.wooteco.wiki.global.auth.service.AuthService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,7 @@
 package com.wooteco.wiki.repository;
 
-import com.wooteco.wiki.domain.Admin;
+import com.wooteco.wiki.admin.domain.Admin;
+import com.wooteco.wiki.admin.repository.AdminRepository;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
