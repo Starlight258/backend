@@ -1,12 +1,13 @@
 package com.wooteco.wiki.service;
 
-import com.wooteco.wiki.domain.Admin;
-import com.wooteco.wiki.dto.LoginRequest;
-import com.wooteco.wiki.dto.TokenInfoDto;
-import com.wooteco.wiki.dto.TokenResponse;
-import com.wooteco.wiki.exception.NotFoundAdminException;
+import com.wooteco.wiki.admin.domain.Admin;
+import com.wooteco.wiki.global.auth.service.AuthService;
+import com.wooteco.wiki.admin.domain.dto.LoginRequest;
+import com.wooteco.wiki.global.auth.domain.dto.TokenInfoDto;
+import com.wooteco.wiki.global.auth.domain.dto.TokenResponse;
+import com.wooteco.wiki.admin.exception.NotFoundAdminException;
 import com.wooteco.wiki.global.auth.JwtTokenProvider;
-import com.wooteco.wiki.repository.AdminRepository;
+import com.wooteco.wiki.admin.repository.AdminRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

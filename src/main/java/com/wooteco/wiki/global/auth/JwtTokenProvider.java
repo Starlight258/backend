@@ -1,7 +1,7 @@
 package com.wooteco.wiki.global.auth;
 
-import com.wooteco.wiki.dto.TokenInfoDto;
-import com.wooteco.wiki.exception.TokenCreateException;
+import com.wooteco.wiki.global.auth.domain.dto.TokenInfoDto;
+import com.wooteco.wiki.global.auth.exception.TokenCreateException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
