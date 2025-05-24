@@ -64,12 +64,12 @@ class DocumentController(
         return ResponseEntity.ok(logDetail)
     }
 
-    @PutMapping("/{title}")
+    @PutMapping("/{uuidText}")
     fun put(
-        @PathVariable title: String,
+        @PathVariable uuidText: String,
         @RequestBody documentUpdateRequest: DocumentUpdateRequest
     ): ResponseEntity<DocumentResponse> {
-        val response = documentService.put(title, documentUpdateRequest)
+        val response = documentService.put(uuidText, documentUpdateRequest)
         return ResponseEntity.ok(response)
     }
 

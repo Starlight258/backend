@@ -24,11 +24,13 @@ class Document(
 ) {
 
     fun update(
+        title: String,
         contents: String,
         writer: String,
         documentBytes: Long,
         generateTime: LocalDateTime
     ) = apply {
+        this.title = title
         this.contents = contents
         this.writer = writer
         this.documentBytes = documentBytes

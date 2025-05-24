@@ -60,15 +60,16 @@ class DocumentService(
             .map { mapToResponse(it) }
             .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
 
-    fun put(title: String, request: DocumentUpdateRequest): DocumentResponse {
-        val (contents, writer, documentBytes) = request
+    fun put(uuidText: String, request: DocumentUpdateRequest): DocumentResponse {
+        val (title, contents, writer, documentBytes) = request
 
-        val document = documentRepository.findByTitle(title)
-            .orElseThrow { DocumentNotFoundException("존재하지 않는 제목의 문서입니다.") }
+        val uuid = UUID.fromString(uuidText)
+        val document = documentRepository.findByUuid(uuid)
+            .orElseThrow { DocumentNotFoundException("존재하지 않는 UUID의 문서입니다.") }
 
-        document.update(contents, writer, documentBytes, LocalDateTime.now())
+        val updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now())
 
-        val log = Log(title, contents, writer, documentBytes, document.generateTime)
+        val log = Log(updateData.title, updateData.contents, updateData.writer, updateData.documentBytes, updateData.generateTime)
         logRepository.save(log)
 
         return mapToResponse(document)
