@@ -40,7 +40,7 @@ class DocumentController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/{title}")
+    @GetMapping("title/{title}")
     fun get(@PathVariable title: String): ResponseEntity<Any> {
         val response = documentService.get(title)
         return ResponseEntity.ok(response)
