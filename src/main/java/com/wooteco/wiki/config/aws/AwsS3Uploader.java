@@ -20,8 +20,6 @@ public class AwsS3Uploader {
     @Autowired
     private final S3Presigner s3Presigner;
 
-    private static final String BUCKET_DOMAIN = "https://crewwiki7th.s3.ap-northeast-2.amazonaws.com/";
-
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
