@@ -21,10 +21,11 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
 
-jwt:
-  key: 012345678901234567890123456789012345678901234567890123456789
-
-
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY}
+      expire-length: 3600000
 cloud:
   aws:
     credentials:
