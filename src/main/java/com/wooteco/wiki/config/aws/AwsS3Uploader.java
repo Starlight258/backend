@@ -21,7 +21,7 @@ public class AwsS3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String createPresignedUrl(String fileKey) {
+    public String createPresignedUrl(String fullFileName) {
         String contentType = "image/jpeg";
         Map<String, String> metadata = Map.of(
                 "fileType", contentType,
@@ -30,7 +30,7 @@ public class AwsS3Uploader {
 
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(bucket)
-                .key(fileKey)
+                .key(fullFileName)
                 .metadata(metadata)
                 .build();
 
