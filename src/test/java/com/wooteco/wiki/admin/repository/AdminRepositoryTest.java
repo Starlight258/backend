@@ -1,4 +1,4 @@
-package com.wooteco.wiki.repository;
+package com.wooteco.wiki.admin.repository;
 
 import com.wooteco.wiki.admin.domain.Admin;
 import com.wooteco.wiki.admin.repository.AdminRepository;

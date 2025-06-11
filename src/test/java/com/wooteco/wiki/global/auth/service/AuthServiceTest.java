@@ -1,4 +1,4 @@
-package com.wooteco.wiki.service;
+package com.wooteco.wiki.global.auth.service;
 
 import com.wooteco.wiki.admin.domain.Admin;
 import com.wooteco.wiki.global.auth.service.AuthService;
