@@ -1,4 +1,4 @@
-package com.wooteco.wiki.document.exception
+package com.wooteco.wiki.document.domain.dto
 
 import com.wooteco.wiki.document.domain.Document
 
