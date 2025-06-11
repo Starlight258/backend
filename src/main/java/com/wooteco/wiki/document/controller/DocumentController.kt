@@ -1,9 +1,9 @@
 package com.wooteco.wiki.document.controller
 
-import com.wooteco.wiki.document.exception.DocumentCreateRequest
-import com.wooteco.wiki.document.exception.DocumentFindAllByRecentResponse
-import com.wooteco.wiki.document.exception.DocumentResponse
-import com.wooteco.wiki.document.exception.DocumentUpdateRequest
+import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
+import com.wooteco.wiki.document.domain.dto.DocumentFindAllByRecentResponse
+import com.wooteco.wiki.document.domain.dto.DocumentResponse
+import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.log.domain.dto.LogDetailResponse
 import com.wooteco.wiki.log.domain.dto.LogResponse
 import com.wooteco.wiki.document.service.DocumentSearchService
@@ -43,6 +43,12 @@ class DocumentController(
     @GetMapping("title/{title}")
     fun get(@PathVariable title: String): ResponseEntity<Any> {
         val response = documentService.get(title)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("title/{title}/uuid")
+    fun getUuidByTitle(@PathVariable title: String): ResponseEntity<Any> {
+        val response = documentService.getUuidByTitle(title)
         return ResponseEntity.ok(response)
     }
 

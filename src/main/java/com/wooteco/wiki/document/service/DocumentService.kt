@@ -2,10 +2,11 @@ package com.wooteco.wiki.document.service
 
 import com.wooteco.wiki.document.domain.Document
 import com.wooteco.wiki.log.domain.Log
-import com.wooteco.wiki.document.exception.DocumentCreateRequest
-import com.wooteco.wiki.document.exception.DocumentFindAllByRecentResponse
-import com.wooteco.wiki.document.exception.DocumentResponse
-import com.wooteco.wiki.document.exception.DocumentUpdateRequest
+import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
+import com.wooteco.wiki.document.domain.dto.DocumentFindAllByRecentResponse
+import com.wooteco.wiki.document.domain.dto.DocumentResponse
+import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
+import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
 import com.wooteco.wiki.document.exception.DocumentNotFoundException
 import com.wooteco.wiki.document.exception.DuplicateDocumentException
 import com.wooteco.wiki.document.repository.DocumentRepository
@@ -53,6 +54,11 @@ class DocumentService(
     fun get(title: String): DocumentResponse =
         documentRepository.findByTitle(title)
             .map { mapToResponse(it) }
+            .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
+
+    fun getUuidByTitle(title: String): DocumentUuidResponse =
+        documentRepository.findUUidByTitle(title)
+            .map(::DocumentUuidResponse)
             .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
 
     fun getByUuid(uuid: UUID): DocumentResponse =
