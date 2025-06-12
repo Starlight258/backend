@@ -15,11 +15,11 @@ public class DocumentFixture {
         return create("defaultTitle", "defaultContent", "defaultWriter", 10L, LocalDateTime.now(), UUID.randomUUID(), 1L);
     }
 
-    public static DocumentCreateRequest createDocumentCreateRequest(String title, String contents, String writer, Long documentBytes) {
-        return new DocumentCreateRequest(title, contents, writer, documentBytes);
+    public static DocumentCreateRequest createDocumentCreateRequest(String title, String contents, String writer, Long documentBytes, UUID uuid) {
+        return new DocumentCreateRequest(title, contents, writer, documentBytes, uuid);
     }
 
     public static DocumentCreateRequest createDocumentCreateRequestDefault() {
-        return createDocumentCreateRequest("defaultTitle", "defaultContent", "defaultWriter", 10L);
+        return createDocumentCreateRequest("defaultTitle", "defaultContent", "defaultWriter", 10L, UUID.randomUUID());
     }
 }

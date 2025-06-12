@@ -26,13 +26,13 @@ class DocumentService(
 ) {
 
     fun post(request: DocumentCreateRequest): DocumentResponse {
-        val (title, contents, writer, documentBytes) = request
+        val (title, contents, writer, documentBytes, uuid) = request
 
         if (documentRepository.existsByTitle(title)) {
             throw DuplicateDocumentException("제목이 겹치는 문서가 있습니다.")
         }
 
-        val document = Document(title, contents, writer, documentBytes, LocalDateTime.now())
+        val document = Document(title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
         val savedDocument = documentRepository.save(document)
 
         val log = Log(title, contents, writer, documentBytes, savedDocument.generateTime)
