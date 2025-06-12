@@ -6,7 +6,7 @@ import java.util.*
 @Service
 public class UUIDService {
 
-    fun generate(): String? {
+    fun generate(): String {
         return UUID.randomUUID().toString();
     }
 }
