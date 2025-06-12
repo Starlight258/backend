@@ -1,4 +1,4 @@
-package com.wooteco.wiki.controller;
+package com.wooteco.wiki.admin.controller;
 
 import com.wooteco.wiki.admin.domain.Admin;
 import com.wooteco.wiki.admin.domain.dto.LoginRequest;

@@ -1,8 +1,8 @@
-package com.wooteco.wiki.document.exception
+package com.wooteco.wiki.document.domain.dto
 
 import com.wooteco.wiki.document.domain.Document
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 data class DocumentRecentResponse(
     val documentId: Long?,

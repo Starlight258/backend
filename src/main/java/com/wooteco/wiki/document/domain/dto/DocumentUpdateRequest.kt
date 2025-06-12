@@ -1,4 +1,4 @@
-package com.wooteco.wiki.document.exception
+package com.wooteco.wiki.document.domain.dto
 
 data class DocumentUpdateRequest(
     val title: String,

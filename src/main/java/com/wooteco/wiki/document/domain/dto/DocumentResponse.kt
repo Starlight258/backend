@@ -1,4 +1,4 @@
-package com.wooteco.wiki.document.exception
+package com.wooteco.wiki.document.domain.dto
 
 import java.time.LocalDateTime
 import java.util.UUID
