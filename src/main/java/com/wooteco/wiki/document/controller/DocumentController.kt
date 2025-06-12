@@ -78,7 +78,7 @@ class DocumentController(
 
     @GetMapping("/uuid")
     fun getUUID(): ResponseEntity<UUIDResponse> {
-        val uuid = uuidService.generate();
+        val uuid = uuidService.generate()
         return ResponseEntity.ok(UUIDResponse(uuid.toString()))
     }
 }
