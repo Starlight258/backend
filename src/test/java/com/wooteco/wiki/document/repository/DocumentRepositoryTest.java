@@ -2,6 +2,8 @@ package com.wooteco.wiki.document.repository;
 
 import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -44,6 +46,35 @@ public class DocumentRepositoryTest {
 
             // then
             Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getUuid());
+        }
+    }
+
+    @Nested
+    @DisplayName("문서 전체 조회 기능")
+    class findAll {
+
+        @DisplayName("문서가 여러개 존재했을 때 List 형태로 반환한다")
+        @Test
+        void findAll_success_bySomeData() {
+            // given
+            documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L, LocalDateTime.now(), UUID.randomUUID(), 10L));
+            documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 11L, LocalDateTime.now(), UUID.randomUUID(), 11L));
+
+            // when
+            List<@NotNull Document> documents = documentRepository.findAll();
+
+            // then
+            Assertions.assertThat(documents).hasSize(2);
+        }
+
+        @DisplayName("저장된 문서가 없을 때 빈 List를 반환한다")
+        @Test
+        void findAll_success_byNoData() {
+            // when
+            List<@NotNull Document> documents = documentRepository.findAll();
+
+            // then
+            Assertions.assertThat(documents).hasSize(0);
         }
     }
 }

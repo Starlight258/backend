@@ -1,9 +1,12 @@
 package com.wooteco.wiki.document.service;
 
+import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
 import com.wooteco.wiki.document.exception.DocumentNotFoundException;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
+import java.util.List;
+import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -44,6 +47,36 @@ class DocumentServiceTest {
             Assertions.assertThatThrownBy(
                     () -> documentService.getUuidByTitle("nonExistsDocumentTitle")
             ).isInstanceOf(DocumentNotFoundException.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("문서 전체 조회 기능")
+    class findAll {
+
+        @DisplayName("저장된 문서가 존재할 때 요청 시 List 형태로 반환한다")
+        @Test
+        void findAll_success_bySomeData() {
+            // given
+            List<DocumentCreateRequest> documentCreateRequests = List.of(
+                    DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L, UUID.randomUUID()),
+                    DocumentFixture.createDocumentCreateRequest("title2", "content2", "writer2", 11L, UUID.randomUUID())
+            );
+
+            // when
+            for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
+                documentService.post(documentRequestDto);
+            }
+
+            // then
+            Assertions.assertThat(documentService.findAll()).hasSize(documentCreateRequests.size());
+        }
+
+        @DisplayName("저장된 문서가 존재하지 않을 때 요청 시 예외 없이 빈 리스트를 반환한다")
+        @Test
+        void findAll_success_byNoData() {
+            // when & then
+            Assertions.assertThat(documentService.findAll()).hasSize(0);
         }
     }
 }

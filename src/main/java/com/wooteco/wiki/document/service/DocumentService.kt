@@ -51,6 +51,13 @@ class DocumentService(
         return mapToResponse(document)
     }
 
+    fun findAll(): List<DocumentResponse> {
+        val documents = documentRepository.findAll()
+
+        val documentResponses = ArrayList<DocumentResponse>(documents.map { mapToResponse(it) })
+        return documentResponses
+    }
+
     fun get(title: String): DocumentResponse =
         documentRepository.findByTitle(title)
             .map { mapToResponse(it) }

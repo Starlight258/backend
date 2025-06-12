@@ -31,9 +31,15 @@ class DocumentController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("")
+    @GetMapping("/random")
     fun getRandom(): ResponseEntity<DocumentResponse> {
         val response = documentService.getRandom()
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("")
+    fun findAll(): ResponseEntity<List<DocumentResponse>> {
+        val response = documentService.findAll()
         return ResponseEntity.ok(response)
     }
 
