@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface DocumentRepository1 extends JpaRepository<Document, Long> {
+public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     Optional<Document> findByTitle(String title);
 

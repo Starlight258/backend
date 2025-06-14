@@ -9,7 +9,7 @@ import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
 import com.wooteco.wiki.document.exception.DocumentNotFoundException
 import com.wooteco.wiki.document.exception.DuplicateDocumentException
-import com.wooteco.wiki.document.repository.DocumentRepository1
+import com.wooteco.wiki.document.repository.DocumentRepository
 import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.log.repository.LogRepository
 import org.springframework.data.domain.Page
@@ -22,7 +22,7 @@ import kotlin.random.Random
 @Service
 @Transactional
 class DocumentService(
-    private val documentRepository: DocumentRepository1,
+    private val documentRepository: DocumentRepository,
     private val logRepository: LogRepository,
     private val random: Random,
 ) {
