@@ -6,6 +6,7 @@ import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
+import com.wooteco.wiki.document.exception.DocumentBadRequestException
 import com.wooteco.wiki.document.exception.DocumentNotFoundException
 import com.wooteco.wiki.document.exception.DuplicateDocumentException
 import com.wooteco.wiki.document.repository.DocumentRepository
@@ -53,8 +54,12 @@ class DocumentService(
     }
 
     fun findAll(requestDto: PageRequestDto): Page<Document> {
-        val pageable = requestDto.toPageable()
-        return documentRepository.findAll(pageable)
+        try {
+            val pageable = requestDto.toPageable()
+            return documentRepository.findAll(pageable)
+        } catch (e: IllegalArgumentException) {
+            throw DocumentBadRequestException()
+        }
     }
 
     fun get(title: String): DocumentResponse =

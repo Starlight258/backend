@@ -4,6 +4,7 @@ import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
+import com.wooteco.wiki.document.exception.DocumentBadRequestException;
 import com.wooteco.wiki.document.exception.DocumentNotFoundException;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.global.common.PageRequestDto;
@@ -165,6 +166,24 @@ class DocumentServiceTest {
                 softAssertions.assertThat(documentPages.getNumber()).isEqualTo(1);
                 softAssertions.assertThat(documentPages.getTotalPages()).isEqualTo(3);
                 softAssertions.assertAll();
+            }
+            
+            @DisplayName("PageRequestDto 필드 중 pageNumber 와 pageSize는 음수가 불가능하도록 확인")
+            @Test
+            void findAll_throwsException_byNegativeNumber() {
+                // given
+                PageRequestDto pageRequestDto = new PageRequestDto();
+                pageRequestDto.setPageNumber(-1);
+                pageRequestDto.setPageSize(5);
+
+                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
+                    documentService.post(documentRequestDto);
+                }
+
+                // when & then
+                Assertions.assertThatThrownBy(
+                        () -> documentService.findAll(pageRequestDto)
+                ).isInstanceOf(DocumentBadRequestException.class);
             }
         }
     }
