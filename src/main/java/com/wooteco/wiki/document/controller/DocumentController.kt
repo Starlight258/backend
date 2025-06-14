@@ -40,7 +40,7 @@ class DocumentController(
     }
 
     @GetMapping("")
-    fun findAll(@RequestBody pageRequestDto: PageRequestDto): ResponseEntity<ResponseDto<List<Document>>> {
+    fun findAll(@ModelAttribute pageRequestDto: PageRequestDto): ResponseEntity<ResponseDto<List<Document>>> {
         val pageResponses = documentService.findAll(pageRequestDto)
         val response = ResponseDto.of(
             pageResponses.number,
