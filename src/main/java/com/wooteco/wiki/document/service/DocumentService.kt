@@ -9,8 +9,10 @@ import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
 import com.wooteco.wiki.document.exception.DocumentNotFoundException
 import com.wooteco.wiki.document.exception.DuplicateDocumentException
-import com.wooteco.wiki.document.repository.DocumentRepository
+import com.wooteco.wiki.document.repository.DocumentRepository1
+import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.log.repository.LogRepository
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -20,7 +22,7 @@ import kotlin.random.Random
 @Service
 @Transactional
 class DocumentService(
-    private val documentRepository: DocumentRepository,
+    private val documentRepository: DocumentRepository1,
     private val logRepository: LogRepository,
     private val random: Random,
 ) {
@@ -51,11 +53,9 @@ class DocumentService(
         return mapToResponse(document)
     }
 
-    fun findAll(): List<DocumentResponse> {
-        val documents = documentRepository.findAll()
-
-        val documentResponses = ArrayList<DocumentResponse>(documents.map { mapToResponse(it) })
-        return documentResponses
+    fun findAll(requestDto: PageRequestDto): Page<Document> {
+        val pageable = requestDto.toPageable()
+        return documentRepository.findAll(pageable)
     }
 
     fun get(title: String): DocumentResponse =
@@ -95,7 +95,7 @@ class DocumentService(
 
     private fun mapToResponse(document: Document): DocumentResponse =
         DocumentResponse(
-            document.documentId ?: throw DocumentNotFoundException("문서 ID가 없습니다."),
+            document.id ?: throw DocumentNotFoundException("문서 ID가 없습니다."),
             document.uuid,
             document.title,
             document.contents,
