@@ -2,17 +2,16 @@ package com.wooteco.wiki.document.controller
 
 import com.wooteco.wiki.document.domain.Document
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
-import com.wooteco.wiki.document.domain.dto.DocumentFindAllByRecentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
-import com.wooteco.wiki.log.domain.dto.LogDetailResponse
-import com.wooteco.wiki.log.domain.dto.LogResponse
 import com.wooteco.wiki.document.service.DocumentSearchService
 import com.wooteco.wiki.document.service.DocumentService
 import com.wooteco.wiki.document.service.UUIDService
 import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.global.common.ResponseDto
+import com.wooteco.wiki.log.domain.dto.LogDetailResponse
+import com.wooteco.wiki.log.domain.dto.LogResponse
 import com.wooteco.wiki.log.service.LogService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
