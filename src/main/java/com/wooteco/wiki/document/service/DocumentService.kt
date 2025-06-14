@@ -3,7 +3,6 @@ package com.wooteco.wiki.document.service
 import com.wooteco.wiki.document.domain.Document
 import com.wooteco.wiki.log.domain.Log
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
-import com.wooteco.wiki.document.domain.dto.DocumentFindAllByRecentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
@@ -86,11 +85,6 @@ class DocumentService(
         logRepository.save(log)
 
         return mapToResponse(document)
-    }
-
-    fun getRecentDocuments(): DocumentFindAllByRecentResponse {
-        val documents = documentRepository.findAllByOrderByGenerateTimeDesc()
-        return DocumentFindAllByRecentResponse.of(documents)
     }
 
     private fun mapToResponse(document: Document): DocumentResponse =

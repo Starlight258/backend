@@ -89,12 +89,6 @@ class DocumentController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/recent")
-    fun getRecentDocuments(): ResponseEntity<DocumentFindAllByRecentResponse> {
-        val response = documentService.getRecentDocuments()
-        return ResponseEntity.ok(response)
-    }
-
     @GetMapping("/search")
     fun search(@RequestParam keyWord: String): List<String> {
         return documentSearchService.search(keyWord)
