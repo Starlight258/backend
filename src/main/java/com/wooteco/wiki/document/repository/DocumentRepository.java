@@ -20,5 +20,5 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     Optional<Document> findByUuid(UUID uuid);
 
     @Query("SELECT d.uuid FROM Document d WHERE d.title = :title")
-    Optional<UUID> findUUidByTitle(@Param("title")String title);
+    Optional<UUID> findUuidByTitle(@Param("title")String title);
 }

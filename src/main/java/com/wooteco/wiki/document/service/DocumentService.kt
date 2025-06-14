@@ -68,7 +68,7 @@ class DocumentService(
             .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
 
     fun getUuidByTitle(title: String): DocumentUuidResponse =
-        documentRepository.findUUidByTitle(title)
+        documentRepository.findUuidByTitle(title)
             .map(::DocumentUuidResponse)
             .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
 
