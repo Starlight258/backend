@@ -11,13 +11,17 @@ class Document(
     @Lob
     var contents: String = "",
     var writer: String = "",
+
+    @Column(name = "document_bytes")
     var documentBytes: Long = 0,
+
+    @Column(name = "generate_time")
     var generateTime: LocalDateTime = LocalDateTime.now(),
     var uuid: UUID = UUID.randomUUID(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val documentId: Long? = null,
+    val id: Long? = null,
 ) {
 
     fun update(
@@ -35,7 +39,7 @@ class Document(
     }
 
     override fun equals(other: Any?): Boolean =
-        other is Document && this.documentId == other.documentId;
+        other is Document && this.id == other.id;
 
-    override fun hashCode(): Int = documentId?.hashCode() ?: 0
+    override fun hashCode(): Int = id?.hashCode() ?: 0
 }

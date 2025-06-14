@@ -8,6 +8,10 @@ spring:
   datasource:
     url: jdbc:h2:mem:database;MODE=MySQL;
 
+  sql:
+    init:
+      data-locations: classpath:/init.sql
+
   h2:
     console:
       enabled: true
