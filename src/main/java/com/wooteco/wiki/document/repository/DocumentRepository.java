@@ -13,13 +13,13 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     Optional<Document> findByTitle(String title);
 
-    Boolean existsByTitle(String title); // TODO 2025. 6. 14. 15:34: 제거 가능 한 지 테스트 하고 제거
+    Boolean existsByTitle(String title);
 
     List<Document> findAllByOrderByGenerateTimeDesc();
 
     List<Title> findAllByTitleStartingWith(String keyWord);
 
-    Optional<Document> findByUuid(UUID uuid); // TODO 2025. 6. 14. 15:34: 제거 가능 한 지 테스트 하고 제거
+    Optional<Document> findByUuid(UUID uuid);
 
     @Query("SELECT d.uuid FROM Document d WHERE d.title = :title")
     Optional<UUID> findUUidByTitle(@Param("title")String title);
