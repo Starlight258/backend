@@ -5,10 +5,12 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Entity
 class Log(
     var title: String = "",
+    var uuid: UUID = UUID.randomUUID(),
     var contents: String = "",
     var writer: String = "",
     var documentBytes: Long = 0,

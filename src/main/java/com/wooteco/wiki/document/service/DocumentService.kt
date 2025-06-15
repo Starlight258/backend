@@ -1,22 +1,21 @@
 package com.wooteco.wiki.document.service
 
 import com.wooteco.wiki.document.domain.Document
-import com.wooteco.wiki.log.domain.Log
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
-import com.wooteco.wiki.document.exception.DocumentBadRequestException
 import com.wooteco.wiki.document.exception.DocumentNotFoundException
 import com.wooteco.wiki.document.exception.DuplicateDocumentException
 import com.wooteco.wiki.document.repository.DocumentRepository
 import com.wooteco.wiki.global.common.PageRequestDto
+import com.wooteco.wiki.log.domain.Log1
 import com.wooteco.wiki.log.repository.LogRepository
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 import kotlin.random.Random
 
 @Service
@@ -37,7 +36,7 @@ class DocumentService(
         val document = Document(title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
         val savedDocument = documentRepository.save(document)
 
-        val log = Log(title, contents, writer, documentBytes, savedDocument.generateTime)
+        val log = Log1(title, uuid, contents, writer, documentBytes, savedDocument.generateTime, savedDocument)
         logRepository.save(log)
 
         return mapToResponse(savedDocument)
@@ -82,7 +81,15 @@ class DocumentService(
 
         val updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now())
 
-        val log = Log(updateData.title, updateData.contents, updateData.writer, updateData.documentBytes, updateData.generateTime)
+        val log = Log1(
+            updateData.title,
+            uuid,
+            updateData.contents,
+            updateData.writer,
+            updateData.documentBytes,
+            updateData.generateTime,
+            updateData
+        )
         logRepository.save(log)
 
         return mapToResponse(document)

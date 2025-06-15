@@ -2,6 +2,7 @@ package com.wooteco.wiki.document.fixture;
 
 import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
+import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,5 +22,9 @@ public class DocumentFixture {
 
     public static DocumentCreateRequest createDocumentCreateRequestDefault() {
         return createDocumentCreateRequest("defaultTitle", "defaultContent", "defaultWriter", 10L, UUID.randomUUID());
+    }
+
+    public static DocumentUpdateRequest createDocumentUpdateRequest(String title, String contents, String writer, Long documentBytes) {
+        return new DocumentUpdateRequest(title, contents, writer, documentBytes);
     }
 }
