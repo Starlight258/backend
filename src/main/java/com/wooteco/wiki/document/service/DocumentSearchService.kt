@@ -13,5 +13,5 @@ class DocumentSearchService(
 
     fun search(keyWord: String): List<DocumentSearchResponse> =
         documentRepository.findAllByTitleStartingWith(keyWord)
-            .map { DocumentSearchResponse(it.title, it.uuid) };
+            .map { DocumentSearchResponse(it.title, it.uuid) }
 }
