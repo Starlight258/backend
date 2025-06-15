@@ -54,12 +54,8 @@ class DocumentService(
     }
 
     fun findAll(requestDto: PageRequestDto): Page<Document> {
-        try {
             val pageable = requestDto.toPageable()
             return documentRepository.findAll(pageable)
-        } catch (e: IllegalArgumentException) {
-            throw DocumentBadRequestException()
-        }
     }
 
     fun get(title: String): DocumentResponse =

@@ -4,10 +4,10 @@ import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
-import com.wooteco.wiki.document.exception.DocumentBadRequestException;
 import com.wooteco.wiki.document.exception.DocumentNotFoundException;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.global.common.PageRequestDto;
+import com.wooteco.wiki.global.exception.PageBadRequestException;
 import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -183,7 +183,7 @@ class DocumentServiceTest {
                 // when & then
                 Assertions.assertThatThrownBy(
                         () -> documentService.findAll(pageRequestDto)
-                ).isInstanceOf(DocumentBadRequestException.class);
+                ).isInstanceOf(PageBadRequestException.class);
             }
         }
     }
