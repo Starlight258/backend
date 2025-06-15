@@ -14,7 +14,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class Log1 {
+public class Log {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +31,10 @@ public class Log1 {
     @JoinColumn(name = "document_id", nullable = false)
     private Document document;
 
-    protected Log1() {
+    protected Log() {
     }
 
-    public Log1(String title, UUID uuid, String contents, String writer, long documentBytes, LocalDateTime generateTime, Document document) {
+    public Log(String title, UUID uuid, String contents, String writer, long documentBytes, LocalDateTime generateTime, Document document) {
         this.title = title;
         this.uuid = uuid;
         this.contents = contents;
@@ -49,7 +49,7 @@ public class Log1 {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Log1 that)) {
+        if (!(o instanceof Log that)) {
             return false;
         }
         if (this.id == null || that.id == null) {

@@ -9,7 +9,7 @@ import com.wooteco.wiki.document.exception.DocumentNotFoundException
 import com.wooteco.wiki.document.exception.DuplicateDocumentException
 import com.wooteco.wiki.document.repository.DocumentRepository
 import com.wooteco.wiki.global.common.PageRequestDto
-import com.wooteco.wiki.log.domain.Log1
+import com.wooteco.wiki.log.domain.Log
 import com.wooteco.wiki.log.repository.LogRepository
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
@@ -36,7 +36,7 @@ class DocumentService(
         val document = Document(title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
         val savedDocument = documentRepository.save(document)
 
-        val log = Log1(title, uuid, contents, writer, documentBytes, savedDocument.generateTime, savedDocument)
+        val log = Log(title, uuid, contents, writer, documentBytes, savedDocument.generateTime, savedDocument)
         logRepository.save(log)
 
         return mapToResponse(savedDocument)
@@ -81,7 +81,7 @@ class DocumentService(
 
         val updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now())
 
-        val log = Log1(
+        val log = Log(
             updateData.title,
             uuid,
             updateData.contents,
