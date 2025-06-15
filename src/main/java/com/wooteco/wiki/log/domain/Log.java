@@ -1,6 +1,7 @@
 package com.wooteco.wiki.log.domain;
 
 import com.wooteco.wiki.document.domain.Document;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +25,11 @@ public class Log {
     private UUID uuid;
     private String contents;
     private String writer;
+
+    @Column(name = "document_bytes")
     private long documentBytes;
+
+    @Column(name = "generate_time")
     private LocalDateTime generateTime;
 
     @ManyToOne(optional = false)
