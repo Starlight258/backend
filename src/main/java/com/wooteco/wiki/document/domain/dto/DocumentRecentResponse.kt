@@ -12,7 +12,7 @@ data class DocumentRecentResponse(
 ) {
     companion object {
         fun from(document: Document) = DocumentRecentResponse(
-            documentId = document.documentId,
+            documentId = document.id,
             uuid = document.uuid,
             title = document.title,
             generateTime = document.generateTime,

@@ -3,14 +3,16 @@ package com.wooteco.wiki.document.service
 import com.wooteco.wiki.document.domain.Document
 import com.wooteco.wiki.log.domain.Log
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
-import com.wooteco.wiki.document.domain.dto.DocumentFindAllByRecentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
+import com.wooteco.wiki.document.exception.DocumentBadRequestException
 import com.wooteco.wiki.document.exception.DocumentNotFoundException
 import com.wooteco.wiki.document.exception.DuplicateDocumentException
 import com.wooteco.wiki.document.repository.DocumentRepository
+import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.log.repository.LogRepository
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -51,13 +53,18 @@ class DocumentService(
         return mapToResponse(document)
     }
 
+    fun findAll(requestDto: PageRequestDto): Page<Document> {
+            val pageable = requestDto.toPageable()
+            return documentRepository.findAll(pageable)
+    }
+
     fun get(title: String): DocumentResponse =
         documentRepository.findByTitle(title)
             .map { mapToResponse(it) }
             .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
 
     fun getUuidByTitle(title: String): DocumentUuidResponse =
-        documentRepository.findUUidByTitle(title)
+        documentRepository.findUuidByTitle(title)
             .map(::DocumentUuidResponse)
             .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
 
@@ -81,14 +88,9 @@ class DocumentService(
         return mapToResponse(document)
     }
 
-    fun getRecentDocuments(): DocumentFindAllByRecentResponse {
-        val documents = documentRepository.findAllByOrderByGenerateTimeDesc()
-        return DocumentFindAllByRecentResponse.of(documents)
-    }
-
     private fun mapToResponse(document: Document): DocumentResponse =
         DocumentResponse(
-            document.documentId ?: throw DocumentNotFoundException("문서 ID가 없습니다."),
+            document.id ?: throw DocumentNotFoundException("문서 ID가 없습니다."),
             document.uuid,
             document.title,
             document.contents,
