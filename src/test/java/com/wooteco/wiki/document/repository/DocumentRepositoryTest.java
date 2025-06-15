@@ -29,7 +29,7 @@ public class DocumentRepositoryTest {
         void findUUidByTitle_success_byNonExistsDocument() {
 
             // when
-            Optional<@NotNull UUID> actual = documentRepository.findUUidByTitle("nonExistsDocumentTitle");
+            Optional<@NotNull UUID> actual = documentRepository.findUuidByTitle("nonExistsDocumentTitle");
 
             // then
             Assertions.assertThat(actual).isEmpty();
@@ -42,7 +42,7 @@ public class DocumentRepositoryTest {
             Document savedDocument = documentRepository.save(DocumentFixture.createDefault());
 
             // when
-            Optional<@NotNull UUID> actual = documentRepository.findUUidByTitle(savedDocument.getTitle());
+            Optional<@NotNull UUID> actual = documentRepository.findUuidByTitle(savedDocument.getTitle());
 
             // then
             Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getUuid());
