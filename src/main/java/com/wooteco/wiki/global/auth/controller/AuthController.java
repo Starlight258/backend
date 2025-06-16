@@ -53,7 +53,6 @@ public class AuthController {
 
         ResponseCookie cookie = ResponseCookie
                 .from(TOKEN_NAME_FIELD, "")
-                .domain("localhost")
                 .path("/")
                 .httpOnly(true)
                 .secure(true)
