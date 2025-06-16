@@ -3,6 +3,7 @@ package com.wooteco.wiki.global.auth.service;
 import com.wooteco.wiki.admin.domain.Admin;
 import com.wooteco.wiki.admin.domain.dto.AdminResponse;
 import com.wooteco.wiki.admin.domain.dto.LoginRequest;
+import com.wooteco.wiki.global.auth.Role;
 import com.wooteco.wiki.global.auth.domain.dto.TokenInfoDto;
 import com.wooteco.wiki.global.auth.domain.dto.TokenResponse;
 import com.wooteco.wiki.admin.exception.NotFoundAdminException;
@@ -25,7 +26,7 @@ public class AuthService {
     public TokenResponse login(LoginRequest loginRequest) {
         Admin admin = adminRepository.findOneByLoginIdAndPassword(loginRequest.loginId(), loginRequest.password())
                 .orElseThrow(NotFoundAdminException::new);
-        return createToken(TokenInfoDto.of(admin));
+        return createToken(TokenInfoDto.of(admin, Role.ROLE_ADMIN));
     }
 
     public TokenResponse createToken(TokenInfoDto tokenInfoDto) {

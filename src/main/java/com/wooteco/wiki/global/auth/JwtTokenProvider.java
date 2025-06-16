@@ -51,6 +51,7 @@ public class JwtTokenProvider {
     private Map<String, ?> getMyClaimMap(TokenInfoDto tokenInfoDto) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", tokenInfoDto.id());
+        map.put("role", tokenInfoDto.role());
 
         return new HashMap<>(map);
     }
