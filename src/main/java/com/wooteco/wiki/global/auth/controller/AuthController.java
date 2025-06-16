@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private static final String TOKEN_NAME_FIELD = "token";
-    private static final String COOKIE_SAME_SITE_FIELD = "Strict";
+    private static final String COOKIE_SAME_SITE_FIELD = "Lax";
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
