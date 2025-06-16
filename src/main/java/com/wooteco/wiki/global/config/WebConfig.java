@@ -1,7 +1,8 @@
 package com.wooteco.wiki.global.config;
 
-import com.wooteco.wiki.global.config.resolver.AuthArgumentResolver;
+import com.wooteco.wiki.global.auth.JwtTokenProvider;
 import com.wooteco.wiki.global.config.interceptor.LoginCheckInterceptor;
+import com.wooteco.wiki.global.config.resolver.LoginMemberArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -13,14 +14,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-    private final AuthArgumentResolver authArgumentResolver;
-    private final LoginCheckInterceptor loginCheckInterceptor;
+
+    private final LoginMemberArgumentResolver loginMemberArgumentResolver;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(loginCheckInterceptor)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/login/**", "/", "/themes/ranking", "/**/*.html", "/**/*.js", "/**/*.css");
+        registry.addInterceptor(new LoginCheckInterceptor(jwtTokenProvider))
+                .addPathPatterns("/admin/**");
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(loginMemberArgumentResolver);
     }
 
     @Override
@@ -30,10 +36,5 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://www.crew-wiki.site")
                 .allowCredentials(true)
                 .allowedMethods("*");
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-//        resolvers.add(authArgumentResolver);
     }
 }

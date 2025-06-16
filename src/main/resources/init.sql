@@ -1,4 +1,3 @@
--- var documentBytes: Long = 0,
 
 INSERT INTO document (title, contents, writer, document_bytes, generate_time, uuid)
 VALUES
@@ -12,3 +11,7 @@ VALUES
     ('titleC1', '내용C1', '작성자31', 300, '2024-01-03T10:00:00', UUID()),
     ('titleD1', '내용D1', '작성자11', 400, '2024-01-04T10:00:00', UUID()),
     ('titleE1', '내용E1', '작성자21', 500, '2024-01-05T10:00:00', UUID());
+
+INSERT INTO admin(login_id, password)
+VALUES
+    ('adminGood', 'helloWorld!!')
