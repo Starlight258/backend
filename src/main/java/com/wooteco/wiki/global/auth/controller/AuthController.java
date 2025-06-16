@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private static final String TOKEN_NAME_FIELD = "token";
+    private static final String COOKIE_SAME_SITE_FIELD = "Strict";
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -35,7 +36,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(false)
                 .maxAge(Duration.ofDays(30))
-                .sameSite("Lax")
+                .sameSite(COOKIE_SAME_SITE_FIELD)
                 .build();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
     }
@@ -57,7 +58,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(true)
                 .maxAge(Duration.ofDays(0))
-                .sameSite("Strict")
+                .sameSite(COOKIE_SAME_SITE_FIELD)
                 .build();
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
