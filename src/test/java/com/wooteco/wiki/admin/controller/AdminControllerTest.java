@@ -38,7 +38,7 @@ class AdminControllerTest {
                     .given().log().all()
                     .when().delete("/admin/documents/1")
                     .then().log().all()
-                    .statusCode(HttpStatus.NOT_FOUND.value());
+                    .statusCode(HttpStatus.UNAUTHORIZED.value());
         }
     }
 }

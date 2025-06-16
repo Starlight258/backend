@@ -2,8 +2,8 @@ package com.wooteco.wiki.global.config.interceptor;
 
 import com.wooteco.wiki.global.auth.JwtTokenProvider;
 import com.wooteco.wiki.global.auth.Role;
-import com.wooteco.wiki.global.auth.exception.CookieNotFoundException;
 import com.wooteco.wiki.global.exception.ForbiddenException;
+import com.wooteco.wiki.global.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,11 +27,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         String token = extractTokenFromCookie(request);
 
         if (token == null) {
-            throw new CookieNotFoundException();
+            throw new UnauthorizedException();
         }
 
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new ForbiddenException("유효하지 않는 토큰입니다.");
+            throw new UnauthorizedException("유효하지 않는 토큰입니다.");
         }
 
         Claims claims = jwtTokenProvider.getClaims(token);
