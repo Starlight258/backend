@@ -54,8 +54,8 @@ class DocumentService(
     }
 
     fun findAll(requestDto: PageRequestDto): Page<Document> {
-            val pageable = requestDto.toPageable()
-            return documentRepository.findAll(pageable)
+        val pageable = requestDto.toPageable()
+        return documentRepository.findAll(pageable)
     }
 
     fun get(title: String): DocumentResponse =
@@ -82,10 +82,22 @@ class DocumentService(
 
         val updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now())
 
-        val log = Log(updateData.title, updateData.contents, updateData.writer, updateData.documentBytes, updateData.generateTime)
+        val log = Log(
+            updateData.title,
+            updateData.contents,
+            updateData.writer,
+            updateData.documentBytes,
+            updateData.generateTime
+        )
         logRepository.save(log)
 
         return mapToResponse(document)
+    }
+
+    fun deleteById(id: Long) {
+        documentRepository.findById(id)
+            .orElseThrow{DocumentNotFoundException()}
+        documentRepository.deleteById(id)
     }
 
     private fun mapToResponse(document: Document): DocumentResponse =
