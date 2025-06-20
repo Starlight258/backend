@@ -89,10 +89,6 @@ class DocumentService(
             updateData.documentBytes,
             updateData.generateTime,
             updateData
-            updateData.contents,
-            updateData.writer,
-            updateData.documentBytes,
-            updateData.generateTime
         )
         logRepository.save(log)
 
