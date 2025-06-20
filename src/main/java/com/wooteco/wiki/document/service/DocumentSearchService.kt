@@ -1,5 +1,6 @@
 package com.wooteco.wiki.document.service
 
+import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
 import com.wooteco.wiki.document.repository.DocumentRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -10,7 +11,8 @@ class DocumentSearchService(
     private val documentRepository: DocumentRepository,
 ) {
 
-    fun search(keyWord: String): List<String> =
+    @Transactional(readOnly = true)
+    fun search(keyWord: String): List<DocumentSearchResponse> =
         documentRepository.findAllByTitleStartingWith(keyWord)
-            .map { it.title }
+            .map { DocumentSearchResponse(it.title, it.uuid) }
 }

@@ -1,4 +1,4 @@
-package com.wooteco.wiki.config.aws;
+package com.wooteco.wiki.global.config.aws;
 
 import java.time.Duration;
 import java.util.Map;

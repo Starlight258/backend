@@ -24,3 +24,8 @@ VALUES
 ('titleC1', '5f3a0b46-93de-4a89-bef2-f470ce11a9d7', '내용C1', '작성자31', 300, '2024-01-03T10:00:00', 8),
 ('titleD1', 'e64ae9dc-70d2-4ef7-a431-6ef5f81b2cf0', '내용D1', '작성자11', 400, '2024-01-04T10:00:00', 9),
 ('titleE1', 'a3eb4453-e317-4411-932f-8d3b3e3b5b74', '내용E1', '작성자21', 500, '2024-01-05T10:00:00', 10);
+
+
+INSERT INTO admin(login_id, password)
+VALUES
+    ('adminGood', 'helloWorld!!')

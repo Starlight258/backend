@@ -6,6 +6,7 @@ import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
 import com.wooteco.wiki.document.exception.DocumentNotFoundException;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
+import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.PageBadRequestException;
 import java.util.List;
@@ -28,6 +29,8 @@ class DocumentServiceTest {
 
     @Autowired
     private DocumentService documentService;
+    @Autowired
+    private DocumentRepository documentRepository;
 
     @Nested
     @DisplayName("문서 제목으로 조회하면 UUID를 반환하는 기능")
@@ -121,7 +124,6 @@ class DocumentServiceTest {
                 );
             }
 
-
             @DisplayName("PageRequestDto의 default 값으로 동작하는 지 확인")
             @Test
             void findAll_success_byPageRequestDtoDefault() {
@@ -185,6 +187,36 @@ class DocumentServiceTest {
                         () -> documentService.findAll(pageRequestDto)
                 ).isInstanceOf(PageBadRequestException.class);
             }
+        }
+    }
+    
+    @Nested
+    @DisplayName("문서 id로 삭제 기능")
+    class deleteById {
+        
+        @DisplayName("존재하는 문서 id일 경우 문서가 삭제 된다")
+        @Test
+        void deleteById_success_byExistsId() {
+            // given
+            DocumentResponse documentResponse = documentService.post(DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L, UUID.randomUUID()));
+
+            // before then
+            Assertions.assertThat(documentRepository.findAll()).hasSize(1);
+
+            // when
+            documentService.deleteById(documentResponse.getDocumentId());
+
+            // after then
+            Assertions.assertThat(documentRepository.findAll()).hasSize(0);
+        }
+
+        @DisplayName("존재하지 않는 문서의 id일 경우 예외가 발생한다 : DocumentNotFoundException")
+        @Test
+        void deleteById_throwsException_byNonExistsId() {
+            // when & then
+            Assertions.assertThatThrownBy(
+                    () -> documentService.deleteById(Long.MAX_VALUE)
+            ).isInstanceOf(DocumentNotFoundException.class);
         }
     }
 }

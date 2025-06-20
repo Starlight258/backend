@@ -1,10 +1,7 @@
 package com.wooteco.wiki.document.controller
 
 import com.wooteco.wiki.document.domain.Document
-import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
-import com.wooteco.wiki.document.domain.dto.DocumentResponse
-import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
-import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
+import com.wooteco.wiki.document.domain.dto.*
 import com.wooteco.wiki.document.service.DocumentSearchService
 import com.wooteco.wiki.document.service.DocumentService
 import com.wooteco.wiki.document.service.UUIDService
@@ -90,7 +87,7 @@ class DocumentController(
     }
 
     @GetMapping("/search")
-    fun search(@RequestParam keyWord: String): List<String> {
+    fun search(@RequestParam keyWord: String): List<DocumentSearchResponse> {
         return documentSearchService.search(keyWord)
     }
 

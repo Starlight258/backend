@@ -1,13 +1,13 @@
 package com.wooteco.wiki.global.auth.service;
 
 import com.wooteco.wiki.admin.domain.Admin;
-import com.wooteco.wiki.global.auth.service.AuthService;
 import com.wooteco.wiki.admin.domain.dto.LoginRequest;
+import com.wooteco.wiki.admin.exception.NotFoundAdminException;
+import com.wooteco.wiki.admin.repository.AdminRepository;
+import com.wooteco.wiki.global.auth.JwtTokenProvider;
+import com.wooteco.wiki.global.auth.Role;
 import com.wooteco.wiki.global.auth.domain.dto.TokenInfoDto;
 import com.wooteco.wiki.global.auth.domain.dto.TokenResponse;
-import com.wooteco.wiki.admin.exception.NotFoundAdminException;
-import com.wooteco.wiki.global.auth.JwtTokenProvider;
-import com.wooteco.wiki.admin.repository.AdminRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -36,7 +36,7 @@ class AuthServiceTest {
         @Test
         void createToken_success() {
             // given
-            TokenInfoDto tokenInfoDto = new TokenInfoDto(1L);
+            TokenInfoDto tokenInfoDto = new TokenInfoDto(1L, Role.ROLE_ADMIN);
 
             // when
             TokenResponse tokenResponse = authService.createToken(tokenInfoDto);
