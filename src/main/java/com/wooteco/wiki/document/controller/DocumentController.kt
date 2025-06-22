@@ -65,9 +65,10 @@ class DocumentController(
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/{title}/log")
-    fun getLogs(@PathVariable title: String): ResponseEntity<List<LogResponse>> {
-        return ResponseEntity.ok(logService.getLogs(title))
+    @GetMapping("uuid/{uuidText}/log")
+    fun getLogs(@PathVariable uuidText: String): ResponseEntity<List<LogResponse>> {
+        val uuid = UUID.fromString(uuidText)
+        return ResponseEntity.ok(logService.getLogs(uuid))
     }
 
     @GetMapping("/log/{logId}")
