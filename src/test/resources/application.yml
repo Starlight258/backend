@@ -1,0 +1,23 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:database
+
+security:
+  jwt:
+    token:
+      secret-key: 012312312312031230120410240123401230410234012
+      expire-length: 3600000
+cloud:
+  aws:
+    credentials:
+      access-key: dummy
+      secret-key: dummy
+    s3:
+      bucket: dummy
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
