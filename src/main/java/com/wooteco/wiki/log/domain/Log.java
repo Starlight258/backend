@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.Getter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
@@ -34,6 +36,7 @@ public class Log {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "document_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Document document;
 
     protected Log() {

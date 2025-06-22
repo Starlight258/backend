@@ -9,6 +9,7 @@ import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.PageBadRequestException;
+import com.wooteco.wiki.log.repository.LogRepository;
 import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -31,6 +32,8 @@ class DocumentServiceTest {
     private DocumentService documentService;
     @Autowired
     private DocumentRepository documentRepository;
+    @Autowired
+    private LogRepository logRepository;
 
     @Nested
     @DisplayName("문서 제목으로 조회하면 UUID를 반환하는 기능")
@@ -194,7 +197,7 @@ class DocumentServiceTest {
     @DisplayName("문서 id로 삭제 기능")
     class deleteById {
         
-        @DisplayName("존재하는 문서 id일 경우 문서가 삭제 된다")
+        @DisplayName("존재하는 문서 id일 경우 문서가 로그들과 함께 삭제된다")
         @Test
         void deleteById_success_byExistsId() {
             // given
@@ -202,12 +205,14 @@ class DocumentServiceTest {
 
             // before then
             Assertions.assertThat(documentRepository.findAll()).hasSize(1);
+            Assertions.assertThat(logRepository.findAll()).hasSize(1);
 
             // when
             documentService.deleteById(documentResponse.getDocumentId());
 
             // after then
             Assertions.assertThat(documentRepository.findAll()).hasSize(0);
+            Assertions.assertThat(logRepository.findAll()).hasSize(0);
         }
 
         @DisplayName("존재하지 않는 문서의 id일 경우 예외가 발생한다 : DocumentNotFoundException")
