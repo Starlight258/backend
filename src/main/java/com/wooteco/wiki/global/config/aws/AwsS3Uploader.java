@@ -1,5 +1,8 @@
 package com.wooteco.wiki.global.config.aws;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +24,8 @@ public class AwsS3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String createPresignedUrl(String fullFileName) {
-        String contentType = "image/jpeg";
+    public String createPresignedUrl(String fullFileName) throws IOException {
+        String contentType = Files.probeContentType(Path.of(fullFileName));
         Map<String, String> metadata = Map.of(
                 "fileType", contentType,
                 "Content-Type", contentType
