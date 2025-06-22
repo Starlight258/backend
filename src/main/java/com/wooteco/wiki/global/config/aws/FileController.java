@@ -1,6 +1,7 @@
 package com.wooteco.wiki.global.config.aws;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,7 @@ public class FileController {
     private final AwsS3Uploader awsS3Uploader;
 
     @GetMapping("/upload/**")
-    public String upload(HttpServletRequest request) {
+    public String upload(HttpServletRequest request) throws IOException {
         String fileKey = request.getRequestURI().substring("/upload/".length());
         return awsS3Uploader.createPresignedUrl(fileKey).toString();
     }
