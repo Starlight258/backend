@@ -23,7 +23,8 @@ public class LogService {
     public LogDetailResponse getLogDetail(Long logId) {
         Log log = logRepository.findById(logId)
                 .orElseThrow(() -> new DocumentNotFoundException("해당 로그가 존재하지 않습니다."));
-        return new LogDetailResponse(logId, log.getUuid(), log.getTitle(), log.getContents(), log.getWriter(), log.getGenerateTime());
+        return new LogDetailResponse(logId, log.getUuid(), log.getTitle(), log.getContents(), log.getWriter(),
+                log.getGenerateTime());
     }
 
     public List<LogResponse> getLogs(UUID uuid) {
