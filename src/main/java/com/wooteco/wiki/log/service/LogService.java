@@ -35,12 +35,11 @@ public class LogService {
     }
 
     public Page<LogResponse> findAllByDocumentUuid(UUID documentUuid, PageRequestDto pageRequestDto) {
-        if (!documentRepository.existsByUuid(documentUuid)) {
-            throw new DocumentBadRequestException();
-        }
+        Long documentId = documentRepository.findIdByUuid(documentUuid)
+                .orElseThrow(DocumentBadRequestException::new);
 
         Pageable pageable = pageRequestDto.toPageable();
-        Page<Log> logs = logRepository.findAllByDocumentUuid(documentUuid, pageable);
+        Page<Log> logs = logRepository.findAllByDocumentId(documentId, pageable);
         List<Log> content = logs.getContent();
         long offset = logs.getPageable().getOffset();
 

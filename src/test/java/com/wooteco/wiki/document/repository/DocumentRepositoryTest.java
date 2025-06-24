@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
-import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class DocumentRepositoryTest {
         void findUUidByTitle_success_byNonExistsDocument() {
 
             // when
-            Optional<@NotNull UUID> actual = documentRepository.findUuidByTitle("nonExistsDocumentTitle");
+            Optional<UUID> actual = documentRepository.findUuidByTitle("nonExistsDocumentTitle");
 
             // then
             Assertions.assertThat(actual).isEmpty();
@@ -42,7 +42,7 @@ public class DocumentRepositoryTest {
             Document savedDocument = documentRepository.save(DocumentFixture.createDefault());
 
             // when
-            Optional<@NotNull UUID> actual = documentRepository.findUuidByTitle(savedDocument.getTitle());
+            Optional<UUID> actual = documentRepository.findUuidByTitle(savedDocument.getTitle());
 
             // then
             Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getUuid());
@@ -61,7 +61,7 @@ public class DocumentRepositoryTest {
             documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 11L, LocalDateTime.now(), UUID.randomUUID(), 11L));
 
             // when
-            List<@NotNull Document> documents = documentRepository.findAll();
+            List<Document> documents = documentRepository.findAll();
 
             // then
             Assertions.assertThat(documents).hasSize(2);
@@ -71,10 +71,38 @@ public class DocumentRepositoryTest {
         @Test
         void findAll_success_byNoData() {
             // when
-            List<@NotNull Document> documents = documentRepository.findAll();
+            List<Document> documents = documentRepository.findAll();
 
             // then
             Assertions.assertThat(documents).hasSize(0);
+        }
+    }
+
+    @Nested
+    @DisplayName("uuid로 id 찾는 기능")
+    class findIdByUuid {
+
+        private UUID uuid;
+        private Document savedDocument;
+
+        @BeforeEach
+        void setUp() {
+            uuid = UUID.randomUUID();
+
+            Document document = DocumentFixture.create("titl1", "content1", "writer1", 10L,
+                    LocalDateTime.of(2024, 11, 11, 11, 11), uuid, null);
+            savedDocument = documentRepository.save(document);
+
+        }
+
+        @DisplayName("존재하는 uuid로 찾을 시 Optional(id) 형태로 반환한다")
+        @Test
+        void findIdByUuid_success_byExistsUuid() {
+            // when
+            Optional<Long> actual = documentRepository.findIdByUuid(uuid);
+
+            // then
+            Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getId());
         }
     }
 }
