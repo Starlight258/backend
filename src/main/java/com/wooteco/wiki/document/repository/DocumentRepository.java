@@ -20,4 +20,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     @Query("SELECT d.uuid FROM Document d WHERE d.title = :title")
     Optional<UUID> findUuidByTitle(@Param("title") String title);
+
+    boolean existsByUuid(UUID uuid);
 }
