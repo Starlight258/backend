@@ -36,7 +36,7 @@ class DocumentService(
         val document = Document(title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
         val savedDocument = documentRepository.save(document)
 
-        val log = Log(title, uuid, contents, writer, documentBytes, savedDocument.generateTime, savedDocument)
+        val log = Log(title, contents, writer, documentBytes, savedDocument.generateTime, savedDocument)
         logRepository.save(log)
 
         return mapToResponse(savedDocument)
@@ -83,7 +83,6 @@ class DocumentService(
 
         val log = Log(
             updateData.title,
-            uuid,
             updateData.contents,
             updateData.writer,
             updateData.documentBytes,

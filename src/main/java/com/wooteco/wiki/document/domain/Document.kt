@@ -1,6 +1,8 @@
 package com.wooteco.wiki.document.domain
 
 import jakarta.persistence.*
+import org.hibernate.annotations.JdbcTypeCode
+import java.sql.Types
 import java.time.LocalDateTime
 import java.util.*
 
@@ -8,7 +10,9 @@ import java.util.*
 class Document(
     @Column(nullable = false, unique = true)
     var title: String = "",
+
     @Lob
+    @Column(columnDefinition = "LONGTEXT")
     var contents: String = "",
     var writer: String = "",
 
@@ -17,6 +21,8 @@ class Document(
 
     @Column(name = "generate_time")
     var generateTime: LocalDateTime = LocalDateTime.now(),
+
+    @JdbcTypeCode(Types.CHAR)
     var uuid: UUID = UUID.randomUUID(),
 
     @Id

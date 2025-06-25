@@ -10,6 +10,7 @@ import com.wooteco.wiki.global.common.ResponseDto
 import com.wooteco.wiki.log.domain.dto.LogDetailResponse
 import com.wooteco.wiki.log.domain.dto.LogResponse
 import com.wooteco.wiki.log.service.LogService
+import org.springframework.data.domain.Page
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -38,12 +39,7 @@ class DocumentController(
     @GetMapping("")
     fun findAll(@ModelAttribute pageRequestDto: PageRequestDto): ResponseEntity<ResponseDto<List<Document>>> {
         val pageResponses = documentService.findAll(pageRequestDto)
-        val response = ResponseDto.of(
-            pageResponses.number,
-            pageResponses.totalPages,
-            pageResponses.content
-        )
-        return ResponseEntity.ok(response)
+        return ResponseEntity.ok(convertToResponse(pageResponses))
     }
 
     @GetMapping("title/{title}")
@@ -66,9 +62,10 @@ class DocumentController(
     }
 
     @GetMapping("uuid/{uuidText}/log")
-    fun getLogs(@PathVariable uuidText: String): ResponseEntity<List<LogResponse>> {
+    fun getLogs(@PathVariable uuidText: String, @ModelAttribute pageRequestDto: PageRequestDto): ResponseEntity<ResponseDto<List<LogResponse>>> {
         val uuid = UUID.fromString(uuidText)
-        return ResponseEntity.ok(logService.getLogs(uuid))
+        val pageResponses = logService.findAllByDocumentUuid(uuid, pageRequestDto)
+        return ResponseEntity.ok(convertToResponse(pageResponses))
     }
 
     @GetMapping("/log/{logId}")
@@ -95,5 +92,13 @@ class DocumentController(
     fun getUUID(): ResponseEntity<DocumentUuidResponse> {
         val uuid = uuidService.generate()
         return ResponseEntity.ok(DocumentUuidResponse(uuid))
+    }
+
+    private fun<T> convertToResponse(pageResponses: Page<T>) : ResponseDto<List<T>> {
+        return ResponseDto.of(
+            pageResponses.number,
+            pageResponses.totalPages,
+            pageResponses.content
+        )
     }
 }
