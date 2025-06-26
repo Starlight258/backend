@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 import lombok.Getter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,10 +20,10 @@ public class Log {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "log_id")
     private Long id;
 
     private String title;
-    private UUID uuid;
     private String contents;
     private String writer;
 
@@ -42,9 +41,8 @@ public class Log {
     protected Log() {
     }
 
-    public Log(String title, UUID uuid, String contents, String writer, long documentBytes, LocalDateTime generateTime, Document document) {
+    public Log(String title, String contents, String writer, long documentBytes, LocalDateTime generateTime, Document document) {
         this.title = title;
-        this.uuid = uuid;
         this.contents = contents;
         this.writer = writer;
         this.documentBytes = documentBytes;
