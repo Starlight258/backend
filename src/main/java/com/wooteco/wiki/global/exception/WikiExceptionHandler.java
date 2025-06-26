@@ -21,7 +21,7 @@ public class WikiExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ApiResponse<ApiResponse.FailureBody> handle(Exception exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponseGenerator.failure(ErrorCode.UNKNOWN_ERROR.name(), exception.getMessage(),
+        return ApiResponseGenerator.failure(ErrorCode.UNKNOWN_ERROR.name(), "An unknown error occurred.",
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
