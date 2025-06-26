@@ -2,12 +2,12 @@ package com.wooteco.wiki.global.auth.service;
 
 import com.wooteco.wiki.admin.domain.Admin;
 import com.wooteco.wiki.admin.domain.dto.LoginRequest;
-import com.wooteco.wiki.admin.exception.NotFoundAdminException;
 import com.wooteco.wiki.admin.repository.AdminRepository;
 import com.wooteco.wiki.global.auth.JwtTokenProvider;
 import com.wooteco.wiki.global.auth.Role;
 import com.wooteco.wiki.global.auth.domain.dto.TokenInfoDto;
 import com.wooteco.wiki.global.auth.domain.dto.TokenResponse;
+import com.wooteco.wiki.global.exception.WikiException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -66,7 +66,7 @@ class AuthServiceTest {
             System.out.println(tokenResponse);
         }
 
-        @DisplayName("존재하지 않는 어드민 정보로 요쳥했을 때 예외 발생한다. : NotFoundAdminException")
+        @DisplayName("존재하지 않는 어드민 정보로 요쳥했을 때 예외 발생한다. : WikiException.ADMIN_NOT_FOUND")
         @Test
         void login_throwException_byInValidAdmin() {
             // given
@@ -76,7 +76,7 @@ class AuthServiceTest {
             // then
             Assertions.assertThatThrownBy(
                     () -> authService.login(loginRequest)
-            ).isInstanceOf(NotFoundAdminException.class);
+            ).isInstanceOf(WikiException.class);
         }
     }
 }

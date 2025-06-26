@@ -1,10 +1,10 @@
 package com.wooteco.wiki.log.service;
 
 import com.wooteco.wiki.document.domain.Document;
-import com.wooteco.wiki.document.exception.DocumentBadRequestException;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
+import com.wooteco.wiki.global.exception.WikiException;
 import com.wooteco.wiki.log.domain.dto.LogResponse;
 import com.wooteco.wiki.log.fixture.LogFixture;
 import com.wooteco.wiki.log.repository.LogRepository;
@@ -34,7 +34,7 @@ public class LogServiceTest {
     private DocumentRepository documentRepository;
     @Autowired
     private LogRepository logRepository;
-    
+
     @Nested
     @DisplayName("documentUuid로 요청 시 로그 리스트 반환하는 기능")
     class findAllByDocumentUuid {
@@ -45,7 +45,9 @@ public class LogServiceTest {
 
         @BeforeEach
         void setUp() {
-            savedDocument = documentRepository.save(DocumentFixture.create("title", "content", "writer", 100L, LocalDateTime.now(), UUID.randomUUID(), null));
+            savedDocument = documentRepository.save(
+                    DocumentFixture.create("title", "content", "writer", 100L, LocalDateTime.now(), UUID.randomUUID(),
+                            null));
             documentUuid = savedDocument.getUuid();
 
             logRepository.save(LogFixture.create("t1", "c1", "w1", 10L, LocalDateTime.now(), savedDocument));
@@ -80,7 +82,7 @@ public class LogServiceTest {
             Assertions.assertThat(versions).containsExactly(1L, 2L);
         }
 
-        @DisplayName("존재하지 않는 documentUuid로 요청 시 예외가 발생한다 : DocumentBadRequestException")
+        @DisplayName("존재하지 않는 documentUuid로 요청 시 예외가 발생한다 : WikiException.DOCUMENT_NOT_FOUND")
         @Test
         void findAllByDocumentUuid_throwsException_byNonExistsDocumentUuid() {
             // given
@@ -89,7 +91,7 @@ public class LogServiceTest {
             // when & then
             Assertions.assertThatThrownBy(
                     () -> logService.findAllByDocumentUuid(invalidUuid, pageRequestDto)
-            ).isInstanceOf(DocumentBadRequestException.class);
+            ).isInstanceOf(WikiException.class);
         }
     }
 }

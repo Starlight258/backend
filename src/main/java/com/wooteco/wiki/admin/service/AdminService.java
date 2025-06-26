@@ -1,6 +1,8 @@
 package com.wooteco.wiki.admin.service;
 
 import com.wooteco.wiki.document.service.DocumentService;
+import com.wooteco.wiki.global.exception.ErrorCode;
+import com.wooteco.wiki.global.exception.WikiException;
 import org.springframework.stereotype.Service;
 
 @Service

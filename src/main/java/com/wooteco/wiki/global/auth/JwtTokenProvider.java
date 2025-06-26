@@ -1,7 +1,8 @@
 package com.wooteco.wiki.global.auth;
 
 import com.wooteco.wiki.global.auth.domain.dto.TokenInfoDto;
-import com.wooteco.wiki.global.auth.exception.TokenCreateException;
+import com.wooteco.wiki.global.exception.ErrorCode;
+import com.wooteco.wiki.global.exception.WikiException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -44,7 +45,7 @@ public class JwtTokenProvider {
                     .signWith(secretKey)
                     .compact();
         } catch (JwtException e) {
-            throw new TokenCreateException();
+            throw new WikiException(ErrorCode.TOKEN_CREATE_ERROR);
         }
     }
 

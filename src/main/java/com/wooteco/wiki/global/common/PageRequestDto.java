@@ -1,6 +1,7 @@
 package com.wooteco.wiki.global.common;
 
-import com.wooteco.wiki.global.exception.PageBadRequestException;
+import com.wooteco.wiki.global.exception.ErrorCode;
+import com.wooteco.wiki.global.exception.WikiException;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class PageRequestDto {
             Sort.Direction direction = Sort.Direction.fromString(sortDirection.toUpperCase());
             return PageRequest.of(pageNumber, pageSize, direction, sort);
         } catch (IllegalArgumentException e) {
-            throw new PageBadRequestException();
+            throw new WikiException(ErrorCode.PAGE_BAD_REQUEST);
         }
     }
 
