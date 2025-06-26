@@ -31,7 +31,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
 
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new WikiException(ErrorCode.UNAUTHORIZED);
+            throw new WikiException(ErrorCode.WRONG_TOKEN);
         }
 
         Claims claims = jwtTokenProvider.getClaims(token);
