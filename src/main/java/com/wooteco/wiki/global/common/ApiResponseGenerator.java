@@ -9,12 +9,12 @@ public class ApiResponseGenerator {
     public static <D> ApiResponse<ApiResponse.SuccessBody<D>> success(D data) {
         return new ApiResponse<>(new ApiResponse.SuccessBody<>(data, SUCCESS_MESSAGE), HttpStatus.OK);
     }
-    
+
     public static ApiResponse<ApiResponse.SuccessBody<Void>> success(HttpStatus status) {
         return new ApiResponse<>(new ApiResponse.SuccessBody<>(null, SUCCESS_MESSAGE), status);
     }
 
-    public static ApiResponse<ApiResponse.FailureBody> failure(String message, HttpStatus status) {
-        return new ApiResponse<>(new ApiResponse.FailureBody(message), status);
+    public static ApiResponse<ApiResponse.FailureBody> failure(String code, String message, HttpStatus status) {
+        return new ApiResponse<>(new ApiResponse.FailureBody(code, message), status);
     }
 }

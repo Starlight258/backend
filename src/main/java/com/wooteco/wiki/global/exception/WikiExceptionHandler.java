@@ -14,12 +14,14 @@ public class WikiExceptionHandler {
     @ExceptionHandler(WikiException.class)
     public ApiResponse<ApiResponse.FailureBody> handle(WikiException exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponseGenerator.failure(exception.getMessage(), exception.getHttpStatus());
+        return ApiResponseGenerator.failure(String.valueOf(exception.getErrorCode()), exception.getMessage(),
+                exception.getHttpStatus());
     }
 
     @ExceptionHandler(Exception.class)
     public ApiResponse<ApiResponse.FailureBody> handle(Exception exception) {
         log.error(exception.getMessage(), exception);
-        return ApiResponseGenerator.failure(ErrorCode.UNKNOWN_ERROR.name(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return ApiResponseGenerator.failure(ErrorCode.UNKNOWN_ERROR.name(), exception.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

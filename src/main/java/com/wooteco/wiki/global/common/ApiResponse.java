@@ -16,12 +16,13 @@ public class ApiResponse<B> extends ResponseEntity<B> {
     @AllArgsConstructor
     public static class SuccessBody<D> {
         private D data;
-        private String message;
+        private String code;
     }
 
     @Getter
     @AllArgsConstructor
     public static class FailureBody {
+        private String code;
         private String message;
     }
 }
