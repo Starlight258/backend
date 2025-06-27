@@ -1,7 +1,9 @@
 package com.wooteco.wiki.admin.controller;
 
 import com.wooteco.wiki.admin.service.AdminService;
-import org.springframework.http.ResponseEntity;
+import com.wooteco.wiki.global.common.ApiResponse;
+import com.wooteco.wiki.global.common.ApiResponseGenerator;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +20,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/documents/{documentId}")
-    public ResponseEntity<Void> deleteDocumentByDocumentId(@PathVariable Long documentId) {
+    public ApiResponse<ApiResponse.SuccessBody<Void>> deleteDocumentByDocumentId(@PathVariable Long documentId) {
         adminService.deleteDocumentByDocumentId(documentId);
-        return ResponseEntity.noContent().build();
+        return ApiResponseGenerator.success(HttpStatus.NO_CONTENT);
     }
 }

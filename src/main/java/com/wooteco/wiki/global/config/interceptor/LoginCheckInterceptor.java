@@ -2,8 +2,8 @@ package com.wooteco.wiki.global.config.interceptor;
 
 import com.wooteco.wiki.global.auth.JwtTokenProvider;
 import com.wooteco.wiki.global.auth.Role;
-import com.wooteco.wiki.global.exception.ForbiddenException;
-import com.wooteco.wiki.global.exception.UnauthorizedException;
+import com.wooteco.wiki.global.exception.ErrorCode;
+import com.wooteco.wiki.global.exception.WikiException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,18 +27,18 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         String token = extractTokenFromCookie(request);
 
         if (token == null) {
-            throw new UnauthorizedException();
+            throw new WikiException(ErrorCode.UNAUTHORIZED);
         }
 
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new UnauthorizedException("유효하지 않는 토큰입니다.");
+            throw new WikiException(ErrorCode.WRONG_TOKEN);
         }
 
         Claims claims = jwtTokenProvider.getClaims(token);
         String roleStr = (String) claims.get("role");
 
         if (!roleStr.equals(Role.ROLE_ADMIN.name())) {
-            throw new ForbiddenException();
+            throw new WikiException(ErrorCode.FORBIDDEN);
         }
         return true;
     }
