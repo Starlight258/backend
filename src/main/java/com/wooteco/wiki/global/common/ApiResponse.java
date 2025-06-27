@@ -1,5 +1,7 @@
 package com.wooteco.wiki.global.common;
 
+import com.wooteco.wiki.global.exception.ErrorCode;
+import com.wooteco.wiki.global.exception.SuccessCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -16,13 +18,13 @@ public class ApiResponse<B> extends ResponseEntity<B> {
     @AllArgsConstructor
     public static class SuccessBody<D> {
         private D data;
-        private String code;
+        private SuccessCode code;
     }
 
     @Getter
     @AllArgsConstructor
     public static class FailureBody {
-        private String code;
+        private ErrorCode code;
         private String message;
     }
 }
