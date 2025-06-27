@@ -1,5 +1,8 @@
 package com.wooteco.wiki.global.auth.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.wooteco.wiki.admin.domain.Admin;
 import com.wooteco.wiki.admin.domain.dto.LoginRequest;
 import com.wooteco.wiki.admin.repository.AdminRepository;
@@ -7,8 +10,8 @@ import com.wooteco.wiki.global.auth.JwtTokenProvider;
 import com.wooteco.wiki.global.auth.Role;
 import com.wooteco.wiki.global.auth.domain.dto.TokenInfoDto;
 import com.wooteco.wiki.global.auth.domain.dto.TokenResponse;
+import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -42,7 +45,7 @@ class AuthServiceTest {
             TokenResponse tokenResponse = authService.createToken(tokenInfoDto);
 
             // then
-            Assertions.assertThat(tokenResponse).isNotNull();
+            assertThat(tokenResponse).isNotNull();
             System.out.println(tokenResponse);
         }
     }
@@ -62,7 +65,7 @@ class AuthServiceTest {
             TokenResponse tokenResponse = authService.login(loginRequest);
 
             // then
-            Assertions.assertThat(tokenResponse).isNotNull();
+            assertThat(tokenResponse).isNotNull();
             System.out.println(tokenResponse);
         }
 
@@ -72,11 +75,10 @@ class AuthServiceTest {
             // given
             LoginRequest loginRequest = new LoginRequest("invalidLoginId", "invalidPassword");
 
-            // when
             // then
-            Assertions.assertThatThrownBy(
-                    () -> authService.login(loginRequest)
-            ).isInstanceOf(WikiException.class);
+            WikiException ex = assertThrows(WikiException.class,
+                    () -> authService.login(loginRequest));
+            assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.ADMIN_NOT_FOUND);
         }
     }
 }

@@ -1,5 +1,9 @@
 package com.wooteco.wiki.document.service;
 
+import static com.wooteco.wiki.global.exception.ErrorCode.DOCUMENT_NOT_FOUND;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
@@ -7,11 +11,11 @@ import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
+import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
 import com.wooteco.wiki.log.repository.LogRepository;
 import java.util.List;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,16 +53,17 @@ class DocumentServiceTest {
             DocumentUuidResponse documentUuidResponse = documentService.getUuidByTitle(documentResponse.getTitle());
 
             // then
-            Assertions.assertThat(documentUuidResponse.uuid()).isEqualTo(documentResponse.getDocumentUUID());
+            assertThat(documentUuidResponse.uuid()).isEqualTo(documentResponse.getDocumentUUID());
         }
 
-        @DisplayName("존재하지 않는 문서 제목으로 조회할 경우 예외를 반환한다 : DocumentNotFoundException")
+        @DisplayName("존재하지 않는 문서 제목으로 조회할 경우 예외를 반환한다 : WikiException.DOCUMENT_NOT_FOUND")
         @Test
         void getUuidByTitle_success_byNonExistsDocumentTitle() {
+
             // when & then
-            Assertions.assertThatThrownBy(
-                    () -> documentService.getUuidByTitle("nonExistsDocumentTitle")
-            ).isInstanceOf(WikiException.class);
+            WikiException ex = assertThrows(WikiException.class,
+                    () -> documentService.getUuidByTitle("nonExistsDocumentTitle"));
+            assertThat(ex.getErrorCode()).isEqualTo(DOCUMENT_NOT_FOUND);
         }
     }
 
@@ -89,14 +94,14 @@ class DocumentServiceTest {
                 }
 
                 // then
-                Assertions.assertThat(documentService.findAll(pageRequestDto)).hasSize(documentCreateRequests.size());
+                assertThat(documentService.findAll(pageRequestDto)).hasSize(documentCreateRequests.size());
             }
 
             @DisplayName("저장된 문서가 존재하지 않을 때 요청 시 예외 없이 빈 리스트를 반환한다")
             @Test
             void findAll_success_byNoData() {
                 // when & then
-                Assertions.assertThat(documentService.findAll(pageRequestDto)).hasSize(0);
+                assertThat(documentService.findAll(pageRequestDto)).hasSize(0);
             }
         }
 
@@ -199,9 +204,9 @@ class DocumentServiceTest {
                 }
 
                 // when & then
-                Assertions.assertThatThrownBy(
-                        () -> documentService.findAll(pageRequestDto)
-                ).isInstanceOf(WikiException.class);
+                WikiException ex = assertThrows(WikiException.class,
+                        () -> documentService.findAll(pageRequestDto));
+                assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.PAGE_BAD_REQUEST);
             }
         }
     }
@@ -219,24 +224,24 @@ class DocumentServiceTest {
                             UUID.randomUUID()));
 
             // before then
-            Assertions.assertThat(documentRepository.findAll()).hasSize(1);
-            Assertions.assertThat(logRepository.findAll()).hasSize(1);
+            assertThat(documentRepository.findAll()).hasSize(1);
+            assertThat(logRepository.findAll()).hasSize(1);
 
             // when
             documentService.deleteById(documentResponse.getDocumentId());
 
             // after then
-            Assertions.assertThat(documentRepository.findAll()).hasSize(0);
-            Assertions.assertThat(logRepository.findAll()).hasSize(0);
+            assertThat(documentRepository.findAll()).hasSize(0);
+            assertThat(logRepository.findAll()).hasSize(0);
         }
 
         @DisplayName("존재하지 않는 문서의 id일 경우 예외가 발생한다 : WikiException.DOCUMENT_NOT_FOUND")
         @Test
         void deleteById_throwsException_byNonExistsId() {
             // when & then
-            Assertions.assertThatThrownBy(
-                    () -> documentService.deleteById(Long.MAX_VALUE)
-            ).isInstanceOf(WikiException.class);
+            WikiException ex = assertThrows(WikiException.class,
+                    () -> documentService.deleteById(Long.MAX_VALUE));
+            assertThat(ex.getErrorCode()).isEqualTo(DOCUMENT_NOT_FOUND);
         }
     }
 }

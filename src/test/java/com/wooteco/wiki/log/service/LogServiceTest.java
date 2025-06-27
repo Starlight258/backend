@@ -1,9 +1,13 @@
 package com.wooteco.wiki.log.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
+import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
 import com.wooteco.wiki.log.domain.dto.LogResponse;
 import com.wooteco.wiki.log.fixture.LogFixture;
@@ -11,7 +15,6 @@ import com.wooteco.wiki.log.repository.LogRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -79,7 +82,7 @@ public class LogServiceTest {
                     .toList();
 
             // then
-            Assertions.assertThat(versions).containsExactly(1L, 2L);
+            assertThat(versions).containsExactly(1L, 2L);
         }
 
         @DisplayName("존재하지 않는 documentUuid로 요청 시 예외가 발생한다 : WikiException.DOCUMENT_NOT_FOUND")
@@ -89,9 +92,9 @@ public class LogServiceTest {
             UUID invalidUuid = UUID.randomUUID();
 
             // when & then
-            Assertions.assertThatThrownBy(
-                    () -> logService.findAllByDocumentUuid(invalidUuid, pageRequestDto)
-            ).isInstanceOf(WikiException.class);
+            WikiException ex = assertThrows(WikiException.class,
+                    () -> logService.findAllByDocumentUuid(invalidUuid, pageRequestDto));
+            assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.DOCUMENT_NOT_FOUND);
         }
     }
 }
