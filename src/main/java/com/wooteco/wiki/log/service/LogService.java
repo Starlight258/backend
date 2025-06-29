@@ -1,9 +1,9 @@
 package com.wooteco.wiki.log.service;
 
-import com.wooteco.wiki.document.exception.DocumentBadRequestException;
-import com.wooteco.wiki.document.exception.DocumentNotFoundException;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
+import com.wooteco.wiki.global.exception.ErrorCode;
+import com.wooteco.wiki.global.exception.WikiException;
 import com.wooteco.wiki.log.domain.Log;
 import com.wooteco.wiki.log.domain.dto.LogDetailResponse;
 import com.wooteco.wiki.log.domain.dto.LogResponse;
@@ -29,15 +29,15 @@ public class LogService {
 
     public LogDetailResponse getLogDetail(Long logId) {
         Log log = logRepository.findById(logId)
-                .orElseThrow(() -> new DocumentNotFoundException("해당 로그가 존재하지 않습니다."));
+                .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));
         return new LogDetailResponse(logId, log.getTitle(), log.getContents(), log.getWriter(),
                 log.getGenerateTime());
     }
 
     public Page<LogResponse> findAllByDocumentUuid(UUID documentUuid, PageRequestDto pageRequestDto) {
         Long documentId = documentRepository.findIdByUuid(documentUuid)
-                .orElseThrow(DocumentBadRequestException::new);
-
+                .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));
+        
         Pageable pageable = pageRequestDto.toPageable();
         Page<Log> logs = logRepository.findAllByDocumentId(documentId, pageable);
         List<Log> content = logs.getContent();

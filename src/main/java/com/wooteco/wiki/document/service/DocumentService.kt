@@ -5,10 +5,10 @@ import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse
-import com.wooteco.wiki.document.exception.DocumentNotFoundException
-import com.wooteco.wiki.document.exception.DuplicateDocumentException
 import com.wooteco.wiki.document.repository.DocumentRepository
 import com.wooteco.wiki.global.common.PageRequestDto
+import com.wooteco.wiki.global.exception.ErrorCode
+import com.wooteco.wiki.global.exception.WikiException
 import com.wooteco.wiki.log.domain.Log
 import com.wooteco.wiki.log.repository.LogRepository
 import org.springframework.data.domain.Page
@@ -30,7 +30,7 @@ class DocumentService(
         val (title, contents, writer, documentBytes, uuid) = request
 
         if (documentRepository.existsByTitle(title)) {
-            throw DuplicateDocumentException("제목이 겹치는 문서가 있습니다.")
+            throw WikiException(ErrorCode.DOCUMENT_DUPLICATE)
         }
 
         val document = Document(title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
@@ -45,7 +45,7 @@ class DocumentService(
     fun getRandom(): DocumentResponse {
         val documents = documentRepository.findAll()
         if (documents.isEmpty()) {
-            throw DocumentNotFoundException("문서가 없습니다.")
+            throw WikiException(ErrorCode.DOCUMENT_NOT_FOUND)
         }
         val document = documents[random.nextInt(documents.size)]
 
@@ -60,24 +60,24 @@ class DocumentService(
     fun get(title: String): DocumentResponse =
         documentRepository.findByTitle(title)
             .map { mapToResponse(it) }
-            .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
+            .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
 
     fun getUuidByTitle(title: String): DocumentUuidResponse =
         documentRepository.findUuidByTitle(title)
             .map(::DocumentUuidResponse)
-            .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
+            .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
 
     fun getByUuid(uuid: UUID): DocumentResponse =
         documentRepository.findByUuid(uuid)
             .map { mapToResponse(it) }
-            .orElseThrow { DocumentNotFoundException("없는 문서입니다.") }
+            .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
 
     fun put(uuidText: String, request: DocumentUpdateRequest): DocumentResponse {
         val (title, contents, writer, documentBytes) = request
 
         val uuid = UUID.fromString(uuidText)
         val document = documentRepository.findByUuid(uuid)
-            .orElseThrow { DocumentNotFoundException("존재하지 않는 UUID의 문서입니다.") }
+            .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
 
         val updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now())
 
@@ -96,13 +96,13 @@ class DocumentService(
 
     fun deleteById(id: Long) {
         documentRepository.findById(id)
-            .orElseThrow{DocumentNotFoundException()}
+            .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
         documentRepository.deleteById(id)
     }
 
     private fun mapToResponse(document: Document): DocumentResponse =
         DocumentResponse(
-            document.id ?: throw DocumentNotFoundException("문서 ID가 없습니다."),
+            document.id ?: throw WikiException(ErrorCode.DOCUMENT_NOT_FOUND),
             document.uuid,
             document.title,
             document.contents,

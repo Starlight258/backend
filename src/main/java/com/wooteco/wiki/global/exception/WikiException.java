@@ -5,10 +5,15 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class WikiException extends RuntimeException {
-    private final HttpStatus httpStatus;
+    
+    private final ErrorCode errorCode;
 
-    public WikiException(String message, HttpStatus httpStatus) {
-        super(message);
-        this.httpStatus = httpStatus;
+    public WikiException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return errorCode.getHttpStatus();
     }
 }

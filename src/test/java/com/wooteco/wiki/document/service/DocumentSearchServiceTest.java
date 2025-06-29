@@ -2,7 +2,6 @@ package com.wooteco.wiki.document.service;
 
 import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
-import com.wooteco.wiki.document.repository.DocumentRepository;
 import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -18,9 +17,6 @@ class DocumentSearchServiceTest {
 
     @Autowired
     private DocumentSearchService documentSearchService;
-
-    @Autowired
-    private DocumentRepository documentRepository;
 
     @Autowired
     private DocumentService documentService;
