@@ -8,12 +8,12 @@ import java.util.UUID;
 
 public class DocumentFixture {
 
-    public static Document create(String title, String content, String writer, Long documentBytes, LocalDateTime dateTime, UUID uuid, Long id) {
-        return new Document(title, content, writer, documentBytes, dateTime, uuid, id);
+    public static Document create(String title, String content, String writer, Long documentBytes, LocalDateTime dateTime, UUID uuid) {
+        return new Document(title, content, writer, documentBytes, dateTime, uuid, null);
     }
 
     public static Document createDefault() {
-        return create("defaultTitle", "defaultContent", "defaultWriter", 10L, LocalDateTime.now(), UUID.randomUUID(), 1L);
+        return create("defaultTitle", "defaultContent", "defaultWriter", 10L, LocalDateTime.now(), UUID.randomUUID());
     }
 
     public static DocumentCreateRequest createDocumentCreateRequest(String title, String contents, String writer, Long documentBytes, UUID uuid) {
@@ -25,6 +25,6 @@ public class DocumentFixture {
     }
 
     public static DocumentUpdateRequest createDocumentUpdateRequest(String title, String contents, String writer, Long documentBytes) {
-        return new DocumentUpdateRequest(title, contents, writer, documentBytes);
+        return new DocumentUpdateRequest(title, contents, writer, documentBytes, UUID.randomUUID());
     }
 }

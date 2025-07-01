@@ -57,8 +57,10 @@ public class DocumentRepositoryTest {
         @Test
         void findAll_success_bySomeData() {
             // given
-            documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L, LocalDateTime.now(), UUID.randomUUID(), 10L));
-            documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 11L, LocalDateTime.now(), UUID.randomUUID(), 11L));
+            documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L, LocalDateTime.now(),
+                    UUID.randomUUID()));
+            documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 11L, LocalDateTime.now(),
+                    UUID.randomUUID()));
 
             // when
             List<Document> documents = documentRepository.findAll();
@@ -90,7 +92,7 @@ public class DocumentRepositoryTest {
             uuid = UUID.randomUUID();
 
             Document document = DocumentFixture.create("titl1", "content1", "writer1", 10L,
-                    LocalDateTime.of(2024, 11, 11, 11, 11), uuid, null);
+                    LocalDateTime.of(2024, 11, 11, 11, 11), uuid);
             savedDocument = documentRepository.save(document);
 
         }
