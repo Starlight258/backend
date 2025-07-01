@@ -15,7 +15,7 @@ import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 import kotlin.random.Random
 
 @Service
@@ -72,10 +72,9 @@ class DocumentService(
             .map { mapToResponse(it) }
             .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
 
-    fun put(uuidText: String, request: DocumentUpdateRequest): DocumentResponse {
+    fun put(uuid: UUID, request: DocumentUpdateRequest): DocumentResponse {
         val (title, contents, writer, documentBytes) = request
 
-        val uuid = UUID.fromString(uuidText)
         val document = documentRepository.findByUuid(uuid)
             .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
 
