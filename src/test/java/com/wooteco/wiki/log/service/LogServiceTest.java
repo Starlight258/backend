@@ -49,8 +49,7 @@ public class LogServiceTest {
         @BeforeEach
         void setUp() {
             savedDocument = documentRepository.save(
-                    DocumentFixture.create("title", "content", "writer", 100L, LocalDateTime.now(), UUID.randomUUID(),
-                            null));
+                    DocumentFixture.create("title", "content", "writer", 100L, LocalDateTime.now(), UUID.randomUUID()));
             documentUuid = savedDocument.getUuid();
 
             logRepository.save(LogFixture.create("t1", "c1", "w1", 10L, LocalDateTime.now(), savedDocument));
