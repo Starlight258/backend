@@ -41,7 +41,7 @@ public class Log {
     protected Log() {
     }
 
-    public Log(String title, String contents, String writer, long documentBytes, LocalDateTime generateTime,
+    public Log(String title, String contents, String writer, Long documentBytes, LocalDateTime generateTime,
                Document document) {
         this.title = title;
         this.contents = contents;
