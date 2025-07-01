@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -24,11 +25,15 @@ public class Log {
     private Long id;
 
     private String title;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String contents;
+
     private String writer;
 
     @Column(name = "document_bytes")
-    private long documentBytes;
+    private Long documentBytes;
 
     @Column(name = "generate_time")
     private LocalDateTime generateTime;
@@ -41,7 +46,8 @@ public class Log {
     protected Log() {
     }
 
-    public Log(String title, String contents, String writer, long documentBytes, LocalDateTime generateTime, Document document) {
+    public Log(String title, String contents, String writer, Long documentBytes, LocalDateTime generateTime,
+               Document document) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;
