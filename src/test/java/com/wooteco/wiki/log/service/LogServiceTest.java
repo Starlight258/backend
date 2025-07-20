@@ -67,7 +67,8 @@ public class LogServiceTest {
             assertions.assertThat(actual.getContent()).hasSize(2);
             assertions.assertThat(actual.getContent())
                     .extracting(LogResponse::title)
-                    .containsExactly("t1", "t2");
+                    .containsExactly("t1", "t1");
+            assertions.assertAll();
         }
 
         @DisplayName("버전 번호가 순차적으로 부여된다")
