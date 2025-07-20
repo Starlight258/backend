@@ -51,7 +51,9 @@ public class LogService {
         Page<Log> logs = logRepository.findAllByDocumentId(documentId, pageable);
         List<Log> content = logs.getContent();
 
-        List<LogResponse> responses = content.stream().map(LogResponse::of).collect(Collectors.toList());
+        List<LogResponse> responses = content.stream()
+                .map(LogResponse::of)
+                .collect(Collectors.toList());
 
         return new PageImpl<>(responses, pageable, logs.getTotalElements());
     }
