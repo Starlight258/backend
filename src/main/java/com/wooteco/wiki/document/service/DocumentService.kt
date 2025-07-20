@@ -77,7 +77,7 @@ class DocumentService(
 
         val updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now())
 
-        logService.save(updateData);
+        logService.save(updateData)
 
         return mapToResponse(document)
     }
