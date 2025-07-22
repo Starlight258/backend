@@ -43,17 +43,20 @@ public class Log {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Document document;
 
+    private Long version;
+
     protected Log() {
     }
 
     public Log(String title, String contents, String writer, Long documentBytes, LocalDateTime generateTime,
-               Document document) {
+               Document document, Long version) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;
         this.documentBytes = documentBytes;
         this.generateTime = generateTime;
         this.document = document;
+        this.version = version;
     }
 
     @Override

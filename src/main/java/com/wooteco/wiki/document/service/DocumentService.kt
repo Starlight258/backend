@@ -9,8 +9,7 @@ import com.wooteco.wiki.document.repository.DocumentRepository
 import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.global.exception.ErrorCode
 import com.wooteco.wiki.global.exception.WikiException
-import com.wooteco.wiki.log.domain.Log
-import com.wooteco.wiki.log.repository.LogRepository
+import com.wooteco.wiki.log.service.LogService
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,7 +21,7 @@ import kotlin.random.Random
 @Transactional
 class DocumentService(
     private val documentRepository: DocumentRepository,
-    private val logRepository: LogRepository,
+    private val logService: LogService,
     private val random: Random,
 ) {
 
@@ -35,9 +34,7 @@ class DocumentService(
 
         val document = Document(title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
         val savedDocument = documentRepository.save(document)
-
-        val log = Log(title, contents, writer, documentBytes, savedDocument.generateTime, savedDocument)
-        logRepository.save(log)
+        logService.save(savedDocument)
 
         return mapToResponse(savedDocument)
     }
@@ -80,15 +77,7 @@ class DocumentService(
 
         val updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now())
 
-        val log = Log(
-            updateData.title,
-            updateData.contents,
-            updateData.writer,
-            updateData.documentBytes,
-            updateData.generateTime,
-            updateData
-        )
-        logRepository.save(log)
+        logService.save(updateData)
 
         return mapToResponse(document)
     }
