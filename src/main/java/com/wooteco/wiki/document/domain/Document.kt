@@ -25,7 +25,7 @@ class Document(
     @JdbcTypeCode(Types.CHAR)
     var uuid: UUID = UUID.randomUUID(),
 
-    @Column(name = "view_count", nullable = false)
+    @Column(name = "view_count", nullable = false, columnDefinition = "INT DEFAULT 0 NOT NULL")
     var viewCount: Int = 0,
 
     @Id
