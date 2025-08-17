@@ -5,6 +5,7 @@ import com.wooteco.wiki.document.fixture.DocumentFixture;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,6 +106,29 @@ public class DocumentRepositoryTest {
 
             // then
             Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getId());
+        }
+    }
+
+    @Nested
+    @DisplayName("findAllByUuidIn 동작 확인")
+    class FindAllByUuidIn {
+
+        @DisplayName("UUID 리스트로 조회 시 해당 문서 리스트를 반환한다")
+        @Test
+        void findAllByUuidIn_success() {
+            // given
+            Document doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
+                    LocalDateTime.now(), UUID.randomUUID()));
+            Document doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 20L,
+                    LocalDateTime.now(), UUID.randomUUID()));
+
+            Set<UUID> uuids = Set.of(doc1.getUuid(), doc2.getUuid());
+
+            // when
+            List<Document> result = documentRepository.findAllByUuidIn(uuids);
+
+            // then
+            Assertions.assertThat(result).hasSize(2);
         }
     }
 }

@@ -103,6 +103,18 @@ class DocumentService(
             document.contents,
             document.writer,
             document.generateTime,
+            document.viewCount,
             latestVersion
         )
+
+    fun flushViews(views: Map<UUID, Int>) {
+        val documents = documentRepository.findAllByUuidIn(views.keys)
+
+        for (document in documents) {
+            val countToAdd = views[document.uuid] ?: continue
+            document.viewCount += countToAdd
+        }
+
+        documentRepository.saveAll(documents)
+    }
 }
