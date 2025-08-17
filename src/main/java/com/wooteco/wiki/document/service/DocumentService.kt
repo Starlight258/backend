@@ -35,8 +35,8 @@ class DocumentService(
         val document = Document(title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
         val savedDocument = documentRepository.save(document)
         logService.save(savedDocument)
-
-        return mapToResponse(savedDocument)
+        val latestVersion = logService.findLatestVersionByDocument(savedDocument);
+        return mapToResponse(savedDocument, latestVersion);
     }
 
     fun getRandom(): DocumentResponse {
@@ -45,8 +45,9 @@ class DocumentService(
             throw WikiException(ErrorCode.DOCUMENT_NOT_FOUND)
         }
         val document = documents[random.nextInt(documents.size)]
+        val latestVersion = logService.findLatestVersionByDocument(document);
 
-        return mapToResponse(document)
+        return mapToResponse(document, latestVersion);
     }
 
     fun findAll(requestDto: PageRequestDto): Page<Document> {
@@ -54,20 +55,24 @@ class DocumentService(
         return documentRepository.findAll(pageable)
     }
 
-    fun get(title: String): DocumentResponse =
-        documentRepository.findByTitle(title)
-            .map { mapToResponse(it) }
+    fun get(title: String): DocumentResponse {
+        val document = documentRepository.findByTitle(title)
             .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
+        val latestVersion = logService.findLatestVersionByDocument(document);
+        return mapToResponse(document, latestVersion);
+    }
 
     fun getUuidByTitle(title: String): DocumentUuidResponse =
         documentRepository.findUuidByTitle(title)
             .map(::DocumentUuidResponse)
             .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
 
-    fun getByUuid(uuid: UUID): DocumentResponse =
-        documentRepository.findByUuid(uuid)
-            .map { mapToResponse(it) }
+    fun getByUuid(uuid: UUID): DocumentResponse {
+        val document = documentRepository.findByUuid(uuid)
             .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
+        val latestVersion = logService.findLatestVersionByDocument(document);
+        return mapToResponse(document, latestVersion);
+    }
 
     fun put(uuid: UUID, request: DocumentUpdateRequest): DocumentResponse {
         val (title, contents, writer, documentBytes) = request
@@ -79,7 +84,9 @@ class DocumentService(
 
         logService.save(updateData)
 
-        return mapToResponse(document)
+        val latestVersion = logService.findLatestVersionByDocument(document);
+
+        return mapToResponse(document, latestVersion);
     }
 
     fun deleteById(id: Long) {
@@ -88,13 +95,14 @@ class DocumentService(
         documentRepository.deleteById(id)
     }
 
-    private fun mapToResponse(document: Document): DocumentResponse =
+    private fun mapToResponse(document: Document, latestVersion: Long): DocumentResponse =
         DocumentResponse(
             document.id ?: throw WikiException(ErrorCode.DOCUMENT_NOT_FOUND),
             document.uuid,
             document.title,
             document.contents,
             document.writer,
-            document.generateTime
+            document.generateTime,
+            latestVersion
         )
 }
