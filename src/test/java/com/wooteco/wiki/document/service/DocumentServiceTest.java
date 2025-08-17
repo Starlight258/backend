@@ -7,13 +7,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
+import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
+import com.wooteco.wiki.log.domain.Log;
+import com.wooteco.wiki.log.fixture.LogFixture;
 import com.wooteco.wiki.log.repository.LogRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
@@ -37,6 +41,33 @@ class DocumentServiceTest {
     private DocumentRepository documentRepository;
     @Autowired
     private LogRepository logRepository;
+
+    @DisplayName("문서 조회 기능")
+    @Nested
+    class Find {
+
+        @DisplayName("문서 조회시, 해당 문서의 마지막 로그 번호를 가져온다.")
+        @Test
+        void getDocumentLatestVersion_success_byExistsDocument() {
+            // given
+            Document document = DocumentFixture.createDefault();
+            Document savedDocument = documentRepository.save(document);
+
+            Log log = LogFixture.create("test", "test", "tesst", 150, LocalDateTime.of(2025, 7, 15, 10, 0, 0),
+                    savedDocument, 20L);
+            logRepository.save(log);
+
+            // when
+            DocumentUpdateRequest documentUpdateRequest = new DocumentUpdateRequest("test", "test", "test", 150,
+                    savedDocument.getUuid());
+
+            documentService.put(savedDocument.getUuid(), documentUpdateRequest);
+            DocumentResponse documentResponse = documentService.getByUuid(savedDocument.getUuid());
+
+            // then
+            assertThat(documentResponse.getLatestVersion()).isEqualTo(21L);
+        }
+    }
 
     @Nested
     @DisplayName("문서 제목으로 조회하면 UUID를 반환하는 기능")
