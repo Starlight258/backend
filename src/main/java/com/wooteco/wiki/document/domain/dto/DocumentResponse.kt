@@ -10,5 +10,4 @@ data class DocumentResponse(
     val contents: String,
     val writer: String,
     val generateTime: LocalDateTime,
-    val viewCount: Int,
 )
