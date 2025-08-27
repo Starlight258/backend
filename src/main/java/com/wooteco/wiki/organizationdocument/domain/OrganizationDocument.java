@@ -43,7 +43,7 @@ public class OrganizationDocument {
     private UUID uuid = UUID.randomUUID();
 
     @Column(name = "generate_time")
-    LocalDateTime generateTime;
+    private LocalDateTime generateTime;
 
     public OrganizationDocument(String title, String contents, String writer, Long documentBytes, UUID uuid,
                                 LocalDateTime generateTime) {
