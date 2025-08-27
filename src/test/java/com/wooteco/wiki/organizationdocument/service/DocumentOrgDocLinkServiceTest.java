@@ -32,8 +32,6 @@ class DocumentOrgDocLinkServiceTest {
     private OrganizationDocumentRepository organizationDocumentRepository;
 
     @Autowired
-    private DocumentOrgDocLinkRepository orgDocLinkRepository;
-    @Autowired
     private DocumentOrgDocLinkRepository documentOrgDocLinkRepository;
 
 
