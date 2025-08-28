@@ -5,11 +5,11 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
-import com.wooteco.wiki.organizationdocument.domain.DocumentOrgDocLink;
+import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationDocumentLink;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import com.wooteco.wiki.organizationdocument.dto.request.OrganizationDocumentCreateRequest;
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
-import com.wooteco.wiki.organizationdocument.repository.DocumentOrgDocLinkRepository;
+import com.wooteco.wiki.organizationdocument.repository.DocumentOrganizationDocumentLinkRepository;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,19 +20,19 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class DocumentOrgDocLinkServiceTest {
+class DocumentOrganizationDocumentLinkServiceTest {
 
     @Autowired
     private DocumentRepository documentRepository;
 
     @Autowired
-    private DocumentOrgDocLinkService documentOrgDocLinkService;
+    private DocumentOrganizationDocumentLinkService documentOrgDocLinkService;
 
     @Autowired
     private OrganizationDocumentRepository organizationDocumentRepository;
 
     @Autowired
-    private DocumentOrgDocLinkRepository documentOrgDocLinkRepository;
+    private DocumentOrganizationDocumentLinkRepository documentOrgDocLinkRepository;
 
 
     @DisplayName("조직 및 기본 문서 생성 기능")
@@ -53,7 +53,7 @@ class DocumentOrgDocLinkServiceTest {
             OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.findByUuid(
                             organizationDocumentCreateRequest.uuid())
                     .orElseThrow();
-            DocumentOrgDocLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
+            DocumentOrganizationDocumentLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
                     savedDocument, savedOrganizationDocument);
 
             // then
