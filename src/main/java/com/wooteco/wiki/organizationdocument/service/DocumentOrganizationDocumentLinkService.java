@@ -24,11 +24,11 @@ public class DocumentOrganizationDocumentLinkService {
 
 
     public void createOrganizationDocument(OrganizationDocumentCreateRequest organizationDocumentCreateRequest) {
-        OrganizationDocument organizationDocument = organizationDocumentCreateRequest.toOrganizationDocument();
-        OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
-
         Document document = documentRepository.findByUuid(organizationDocumentCreateRequest.documentUUID())
                 .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));
+
+        OrganizationDocument organizationDocument = organizationDocumentCreateRequest.toOrganizationDocument();
+        OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
 
         DocumentOrganizationDocumentLink documentOrgDocLink = new DocumentOrganizationDocumentLink(document,
                 savedOrganizationDocument);
