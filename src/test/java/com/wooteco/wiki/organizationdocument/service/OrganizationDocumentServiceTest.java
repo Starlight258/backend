@@ -27,7 +27,7 @@ class OrganizationDocumentServiceTest {
     @Nested
     class Update {
 
-        @DisplayName("수정 값으로 수정된다.")
+        @DisplayName("전달된 값으로 갱신된다.")
         @Test
         void updateOrganizationDocument_success_byValidData() {
             // given
