@@ -6,6 +6,8 @@ import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DocumentOrgDocLinkRepository extends JpaRepository<DocumentOrgDocLink, Long> {
-    DocumentOrgDocLink findByDocumentAndOrganizationDocument(Document document,
-                                                             OrganizationDocument organizationDocument);
+    DocumentOrgDocLink findByDocumentAndOrganizationDocument(
+            Document document,
+            OrganizationDocument organizationDocument
+    );
 }
