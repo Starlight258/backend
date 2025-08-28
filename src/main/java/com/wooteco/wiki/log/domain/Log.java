@@ -31,11 +31,9 @@ public class Log {
     private String contents;
 
     private String writer;
-
-    @Column(name = "document_bytes")
+    
     private Long documentBytes;
 
-    @Column(name = "generate_time")
     private LocalDateTime generateTime;
 
     @ManyToOne(optional = false)

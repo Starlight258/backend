@@ -36,13 +36,11 @@ public class OrganizationDocument {
 
     private String writer;
 
-    @Column(name = "document_bytes")
     private Long documentBytes;
 
     @JdbcTypeCode(Types.CHAR)
     private UUID uuid = UUID.randomUUID();
-
-    @Column(name = "generate_time")
+    
     private LocalDateTime generateTime;
 
     public OrganizationDocument(String title, String contents, String writer, Long documentBytes, UUID uuid,

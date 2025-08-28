@@ -21,11 +21,9 @@ class Document(
     var contents: String = "",
 
     var writer: String = "",
-
-    @Column(name = "document_bytes")
+    
     var documentBytes: Long = 0,
 
-    @Column(name = "generate_time")
     var generateTime: LocalDateTime = LocalDateTime.now(),
 
     @JdbcTypeCode(Types.CHAR)
