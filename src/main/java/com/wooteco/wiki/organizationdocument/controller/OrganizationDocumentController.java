@@ -1,6 +1,7 @@
 package com.wooteco.wiki.organizationdocument.controller;
 
 import com.wooteco.wiki.global.common.ApiResponse;
+import com.wooteco.wiki.global.common.ApiResponse.SuccessBody;
 import com.wooteco.wiki.global.common.ApiResponseGenerator;
 import com.wooteco.wiki.organizationdocument.dto.request.OrganizationDocumentUpdateRequest;
 import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentResponse;
@@ -21,7 +22,7 @@ public class OrganizationDocumentController {
 
     @Operation(summary = "조직 위키 글 수정", description = "조직 위키 글을 수정합니다.")
     @PutMapping
-    public ApiResponse<ApiResponse.SuccessBody<OrganizationDocumentResponse>> modifyOrganizationDocumentContents(
+    public ApiResponse<SuccessBody<OrganizationDocumentResponse>> modifyOrganizationDocumentContents(
             @RequestBody OrganizationDocumentUpdateRequest organizationDocumentModifyContentsRequest) {
         OrganizationDocumentResponse organizationDocumentResponse = organizationDocumentService.update(
                 organizationDocumentModifyContentsRequest);
