@@ -8,26 +8,26 @@ import java.util.*
 
 @Entity
 class Document(
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+
     @Column(nullable = false, unique = true)
     var title: String = "",
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     var contents: String = "",
-    var writer: String = "",
 
-    @Column(name = "document_bytes")
+    var writer: String = "",
+    
     var documentBytes: Long = 0,
 
-    @Column(name = "generate_time")
     var generateTime: LocalDateTime = LocalDateTime.now(),
 
     @JdbcTypeCode(Types.CHAR)
-    var uuid: UUID = UUID.randomUUID(),
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var uuid: UUID = UUID.randomUUID()
 ) {
 
     fun update(
