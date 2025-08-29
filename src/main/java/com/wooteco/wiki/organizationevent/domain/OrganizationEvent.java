@@ -36,13 +36,13 @@ public class OrganizationEvent {
     private Long id;
 
     @Column(nullable = false)
-    private String title = "";
+    private String title;
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
-    private String contents = "";
+    private String contents;
 
-    private String writer = "";
+    private String writer;
 
     private LocalDate occurredAt;
 
