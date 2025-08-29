@@ -90,6 +90,17 @@ class DocumentService(
         documentRepository.deleteById(id)
     }
 
+    fun flushViews(views: Map<UUID, Int>) {
+        val documents = documentRepository.findAllByUuidIn(views.keys)
+
+        for (document in documents) {
+            val countToAdd = views[document.uuid] ?: continue
+            document.viewCount += countToAdd
+        }
+
+        documentRepository.saveAll(documents)
+    }
+
     private fun mapToResponse(document: Document): DocumentResponse {
         val latestVersion = logService.findLatestVersionByDocument(document);
         val organizationDocumentResponses =

@@ -10,7 +10,7 @@ public class DocumentFixture {
 
     public static Document create(String title, String content, String writer, Long documentBytes,
                                   LocalDateTime dateTime, UUID uuid) {
-        return new Document(null, title, content, writer, documentBytes, dateTime, uuid);
+        return new Document(null, title, content, writer, documentBytes, dateTime, uuid, 0);
     }
 
     public static Document createDefault() {

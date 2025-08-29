@@ -115,7 +115,7 @@ class DocumentController(
     @PostMapping("/views/flush")
     fun flushViews(
         @RequestBody request: ViewFlushRequest
-    ): ApiResponse<ApiResponse.SuccessBody<String>> {
+    ): ApiResponse<SuccessBody<String>> {
         documentService.flushViews(request.views)
         return ApiResponseGenerator.success("조회수 누적 완료")
     }
