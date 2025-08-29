@@ -9,7 +9,7 @@ import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentTitleAndUuidResponse;
 import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentResponse;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
-import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationDocumentLinkService;
+import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationLinkService;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,13 +20,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class DocumentService2 {
 
-    private final DocumentOrganizationDocumentLinkService documentOrganizationDocumentLinkService;
+    private final DocumentOrganizationLinkService documentOrganizationLinkService;
     private final DocumentRepository documentRepository;
     private final OrganizationDocumentRepository organizationDocumentRepository;
 
     public List<OrganizationDocumentTitleAndUuidResponse> readOrganizationTitleAndUuid(UUID documentUuid) {
         Document document = getDocument(documentUuid);
-        List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(
+        List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
                 document);
 
         return toOrganizationDocumentTitleAndUuidResponses(organizationDocumentResponsesByDocument);
@@ -36,14 +36,14 @@ public class DocumentService2 {
         Document document = getDocument(documentUuid);
         OrganizationDocument organizationDocument = organizationDocumentRepository.save(documentOrganizationDocumentCreateRequest.toOrganizationDocument());
 
-        documentOrganizationDocumentLinkService.link(document, organizationDocument);
+        documentOrganizationLinkService.link(document, organizationDocument);
     }
 
     public void deleteOrganizationDocument(UUID documentUuid, UUID organizationDocumentUuid) {
         Document document = getDocument(documentUuid);
         OrganizationDocument organizationDocument = getOrganizationDocument(organizationDocumentUuid);
 
-        documentOrganizationDocumentLinkService.unlink(document, organizationDocument);
+        documentOrganizationLinkService.unlink(document, organizationDocument);
     }
 
     private List<OrganizationDocumentTitleAndUuidResponse> toOrganizationDocumentTitleAndUuidResponses(

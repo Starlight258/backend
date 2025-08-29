@@ -19,13 +19,13 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class DocumentOrganizationDocumentLinkServiceTest {
+class DocumentOrganizationLinkServiceTest {
 
     @Autowired
     private DocumentRepository documentRepository;
 
     @Autowired
-    private DocumentOrganizationDocumentLinkService documentOrgDocLinkService;
+    private DocumentOrganizationLinkService documentOrgDocLinkService;
 
     @Autowired
     private OrganizationDocumentRepository organizationDocumentRepository;

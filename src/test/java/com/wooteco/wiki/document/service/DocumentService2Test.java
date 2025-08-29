@@ -12,7 +12,7 @@ import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentTitleAndUui
 import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentResponse;
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
-import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationDocumentLinkService;
+import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationLinkService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +32,7 @@ class DocumentService2Test {
     private DocumentService2 documentService;
 
     @Autowired
-    private DocumentOrganizationDocumentLinkService documentOrganizationDocumentLinkService;
+    private DocumentOrganizationLinkService documentOrganizationLinkService;
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -65,7 +65,7 @@ class DocumentService2Test {
             organizationDocumentRepository.saveAll(organizationDocuments);
 
             for (OrganizationDocument organizationDocument : organizationDocuments) {
-                documentOrganizationDocumentLinkService.link(savedDocument, organizationDocument);
+                documentOrganizationLinkService.link(savedDocument, organizationDocument);
             }
         }
 
@@ -103,7 +103,7 @@ class DocumentService2Test {
                     documentOrganizationDocumentCreateRequestDefault);
 
             // then
-            List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(
+            List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
                     savedDocument);
             assertSoftly(softy -> {
                         softy.assertThat(organizationDocumentResponsesByDocument.size()).isEqualTo(1);
@@ -127,7 +127,7 @@ class DocumentService2Test {
                     "defaultWriter", 10L, UUID.randomUUID(),
                     LocalDateTime.now());
             OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
-            documentOrganizationDocumentLinkService.link(savedDocument, organizationDocument);
+            documentOrganizationLinkService.link(savedDocument, organizationDocument);
 
             savedOrganizationDocumentUuid = savedOrganizationDocument.getUuid();
         }
@@ -139,7 +139,7 @@ class DocumentService2Test {
             documentService.deleteOrganizationDocument(savedDocumentUuid, savedOrganizationDocumentUuid);
 
             // then
-            List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(
+            List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
                     savedDocument);
 
             assertThat(organizationDocumentResponsesByDocument.size()).isEqualTo(0);

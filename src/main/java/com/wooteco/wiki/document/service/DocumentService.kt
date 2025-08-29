@@ -10,7 +10,7 @@ import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.global.exception.ErrorCode
 import com.wooteco.wiki.global.exception.WikiException
 import com.wooteco.wiki.log.service.LogService
-import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationDocumentLinkService
+import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationLinkService
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,7 +22,7 @@ import kotlin.random.Random
 @Transactional
 class DocumentService(
     private val documentRepository: DocumentRepository,
-    private val organizationDocumentLinkService: DocumentOrganizationDocumentLinkService,
+    private val organizationDocumentLinkService: DocumentOrganizationLinkService,
     private val logService: LogService,
     private val random: Random,
 ) {
