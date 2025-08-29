@@ -12,7 +12,6 @@ import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepo
 import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationLinkService;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +49,7 @@ public class DocumentServiceJava {
             List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument) {
         return organizationDocumentResponsesByDocument.stream()
                 .map(OrganizationDocumentResponse::toOrganizationDocumentTitleAndUuidResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Document getDocument(UUID uuid) {
