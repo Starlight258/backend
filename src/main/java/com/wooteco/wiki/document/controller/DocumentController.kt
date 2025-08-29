@@ -130,8 +130,8 @@ class DocumentController(
         return ApiResponseGenerator.success(documentService2.readOrganizationTitleAndUuid(uuid))
     }
 
-    @Operation(summary = "조직 문서 삭제 API", description = "문서에 조직 문서를 제거합니다.")
-    @PostMapping("/{uuidText}/organization-documents/{organizationDocumentUuidText}")
+    @Operation(summary = "특정 문서에 대한 조직 문서 삭제 API", description = "특정 문서에 대한 조직 문서를 제거합니다.")
+    @DeleteMapping("/{uuidText}/organization-documents/{organizationDocumentUuidText}")
     fun deleteOrganizationDocument(
         @PathVariable uuidText: String,
         @PathVariable organizationDocumentUuidText: String
