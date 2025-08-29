@@ -10,6 +10,7 @@ import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
 import com.wooteco.wiki.organizationdocument.repository.DocumentOrganizationDocumentLinkRepository;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -55,10 +56,11 @@ class DocumentOrganizationLinkServiceTest {
         void link_success_byDocumentAndOrganizationDocument() {
             // when
             documentOrgDocLinkService.link(savedDocument, savedOrganizationDocument);
-            DocumentOrganizationDocumentLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
-                    savedDocument, savedOrganizationDocument);
 
             // then
+            DocumentOrganizationDocumentLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
+                    savedDocument, savedOrganizationDocument).get();
+
             assertSoftly(softly -> {
                 softly.assertThat(documentOrgDocLink.getDocument().getId())
                         .isEqualTo(savedDocument.getId());
