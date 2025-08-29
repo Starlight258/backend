@@ -7,7 +7,6 @@ import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationDocumentLink;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
-import com.wooteco.wiki.organizationdocument.dto.request.OrganizationDocumentCreateRequest;
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
 import com.wooteco.wiki.organizationdocument.repository.DocumentOrganizationDocumentLinkRepository;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
@@ -34,25 +33,22 @@ class DocumentOrganizationDocumentLinkServiceTest {
     @Autowired
     private DocumentOrganizationDocumentLinkRepository documentOrgDocLinkRepository;
 
-
-    @DisplayName("조직 및 기본 문서 생성 기능")
+    @DisplayName("문서 및 조직 문서 연결 기능")
     @Nested
-    class Create {
+    class Link {
 
-        @DisplayName("특정 문서의 UUID로 조직 문서를 생성한다.")
+        @DisplayName("특정 문서와 특정 조직 문서로 둘을 연결한다.")
         @Test
-        void createOrganizationDocument_success_byDocumentUUID() {
+        void link_success_byDocumentAndOrganizationDocument() {
             // given
             Document document = DocumentFixture.createDefault();
             Document savedDocument = documentRepository.save(document);
-            OrganizationDocumentCreateRequest organizationDocumentCreateRequest = OrganizationDocumentFixture.createOrganizationDocumentCreateRequestDefault(
-                    document.getUuid());
+
+            OrganizationDocument organizationDocument = OrganizationDocumentFixture.createDefault();
+            OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
 
             // when
-            documentOrgDocLinkService.createOrganizationDocument(organizationDocumentCreateRequest);
-            OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.findByUuid(
-                            organizationDocumentCreateRequest.uuid())
-                    .orElseThrow();
+            documentOrgDocLinkService.link(savedDocument, savedOrganizationDocument);
             DocumentOrganizationDocumentLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
                     savedDocument, savedOrganizationDocument);
 
