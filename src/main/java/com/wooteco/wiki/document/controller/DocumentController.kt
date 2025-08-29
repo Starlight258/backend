@@ -1,13 +1,16 @@
 package com.wooteco.wiki.document.controller
 
 import com.wooteco.wiki.document.domain.Document
-import com.wooteco.wiki.document.domain.dto.*
+import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
+import com.wooteco.wiki.document.domain.dto.DocumentResponse
+import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
+import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.dto.DocumentOrganizationDocumentCreateRequest
 import com.wooteco.wiki.document.service.DocumentOrganizationDocumentService
 import com.wooteco.wiki.document.service.DocumentSearchService
 import com.wooteco.wiki.document.service.DocumentService
-import com.wooteco.wiki.global.common.ApiResponse.SuccessBody
 import com.wooteco.wiki.global.common.ApiResponse
+import com.wooteco.wiki.global.common.ApiResponse.SuccessBody
 import com.wooteco.wiki.global.common.ApiResponseGenerator
 import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.global.common.ResponseDto
@@ -15,9 +18,9 @@ import com.wooteco.wiki.log.domain.dto.LogDetailResponse
 import com.wooteco.wiki.log.domain.dto.LogResponse
 import com.wooteco.wiki.log.service.LogService
 import io.swagger.v3.oas.annotations.Operation
-import org.apache.http.HttpStatus
 import org.springframework.data.domain.Page
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.NO_CONTENT
+import org.springframework.http.HttpStatus.OK
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
