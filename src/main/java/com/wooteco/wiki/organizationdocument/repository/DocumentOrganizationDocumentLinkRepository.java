@@ -11,4 +11,6 @@ public interface DocumentOrganizationDocumentLinkRepository extends
             Document document,
             OrganizationDocument organizationDocument
     );
+
+    void deleteByDocumentAndOrganizationDocument(Document document, OrganizationDocument organizationDocument);
 }

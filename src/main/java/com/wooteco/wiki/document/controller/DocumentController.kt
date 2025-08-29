@@ -15,7 +15,9 @@ import com.wooteco.wiki.log.domain.dto.LogDetailResponse
 import com.wooteco.wiki.log.domain.dto.LogResponse
 import com.wooteco.wiki.log.service.LogService
 import io.swagger.v3.oas.annotations.Operation
+import org.apache.http.HttpStatus
 import org.springframework.data.domain.Page
+import org.springframework.http.HttpStatus.*
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -109,10 +111,22 @@ class DocumentController(
     fun addOrganizationDocument(
         @PathVariable uuidText: String,
         @RequestBody request: DocumentOrganizationDocumentCreateRequest
-    ): ApiResponse<SuccessBody<String>> {
+    ): ApiResponse<SuccessBody<Void>> {
         val uuid = UUID.fromString(uuidText)
         documentOrganizationDocumentService.addOrganizationDocument(uuid, request)
-        return ApiResponseGenerator.success("조회수 누적 완료")
+        return ApiResponseGenerator.success(OK)
+    }
+
+    @Operation(summary = "조직 문서 삭제 API", description = "문서에 조직 문서를 제거합니다.")
+    @PostMapping("/{uuidText}/organization-document/{organizationDocumentUuidText}")
+    fun deleteOrganizationDocument(
+        @PathVariable uuidText: String,
+        @PathVariable organizationDocumentUuidText: String
+    ): ApiResponse<SuccessBody<Void>> {
+        val documentUuid = UUID.fromString(uuidText)
+        val organizationDocumentUuid = UUID.fromString(organizationDocumentUuidText)
+        documentOrganizationDocumentService.deleteOrganizationDocument(documentUuid, organizationDocumentUuid)
+        return ApiResponseGenerator.success(NO_CONTENT)
     }
 
     private fun <T> convertToResponse(pageResponses: Page<T>): ResponseDto<List<T>> {
