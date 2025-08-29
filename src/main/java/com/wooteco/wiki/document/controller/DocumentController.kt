@@ -1,14 +1,13 @@
 package com.wooteco.wiki.document.controller
 
 import com.wooteco.wiki.document.domain.Document
-import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
-import com.wooteco.wiki.document.domain.dto.DocumentResponse
-import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
-import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
+import com.wooteco.wiki.document.domain.dto.*
+import com.wooteco.wiki.document.dto.DocumentOrganizationDocumentCreateRequest
+import com.wooteco.wiki.document.service.DocumentOrganizationDocumentService
 import com.wooteco.wiki.document.service.DocumentSearchService
 import com.wooteco.wiki.document.service.DocumentService
-import com.wooteco.wiki.global.common.ApiResponse
 import com.wooteco.wiki.global.common.ApiResponse.SuccessBody
+import com.wooteco.wiki.global.common.ApiResponse
 import com.wooteco.wiki.global.common.ApiResponseGenerator
 import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.global.common.ResponseDto
@@ -26,6 +25,7 @@ class DocumentController(
     private val documentService: DocumentService,
     private val logService: LogService,
     private val documentSearchService: DocumentSearchService,
+    private val documentOrganizationDocumentService: DocumentOrganizationDocumentService
 ) {
 
     @Operation(summary = "위키 글 작성", description = "위키 글을 작성합니다.")
@@ -102,6 +102,17 @@ class DocumentController(
     @GetMapping("/search")
     fun search(@RequestParam keyWord: String): ApiResponse<SuccessBody<List<DocumentSearchResponse>>> {
         return ApiResponseGenerator.success(documentSearchService.search(keyWord))
+    }
+
+    @Operation(summary = "조직 문서 추가 API", description = "문서에 조직 문서를 추가합니다.")
+    @PostMapping("/{uuidText}/organization-document")
+    fun addOrganizationDocument(
+        @PathVariable uuidText: String,
+        @RequestBody request: DocumentOrganizationDocumentCreateRequest
+    ): ApiResponse<SuccessBody<String>> {
+        val uuid = UUID.fromString(uuidText)
+        documentOrganizationDocumentService.addOrganizationDocument(uuid, request)
+        return ApiResponseGenerator.success("조회수 누적 완료")
     }
 
     private fun <T> convertToResponse(pageResponses: Page<T>): ResponseDto<List<T>> {

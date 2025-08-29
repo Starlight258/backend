@@ -22,16 +22,8 @@ public class DocumentOrganizationDocumentLinkService {
     private final OrganizationDocumentRepository organizationDocumentRepository;
     private final DocumentRepository documentRepository;
 
-
-    public void createOrganizationDocument(OrganizationDocumentCreateRequest organizationDocumentCreateRequest) {
-        Document document = documentRepository.findByUuid(organizationDocumentCreateRequest.documentUUID())
-                .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));
-
-        OrganizationDocument organizationDocument = organizationDocumentCreateRequest.toOrganizationDocument();
-        OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
-
-        DocumentOrganizationDocumentLink documentOrgDocLink = new DocumentOrganizationDocumentLink(document,
-                savedOrganizationDocument);
+    public void link(Document document, OrganizationDocument organizationDocument) {
+        DocumentOrganizationDocumentLink documentOrgDocLink = new DocumentOrganizationDocumentLink(document, organizationDocument);
         documentOrgDocLinkRepository.save(documentOrgDocLink);
     }
 }
