@@ -1,5 +1,6 @@
 package com.wooteco.wiki.organizationdocument.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.wooteco.wiki.document.domain.Document;
@@ -35,7 +36,7 @@ class DocumentOrganizationLinkServiceTest {
     @Autowired
     private DocumentOrganizationDocumentLinkRepository documentOrgDocLinkRepository;
 
-    @DisplayName("문서 및 조직 문서 연결 기능")
+    @DisplayName("문서 와 조직 문서 연결을 할 때에")
     @Nested
     class Link {
 
@@ -68,5 +69,38 @@ class DocumentOrganizationLinkServiceTest {
                         .isEqualTo(savedOrganizationDocument.getId());
             });
         }
+    }
+
+    @DisplayName("문서와 조직 문서 연결 해제 할 때에")
+    @Nested
+    class UnLink {
+
+        private Document savedDocument;
+        private OrganizationDocument savedOrganizationDocument;
+
+        @BeforeEach
+        void setUp() {
+            Document document = DocumentFixture.createDefault();
+            savedDocument = documentRepository.save(document);
+
+            OrganizationDocument organizationDocument = OrganizationDocumentFixture.createDefault();
+            savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
+
+            documentOrgDocLinkService.link(savedDocument, savedOrganizationDocument);
+        }
+
+        @DisplayName("특정 문서와 특정 조직 문서의 연결을 해제한다")
+        @Test
+        void unLink_success_byDocumentAndOrganizationDocument() {
+            // when
+            documentOrgDocLinkService.unlink(savedDocument, savedOrganizationDocument);
+
+            // then
+            Optional<DocumentOrganizationDocumentLink> foundDocumentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
+                    savedDocument, savedOrganizationDocument);
+
+            assertThat(foundDocumentOrgDocLink).isEmpty();
+        }
+
     }
 }
