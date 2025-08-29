@@ -102,6 +102,7 @@ class DocumentService(
             document.contents,
             document.writer,
             document.generateTime,
+            document.viewCount,
             latestVersion,
             organizationDocumentResponses
         )

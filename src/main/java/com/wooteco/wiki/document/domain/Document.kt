@@ -21,13 +21,16 @@ class Document(
     var contents: String = "",
 
     var writer: String = "",
-    
+
     var documentBytes: Long = 0,
 
     var generateTime: LocalDateTime = LocalDateTime.now(),
 
     @JdbcTypeCode(Types.CHAR)
-    var uuid: UUID = UUID.randomUUID()
+    var uuid: UUID = UUID.randomUUID(),
+
+    @Column(name = "view_count", nullable = false, columnDefinition = "INT DEFAULT 0 NOT NULL")
+    var viewCount: Int = 0
 ) {
 
     fun update(
