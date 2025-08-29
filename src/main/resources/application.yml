@@ -1,4 +1,4 @@
 spring:
   profiles:
     include: private
-    active: prod # prod (배포 환경)
+    active: dev # prod (배포 환경)

@@ -32,7 +32,7 @@ class DocumentService(
             throw WikiException(ErrorCode.DOCUMENT_DUPLICATE)
         }
 
-        val document = Document(title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
+        val document = Document(null, title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
         val savedDocument = documentRepository.save(document)
         logService.save(savedDocument)
         val latestVersion = logService.findLatestVersionByDocument(savedDocument);

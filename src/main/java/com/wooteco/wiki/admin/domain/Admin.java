@@ -1,6 +1,5 @@
 package com.wooteco.wiki.admin.domain;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,11 +10,12 @@ import lombok.Getter;
 @Getter
 public class Admin {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login_id")
     private String loginId;
+
     private String password;
 
     protected Admin() {
