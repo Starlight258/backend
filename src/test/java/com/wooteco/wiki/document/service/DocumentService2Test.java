@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.wooteco.wiki.document.domain.Document;
-import com.wooteco.wiki.document.dto.DocumentOrganizationDocumentCreateRequest;
+import com.wooteco.wiki.document.dto.DocumentOrganizationAddRequest;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
@@ -95,12 +95,12 @@ class DocumentService2Test {
         @Test
         void addOrganizationDocument_success_byExistingDocumentUuid() {
             // given
-            DocumentOrganizationDocumentCreateRequest documentOrganizationDocumentCreateRequestDefault = OrganizationDocumentFixture.createDocumentOrganizationDocumentCreateRequest(
+            DocumentOrganizationAddRequest documentOrganizationAddRequestDefault = OrganizationDocumentFixture.createDocumentOrganizationDocumentCreateRequest(
                     "title1", "defaultContents", "defaultWriter", 10L, UUID.randomUUID());
 
             // when
             documentService.addOrganizationDocument(savedDocumentUuid,
-                    documentOrganizationDocumentCreateRequestDefault);
+                    documentOrganizationAddRequestDefault);
 
             // then
             List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(

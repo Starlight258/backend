@@ -1,7 +1,7 @@
 package com.wooteco.wiki.document.service;
 
 import com.wooteco.wiki.document.domain.Document;
-import com.wooteco.wiki.document.dto.DocumentOrganizationDocumentCreateRequest;
+import com.wooteco.wiki.document.dto.DocumentOrganizationAddRequest;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
@@ -32,9 +32,9 @@ public class DocumentService2 {
         return toOrganizationDocumentTitleAndUuidResponses(organizationDocumentResponsesByDocument);
     }
 
-    public void addOrganizationDocument(UUID documentUuid, DocumentOrganizationDocumentCreateRequest documentOrganizationDocumentCreateRequest) {
+    public void addOrganizationDocument(UUID documentUuid, DocumentOrganizationAddRequest documentOrganizationAddRequest) {
         Document document = getDocument(documentUuid);
-        OrganizationDocument organizationDocument = organizationDocumentRepository.save(documentOrganizationDocumentCreateRequest.toOrganizationDocument());
+        OrganizationDocument organizationDocument = organizationDocumentRepository.save(documentOrganizationAddRequest.toOrganizationDocument());
 
         documentOrganizationLinkService.link(document, organizationDocument);
     }
