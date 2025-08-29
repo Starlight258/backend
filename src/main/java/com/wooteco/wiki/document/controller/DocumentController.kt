@@ -127,7 +127,7 @@ class DocumentController(
         @PathVariable uuidText: String
     ): ApiResponse<SuccessBody<List<OrganizationDocumentSearchResponse>>> {
         val uuid = UUID.fromString(uuidText)
-        return ApiResponseGenerator.success(documentServiceJava.readOrganizationTitleAndUuid(uuid))
+        return ApiResponseGenerator.success(documentServiceJava.searchOrganizationDocument(uuid))
     }
 
     @Operation(summary = "특정 문서에 대한 조직 문서 삭제 API", description = "특정 문서에 대한 조직 문서를 제거합니다.")

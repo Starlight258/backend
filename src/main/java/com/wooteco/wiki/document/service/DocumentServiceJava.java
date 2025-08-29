@@ -23,7 +23,7 @@ public class DocumentServiceJava {
     private final DocumentRepository documentRepository;
     private final OrganizationDocumentRepository organizationDocumentRepository;
 
-    public List<OrganizationDocumentSearchResponse> readOrganizationTitleAndUuid(UUID documentUuid) {
+    public List<OrganizationDocumentSearchResponse> searchOrganizationDocument(UUID documentUuid) {
         Document document = getDocument(documentUuid);
         List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
                 document);
