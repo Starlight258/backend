@@ -10,6 +10,7 @@ import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.global.exception.ErrorCode
 import com.wooteco.wiki.global.exception.WikiException
 import com.wooteco.wiki.log.service.LogService
+import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationDocumentLinkService
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,6 +22,7 @@ import kotlin.random.Random
 @Transactional
 class DocumentService(
     private val documentRepository: DocumentRepository,
+    private val organizationDocumentLinkService: DocumentOrganizationDocumentLinkService,
     private val logService: LogService,
     private val random: Random,
 ) {
@@ -33,10 +35,10 @@ class DocumentService(
         }
 
         val document = Document(null, title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
+
         val savedDocument = documentRepository.save(document)
         logService.save(savedDocument)
-        val latestVersion = logService.findLatestVersionByDocument(savedDocument);
-        return mapToResponse(savedDocument, latestVersion);
+        return mapToResponse(savedDocument);
     }
 
     fun getRandom(): DocumentResponse {
@@ -45,9 +47,7 @@ class DocumentService(
             throw WikiException(ErrorCode.DOCUMENT_NOT_FOUND)
         }
         val document = documents[random.nextInt(documents.size)]
-        val latestVersion = logService.findLatestVersionByDocument(document);
-
-        return mapToResponse(document, latestVersion);
+        return mapToResponse(document);
     }
 
     fun findAll(requestDto: PageRequestDto): Page<Document> {
@@ -58,8 +58,7 @@ class DocumentService(
     fun get(title: String): DocumentResponse {
         val document = documentRepository.findByTitle(title)
             .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
-        val latestVersion = logService.findLatestVersionByDocument(document);
-        return mapToResponse(document, latestVersion);
+        return mapToResponse(document);
     }
 
     fun getUuidByTitle(title: String): DocumentUuidResponse =
@@ -70,8 +69,7 @@ class DocumentService(
     fun getByUuid(uuid: UUID): DocumentResponse {
         val document = documentRepository.findByUuid(uuid)
             .orElseThrow { WikiException(ErrorCode.DOCUMENT_NOT_FOUND) }
-        val latestVersion = logService.findLatestVersionByDocument(document);
-        return mapToResponse(document, latestVersion);
+        return mapToResponse(document);
     }
 
     fun put(uuid: UUID, request: DocumentUpdateRequest): DocumentResponse {
@@ -83,10 +81,7 @@ class DocumentService(
         val updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now())
 
         logService.save(updateData)
-
-        val latestVersion = logService.findLatestVersionByDocument(document);
-
-        return mapToResponse(document, latestVersion);
+        return mapToResponse(document);
     }
 
     fun deleteById(id: Long) {
@@ -95,14 +90,20 @@ class DocumentService(
         documentRepository.deleteById(id)
     }
 
-    private fun mapToResponse(document: Document, latestVersion: Long): DocumentResponse =
-        DocumentResponse(
+    private fun mapToResponse(document: Document): DocumentResponse {
+        val latestVersion = logService.findLatestVersionByDocument(document);
+        val organizationDocumentResponses =
+            organizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(document)
+
+        return DocumentResponse(
             document.id ?: throw WikiException(ErrorCode.DOCUMENT_NOT_FOUND),
             document.uuid,
             document.title,
             document.contents,
             document.writer,
             document.generateTime,
-            latestVersion
+            latestVersion,
+            organizationDocumentResponses
         )
+    }
 }
