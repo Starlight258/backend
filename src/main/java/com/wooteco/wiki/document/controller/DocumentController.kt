@@ -121,7 +121,7 @@ class DocumentController(
         return ApiResponseGenerator.success(OK)
     }
 
-    @Operation(summary = "특정 문서에 대한 조직 문서 조회 API", description = "특정 문서에 대한 조직 문서들을 조회합니.")
+    @Operation(summary = "특정 문서에 대한 조직 문서 조회 API", description = "특정 문서에 대한 조직 문서들을 조회합니다.")
     @GetMapping("/{uuidText}/organization-documents")
     fun readOrganizationDocument(
         @PathVariable uuidText: String
