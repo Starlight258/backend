@@ -1,5 +1,6 @@
 package com.wooteco.wiki.document.service;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.wooteco.wiki.document.domain.Document;
@@ -56,8 +57,10 @@ class DocumentService2Test {
         @BeforeEach
         void setUp() {
             List<OrganizationDocument> organizationDocuments = List.of(
-                    OrganizationDocumentFixture.create("title1", "defaultContent", "defaultWriter", 10L, UUID.randomUUID(), LocalDateTime.now()),
-                    OrganizationDocumentFixture.create("title2", "defaultContent", "defaultWriter", 10L, UUID.randomUUID(), LocalDateTime.now())
+                    OrganizationDocumentFixture.create("title1", "defaultContent", "defaultWriter", 10L,
+                            UUID.randomUUID(), LocalDateTime.now()),
+                    OrganizationDocumentFixture.create("title2", "defaultContent", "defaultWriter", 10L,
+                            UUID.randomUUID(), LocalDateTime.now())
             );
             organizationDocumentRepository.saveAll(organizationDocuments);
 
@@ -79,7 +82,7 @@ class DocumentService2Test {
                         softy.assertThat(organizationDocumentTitleAndUuidResponses.stream()
                                 .map(OrganizationDocumentTitleAndUuidResponse::title)
                         ).containsExactlyInAnyOrder("title1", "title2");
-                }
+                    }
             );
         }
     }
@@ -92,10 +95,12 @@ class DocumentService2Test {
         @Test
         void addOrganizationDocument_success_byExistingDocumentUuid() {
             // given
-            DocumentOrganizationDocumentCreateRequest documentOrganizationDocumentCreateRequestDefault = OrganizationDocumentFixture.createDocumentOrganizationDocumentCreateRequest("title1", "defaultContents", "defaultWriter", 10L, UUID.randomUUID());
+            DocumentOrganizationDocumentCreateRequest documentOrganizationDocumentCreateRequestDefault = OrganizationDocumentFixture.createDocumentOrganizationDocumentCreateRequest(
+                    "title1", "defaultContents", "defaultWriter", 10L, UUID.randomUUID());
 
             // when
-            documentService.addOrganizationDocument(savedDocumentUuid, documentOrganizationDocumentCreateRequestDefault);
+            documentService.addOrganizationDocument(savedDocumentUuid,
+                    documentOrganizationDocumentCreateRequestDefault);
 
             // then
             List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(
@@ -107,6 +112,37 @@ class DocumentService2Test {
                         ).containsExactlyInAnyOrder("title1");
                     }
             );
+        }
+    }
+
+    @DisplayName("특정 문서에 대해 조직 문서를 제거할 때에")
+    @Nested
+    class deleteOrganizationDocument {
+
+        private UUID savedOrganizationDocumentUuid;
+
+        @BeforeEach
+        void setUp() {
+            OrganizationDocument organizationDocument = OrganizationDocumentFixture.create("title1", "defaultContent",
+                    "defaultWriter", 10L, UUID.randomUUID(),
+                    LocalDateTime.now());
+            OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
+            documentOrganizationDocumentLinkService.link(savedDocument, organizationDocument);
+
+            savedOrganizationDocumentUuid = savedOrganizationDocument.getUuid();
+        }
+
+        @DisplayName("존재하는 특정 문서의 uuid로 요청한다면, 조직 문서가 삭제된다")
+        @Test
+        void deleteOrganizationDocument_success_byExistingDocumentUuid() {
+            // when
+            documentService.deleteOrganizationDocument(savedDocumentUuid, savedOrganizationDocumentUuid);
+
+            // then
+            List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(
+                    savedDocument);
+
+            assertThat(organizationDocumentResponsesByDocument.size()).isEqualTo(0);
         }
     }
 }
