@@ -1,7 +1,7 @@
 package com.wooteco.wiki.organizationdocument.dto.response;
 
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
-import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentTitleAndUuidResponse;
+import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentSearchResponse;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -26,8 +26,8 @@ public record OrganizationDocumentResponse(
         );
     }
 
-    public OrganizationDocumentTitleAndUuidResponse toOrganizationDocumentTitleAndUuidResponse() {
-        return new OrganizationDocumentTitleAndUuidResponse(
+    public OrganizationDocumentSearchResponse toOrganizationDocumentTitleAndUuidResponse() {
+        return new OrganizationDocumentSearchResponse(
                 organizationDocumentUUID,
                 title
         );

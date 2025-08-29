@@ -17,7 +17,7 @@ import com.wooteco.wiki.global.common.ResponseDto
 import com.wooteco.wiki.log.domain.dto.LogDetailResponse
 import com.wooteco.wiki.log.domain.dto.LogResponse
 import com.wooteco.wiki.log.service.LogService
-import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentTitleAndUuidResponse
+import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentSearchResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus.NO_CONTENT
@@ -125,7 +125,7 @@ class DocumentController(
     @GetMapping("/{uuidText}/organization-documents")
     fun readOrganizationDocument(
         @PathVariable uuidText: String
-    ): ApiResponse<SuccessBody<List<OrganizationDocumentTitleAndUuidResponse>>> {
+    ): ApiResponse<SuccessBody<List<OrganizationDocumentSearchResponse>>> {
         val uuid = UUID.fromString(uuidText)
         return ApiResponseGenerator.success(documentService2.readOrganizationTitleAndUuid(uuid))
     }

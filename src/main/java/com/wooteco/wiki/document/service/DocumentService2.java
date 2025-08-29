@@ -6,7 +6,7 @@ import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
-import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentTitleAndUuidResponse;
+import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentSearchResponse;
 import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentResponse;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
 import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationLinkService;
@@ -24,7 +24,7 @@ public class DocumentService2 {
     private final DocumentRepository documentRepository;
     private final OrganizationDocumentRepository organizationDocumentRepository;
 
-    public List<OrganizationDocumentTitleAndUuidResponse> readOrganizationTitleAndUuid(UUID documentUuid) {
+    public List<OrganizationDocumentSearchResponse> readOrganizationTitleAndUuid(UUID documentUuid) {
         Document document = getDocument(documentUuid);
         List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
                 document);
@@ -46,7 +46,7 @@ public class DocumentService2 {
         documentOrganizationLinkService.unlink(document, organizationDocument);
     }
 
-    private List<OrganizationDocumentTitleAndUuidResponse> toOrganizationDocumentTitleAndUuidResponses(
+    private List<OrganizationDocumentSearchResponse> toOrganizationDocumentTitleAndUuidResponses(
             List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument) {
         return organizationDocumentResponsesByDocument.stream()
                 .map(OrganizationDocumentResponse::toOrganizationDocumentTitleAndUuidResponse)

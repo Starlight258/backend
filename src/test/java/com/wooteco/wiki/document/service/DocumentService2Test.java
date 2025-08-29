@@ -8,7 +8,7 @@ import com.wooteco.wiki.document.dto.DocumentOrganizationAddRequest;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
-import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentTitleAndUuidResponse;
+import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentSearchResponse;
 import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentResponse;
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
@@ -73,14 +73,14 @@ class DocumentService2Test {
         @Test
         void readOrganizationTitleAndUuid_success_byExistingDocumentUuid() {
             // when
-            List<OrganizationDocumentTitleAndUuidResponse> organizationDocumentTitleAndUuidResponses = documentService.readOrganizationTitleAndUuid(
+            List<OrganizationDocumentSearchResponse> documentOrganizationSearchRespons = documentService.readOrganizationTitleAndUuid(
                     savedDocumentUuid);
 
             // then
             assertSoftly(softy -> {
-                        softy.assertThat(organizationDocumentTitleAndUuidResponses.size()).isEqualTo(2);
-                        softy.assertThat(organizationDocumentTitleAndUuidResponses.stream()
-                                .map(OrganizationDocumentTitleAndUuidResponse::title)
+                        softy.assertThat(documentOrganizationSearchRespons.size()).isEqualTo(2);
+                        softy.assertThat(documentOrganizationSearchRespons.stream()
+                                .map(OrganizationDocumentSearchResponse::title)
                         ).containsExactlyInAnyOrder("title1", "title2");
                     }
             );
