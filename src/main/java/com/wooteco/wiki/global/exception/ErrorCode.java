@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     PAGE_BAD_REQUEST("페이징 요청이 잘못되었습니다.", HttpStatus.BAD_REQUEST),
+    VALIDATION_ERROR("검증에 실패하였습니다.", HttpStatus.BAD_REQUEST),
 
     TOKEN_CREATE_ERROR("토큰 생성에 실패했습니다.", HttpStatus.UNAUTHORIZED),
     WRONG_TOKEN("잘못된 토큰입니다.", HttpStatus.UNAUTHORIZED),
