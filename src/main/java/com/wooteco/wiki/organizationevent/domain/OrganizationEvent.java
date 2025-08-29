@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -59,10 +60,22 @@ public class OrganizationEvent {
         return OrganizationEvent.builder()
                 .uuid(UUID.randomUUID())
                 .title(title.trim())
-                .contents(contents == null ? "" : contents)
+                .contents(getContents(contents))
                 .writer(writer.trim())
                 .occurredAt(occurredAt)
                 .organizationDocument(organizationDocument)
                 .build();
+    }
+
+    public void update(String title, String contents, String writer, LocalDate occurredAt) {
+        this.title = title.trim();
+        this.contents = getContents(contents);
+        this.writer = writer.trim();
+        this.occurredAt = occurredAt;
+    }
+
+    @NotNull
+    private static String getContents(final String contents) {
+        return contents == null ? "" : contents;
     }
 }

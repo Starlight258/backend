@@ -18,6 +18,7 @@ public enum ErrorCode {
     ADMIN_NOT_FOUND("관리자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     VERSION_NOT_FOUND("버전을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ORGANIZATION_DOCUMENT_NOT_FOUND("조직 문서를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    ORGANIZATION_EVENT_NOT_FOUND("조직 이벤트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
     DOCUMENT_DUPLICATE("이미 존재하는 문서입니다.", HttpStatus.CONFLICT),
 

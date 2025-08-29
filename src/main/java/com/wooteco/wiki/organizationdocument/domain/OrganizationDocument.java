@@ -53,6 +53,15 @@ public class OrganizationDocument {
         this.generateTime = generateTime;
     }
 
+    public OrganizationDocument(String title, String contents, String writer, Long documentBytes, UUID uuid) {
+        this.title = title;
+        this.contents = contents;
+        this.writer = writer;
+        this.documentBytes = documentBytes;
+        this.uuid = uuid;
+        this.generateTime = LocalDateTime.now();
+    }
+
     public void update(String title, String contents, String writer, Long documentBytes, LocalDateTime generateTime) {
         this.title = title;
         this.contents = contents;
