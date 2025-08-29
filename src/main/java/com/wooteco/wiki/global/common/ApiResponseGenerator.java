@@ -21,4 +21,8 @@ public class ApiResponseGenerator {
     public static ApiResponse<ApiResponse.FailureBody> failure(ErrorCode code, String message, HttpStatus status) {
         return new ApiResponse<>(new ApiResponse.FailureBody(code, message), status);
     }
+
+    public static ApiResponse<ApiResponse.FailureBody> failure(ErrorCode code) {
+        return new ApiResponse<>(new ApiResponse.FailureBody(code, code.getMessage()), code.getHttpStatus());
+    }
 }

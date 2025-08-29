@@ -31,10 +31,4 @@ public class OrganizationDocumentFixture {
         return createOrganizationDocumentCreateRequest("defaultTitle", "defaultContent", "defaultWriter", 10L,
                 UUID.randomUUID(), documentUUID);
     }
-
-    public static OrganizationDocumentCreateRequest createOrganizationUpdateRequest(String title, String contents,
-                                                                                    String writer, Long documentBytes) {
-        return new OrganizationDocumentCreateRequest(title, contents, writer, documentBytes, UUID.randomUUID(),
-                UUID.randomUUID());
-    }
 }
