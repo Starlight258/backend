@@ -17,6 +17,7 @@ import com.wooteco.wiki.global.common.ResponseDto
 import com.wooteco.wiki.log.domain.dto.LogDetailResponse
 import com.wooteco.wiki.log.domain.dto.LogResponse
 import com.wooteco.wiki.log.service.LogService
+import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentTitleAndUuidResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus.NO_CONTENT
@@ -110,7 +111,7 @@ class DocumentController(
     }
 
     @Operation(summary = "조직 문서 추가 API", description = "문서에 조직 문서를 추가합니다.")
-    @PostMapping("/{uuidText}/organization-document")
+    @PostMapping("/{uuidText}/organization-documents")
     fun addOrganizationDocument(
         @PathVariable uuidText: String,
         @RequestBody request: DocumentOrganizationDocumentCreateRequest
@@ -120,8 +121,17 @@ class DocumentController(
         return ApiResponseGenerator.success(OK)
     }
 
+    @Operation(summary = "특정 문서에 대한 조직 문서 조회 API", description = "특정 문서에 대한 조직 문서들을 조회합니.")
+    @GetMapping("/{uuidText}/organization-documents")
+    fun readOrganizationDocument(
+        @PathVariable uuidText: String
+    ): ApiResponse<SuccessBody<List<OrganizationDocumentTitleAndUuidResponse>>> {
+        val uuid = UUID.fromString(uuidText)
+        return ApiResponseGenerator.success(documentOrganizationDocumentService.readOrganizationTitleAndUuid(uuid))
+    }
+
     @Operation(summary = "조직 문서 삭제 API", description = "문서에 조직 문서를 제거합니다.")
-    @PostMapping("/{uuidText}/organization-document/{organizationDocumentUuidText}")
+    @PostMapping("/{uuidText}/organization-documents/{organizationDocumentUuidText}")
     fun deleteOrganizationDocument(
         @PathVariable uuidText: String,
         @PathVariable organizationDocumentUuidText: String
