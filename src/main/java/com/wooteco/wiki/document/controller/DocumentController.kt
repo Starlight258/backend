@@ -6,7 +6,7 @@ import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.dto.DocumentOrganizationAddRequest
-import com.wooteco.wiki.document.service.DocumentService2
+import com.wooteco.wiki.document.service.DocumentServiceJava
 import com.wooteco.wiki.document.service.DocumentSearchService
 import com.wooteco.wiki.document.service.DocumentService
 import com.wooteco.wiki.global.common.ApiResponse
@@ -31,7 +31,7 @@ class DocumentController(
     private val documentService: DocumentService,
     private val logService: LogService,
     private val documentSearchService: DocumentSearchService,
-    private val documentService2: DocumentService2
+    private val documentServiceJava: DocumentServiceJava
 ) {
 
     @Operation(summary = "위키 글 작성", description = "위키 글을 작성합니다.")
@@ -117,7 +117,7 @@ class DocumentController(
         @RequestBody request: DocumentOrganizationAddRequest
     ): ApiResponse<SuccessBody<Void>> {
         val uuid = UUID.fromString(uuidText)
-        documentService2.addOrganizationDocument(uuid, request)
+        documentServiceJava.addOrganizationDocument(uuid, request)
         return ApiResponseGenerator.success(OK)
     }
 
@@ -127,7 +127,7 @@ class DocumentController(
         @PathVariable uuidText: String
     ): ApiResponse<SuccessBody<List<OrganizationDocumentSearchResponse>>> {
         val uuid = UUID.fromString(uuidText)
-        return ApiResponseGenerator.success(documentService2.readOrganizationTitleAndUuid(uuid))
+        return ApiResponseGenerator.success(documentServiceJava.readOrganizationTitleAndUuid(uuid))
     }
 
     @Operation(summary = "특정 문서에 대한 조직 문서 삭제 API", description = "특정 문서에 대한 조직 문서를 제거합니다.")
@@ -138,7 +138,7 @@ class DocumentController(
     ): ApiResponse<SuccessBody<Void>> {
         val documentUuid = UUID.fromString(uuidText)
         val organizationDocumentUuid = UUID.fromString(organizationDocumentUuidText)
-        documentService2.deleteOrganizationDocument(documentUuid, organizationDocumentUuid)
+        documentServiceJava.deleteOrganizationDocument(documentUuid, organizationDocumentUuid)
         return ApiResponseGenerator.success(NO_CONTENT)
     }
 

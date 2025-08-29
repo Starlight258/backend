@@ -26,10 +26,10 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class DocumentService2Test {
+class DocumentServiceJavaTest {
 
     @Autowired
-    private DocumentService2 documentService;
+    private DocumentServiceJava documentService;
 
     @Autowired
     private DocumentOrganizationLinkService documentOrganizationLinkService;
