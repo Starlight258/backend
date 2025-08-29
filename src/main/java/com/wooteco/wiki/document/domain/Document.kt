@@ -27,7 +27,14 @@ class Document(
     var generateTime: LocalDateTime = LocalDateTime.now(),
 
     @JdbcTypeCode(Types.CHAR)
-    var uuid: UUID = UUID.randomUUID()
+    var uuid: UUID = UUID.randomUUID(),
+
+    @Column(name = "view_count", nullable = false, columnDefinition = "INT DEFAULT 0 NOT NULL")
+    var viewCount: Int = 0,
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
 ) {
 
     fun update(

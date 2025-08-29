@@ -19,7 +19,9 @@ import com.wooteco.wiki.log.fixture.LogFixture;
 import com.wooteco.wiki.log.repository.LogRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -274,5 +276,32 @@ class DocumentServiceTest {
                     () -> documentService.deleteById(Long.MAX_VALUE));
             assertThat(ex.getErrorCode()).isEqualTo(DOCUMENT_NOT_FOUND);
         }
+    }
+
+    @Test
+    @DisplayName("flushViews 호출 시 uuid별로 조회수가 증가된다")
+    void flushViews_success() {
+        // given
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+        Document doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
+                LocalDateTime.now(), uuid1));
+        Document doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 10L,
+                LocalDateTime.now(), uuid2));
+
+        Map<UUID, Integer> viewMap = Map.of(
+                uuid1, 5,
+                uuid2, 10
+        );
+
+        // when
+        documentService.flushViews(viewMap);
+
+        // then
+        Document updated1 = documentRepository.findById(doc1.getId()).get();
+        Document updated2 = documentRepository.findById(doc2.getId()).get();
+
+        Assertions.assertThat(updated1.getViewCount()).isEqualTo(5);
+        Assertions.assertThat(updated2.getViewCount()).isEqualTo(10);
     }
 }

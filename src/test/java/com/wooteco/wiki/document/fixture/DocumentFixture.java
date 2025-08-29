@@ -8,9 +8,17 @@ import java.util.UUID;
 
 public class DocumentFixture {
 
-    public static Document create(String title, String content, String writer, Long documentBytes,
-                                  LocalDateTime dateTime, UUID uuid) {
-        return new Document(null, title, content, writer, documentBytes, dateTime, uuid);
+    public static Document create(String title, String content, String writer, long size,
+                                  LocalDateTime generateTime, UUID uuid) {
+        Document document = new Document();
+        document.setTitle(title);
+        document.setContents(content);
+        document.setWriter(writer);
+        document.setDocumentBytes(size);
+        document.setGenerateTime(generateTime);
+        document.setUuid(uuid);
+        document.setViewCount(0);
+        return document;
     }
 
     public static Document createDefault() {

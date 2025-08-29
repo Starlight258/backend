@@ -1,10 +1,7 @@
 package com.wooteco.wiki.document.controller
 
 import com.wooteco.wiki.document.domain.Document
-import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
-import com.wooteco.wiki.document.domain.dto.DocumentResponse
-import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
-import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
+import com.wooteco.wiki.document.domain.dto.*
 import com.wooteco.wiki.document.service.DocumentSearchService
 import com.wooteco.wiki.document.service.DocumentService
 import com.wooteco.wiki.global.common.ApiResponse
@@ -102,6 +99,15 @@ class DocumentController(
     @GetMapping("/search")
     fun search(@RequestParam keyWord: String): ApiResponse<SuccessBody<List<DocumentSearchResponse>>> {
         return ApiResponseGenerator.success(documentSearchService.search(keyWord))
+    }
+
+    @Operation(summary = "누적 조회수 수신 API", description = "프론트에서 누적된 조회수를 전달받아 DB에 반영합니다.")
+    @PostMapping("/views/flush")
+    fun flushViews(
+        @RequestBody request: ViewFlushRequest
+    ): ApiResponse<ApiResponse.SuccessBody<String>> {
+        documentService.flushViews(request.views)
+        return ApiResponseGenerator.success("조회수 누적 완료")
     }
 
     private fun <T> convertToResponse(pageResponses: Page<T>): ResponseDto<List<T>> {
