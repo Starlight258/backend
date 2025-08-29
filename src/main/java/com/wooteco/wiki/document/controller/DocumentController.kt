@@ -6,7 +6,7 @@ import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
 import com.wooteco.wiki.document.dto.DocumentOrganizationDocumentCreateRequest
-import com.wooteco.wiki.document.service.DocumentOrganizationDocumentService
+import com.wooteco.wiki.document.service.DocumentService2
 import com.wooteco.wiki.document.service.DocumentSearchService
 import com.wooteco.wiki.document.service.DocumentService
 import com.wooteco.wiki.global.common.ApiResponse
@@ -31,7 +31,7 @@ class DocumentController(
     private val documentService: DocumentService,
     private val logService: LogService,
     private val documentSearchService: DocumentSearchService,
-    private val documentOrganizationDocumentService: DocumentOrganizationDocumentService
+    private val documentService2: DocumentService2
 ) {
 
     @Operation(summary = "위키 글 작성", description = "위키 글을 작성합니다.")
@@ -117,7 +117,7 @@ class DocumentController(
         @RequestBody request: DocumentOrganizationDocumentCreateRequest
     ): ApiResponse<SuccessBody<Void>> {
         val uuid = UUID.fromString(uuidText)
-        documentOrganizationDocumentService.addOrganizationDocument(uuid, request)
+        documentService2.addOrganizationDocument(uuid, request)
         return ApiResponseGenerator.success(OK)
     }
 
@@ -127,7 +127,7 @@ class DocumentController(
         @PathVariable uuidText: String
     ): ApiResponse<SuccessBody<List<OrganizationDocumentTitleAndUuidResponse>>> {
         val uuid = UUID.fromString(uuidText)
-        return ApiResponseGenerator.success(documentOrganizationDocumentService.readOrganizationTitleAndUuid(uuid))
+        return ApiResponseGenerator.success(documentService2.readOrganizationTitleAndUuid(uuid))
     }
 
     @Operation(summary = "조직 문서 삭제 API", description = "문서에 조직 문서를 제거합니다.")
@@ -138,7 +138,7 @@ class DocumentController(
     ): ApiResponse<SuccessBody<Void>> {
         val documentUuid = UUID.fromString(uuidText)
         val organizationDocumentUuid = UUID.fromString(organizationDocumentUuidText)
-        documentOrganizationDocumentService.deleteOrganizationDocument(documentUuid, organizationDocumentUuid)
+        documentService2.deleteOrganizationDocument(documentUuid, organizationDocumentUuid)
         return ApiResponseGenerator.success(NO_CONTENT)
     }
 

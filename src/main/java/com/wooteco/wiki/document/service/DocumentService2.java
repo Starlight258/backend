@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class DocumentOrganizationDocumentService {
+public class DocumentService2 {
 
     private final DocumentOrganizationDocumentLinkService documentOrganizationDocumentLinkService;
     private final DocumentRepository documentRepository;
