@@ -10,6 +10,7 @@ import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
 import com.wooteco.wiki.organizationdocument.repository.DocumentOrganizationDocumentLinkRepository;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -37,16 +38,21 @@ class DocumentOrganizationLinkServiceTest {
     @Nested
     class Link {
 
+        private Document savedDocument;
+        private OrganizationDocument savedOrganizationDocument;
+
+        @BeforeEach
+        void setUp() {
+            Document document = DocumentFixture.createDefault();
+            savedDocument = documentRepository.save(document);
+
+            OrganizationDocument organizationDocument = OrganizationDocumentFixture.createDefault();
+            savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
+        }
+
         @DisplayName("특정 문서와 특정 조직 문서로 둘을 연결한다.")
         @Test
         void link_success_byDocumentAndOrganizationDocument() {
-            // given
-            Document document = DocumentFixture.createDefault();
-            Document savedDocument = documentRepository.save(document);
-
-            OrganizationDocument organizationDocument = OrganizationDocumentFixture.createDefault();
-            OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
-
             // when
             documentOrgDocLinkService.link(savedDocument, savedOrganizationDocument);
             DocumentOrganizationDocumentLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
