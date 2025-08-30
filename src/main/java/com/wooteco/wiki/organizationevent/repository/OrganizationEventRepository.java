@@ -8,6 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface OrganizationEventRepository extends JpaRepository<OrganizationEvent, Long> {
 
     Optional<OrganizationEvent> findByUuid(UUID uuid);
-
-    void deleteByUuid(UUID uuid);
 }

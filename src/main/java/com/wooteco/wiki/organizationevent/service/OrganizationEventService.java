@@ -45,9 +45,9 @@ public class OrganizationEventService {
     }
 
     public void delete(UUID organizationEventUUID) {
-        getOrganizationEvent(organizationEventUUID);
+        OrganizationEvent organizationEvent = getOrganizationEvent(organizationEventUUID);
 
-        organizationEventRepository.deleteByUuid(organizationEventUUID);
+        organizationEventRepository.delete(organizationEvent);
     }
 
     private OrganizationDocument getOrganizationDocument(
@@ -60,6 +60,5 @@ public class OrganizationEventService {
     private OrganizationEvent getOrganizationEvent(UUID uuid) {
         return organizationEventRepository.findByUuid(uuid)
                 .orElseThrow(() -> new WikiException(ORGANIZATION_EVENT_NOT_FOUND));
-
     }
 }
