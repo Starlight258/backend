@@ -1,5 +1,6 @@
 package com.wooteco.wiki.document.domain.dto
 
+import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentResponse
 import java.time.LocalDateTime
 import java.util.*
 
@@ -11,5 +12,6 @@ data class DocumentResponse(
     val writer: String,
     val generateTime: LocalDateTime,
     val viewCount: Int,
-    val latestVersion: Long
+    val latestVersion: Long,
+    val organizationDocumentResponses : List<OrganizationDocumentResponse>
 )
