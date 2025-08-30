@@ -11,7 +11,7 @@ public record OrganizationEventUpdateResponse(
         String writer,
         LocalDate occurredAt
 ) {
-    public static OrganizationEventUpdateResponse from(final OrganizationEvent organizationEvent) {
+    public static OrganizationEventUpdateResponse from(OrganizationEvent organizationEvent) {
         return new OrganizationEventUpdateResponse(
                 organizationEvent.getUuid(),
                 organizationEvent.getTitle(),

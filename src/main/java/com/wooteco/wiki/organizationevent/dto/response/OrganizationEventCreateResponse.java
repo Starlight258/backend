@@ -6,7 +6,7 @@ import java.util.UUID;
 public record OrganizationEventCreateResponse(
         UUID organizationEventUUID
 ) {
-    public static OrganizationEventCreateResponse from(final OrganizationEvent organizationEvent) {
+    public static OrganizationEventCreateResponse from(OrganizationEvent organizationEvent) {
         return new OrganizationEventCreateResponse(organizationEvent.getUuid());
     }
 }

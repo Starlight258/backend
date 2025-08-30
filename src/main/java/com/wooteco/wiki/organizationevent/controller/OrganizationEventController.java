@@ -11,6 +11,7 @@ import com.wooteco.wiki.organizationevent.service.OrganizationEventService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,15 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/organization-events")
 public class OrganizationEventController {
 
     private final OrganizationEventService organizationEventService;
-
-    public OrganizationEventController(final OrganizationEventService organizationEventService) {
-        this.organizationEventService = organizationEventService;
-    }
 
     @Operation(summary = "조직 이벤트 생성", description = "조직 이벤트를 생성합니다.")
     @PostMapping("")

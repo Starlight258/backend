@@ -21,7 +21,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.jetbrains.annotations.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -74,8 +73,7 @@ public class OrganizationEvent {
         this.occurredAt = occurredAt;
     }
 
-    @NotNull
-    private static String getContents(final String contents) {
+    private static String getContents(String contents) {
         return contents == null ? "" : contents;
     }
 }
