@@ -6,10 +6,10 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
-import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationDocumentLink;
+import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationLink;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
-import com.wooteco.wiki.organizationdocument.repository.DocumentOrganizationDocumentLinkRepository;
+import com.wooteco.wiki.organizationdocument.repository.DocumentOrganizationLinkRepository;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ class DocumentOrganizationLinkServiceTest {
     private OrganizationDocumentRepository organizationDocumentRepository;
 
     @Autowired
-    private DocumentOrganizationDocumentLinkRepository documentOrgDocLinkRepository;
+    private DocumentOrganizationLinkRepository documentOrgDocLinkRepository;
 
     @DisplayName("문서 와 조직 문서 연결을 할 때에")
     @Nested
@@ -59,7 +59,7 @@ class DocumentOrganizationLinkServiceTest {
             documentOrgDocLinkService.link(savedDocument, savedOrganizationDocument);
 
             // then
-            DocumentOrganizationDocumentLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
+            DocumentOrganizationLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
                     savedDocument, savedOrganizationDocument).get();
 
             assertSoftly(softly -> {
@@ -96,7 +96,7 @@ class DocumentOrganizationLinkServiceTest {
             documentOrgDocLinkService.unlink(savedDocument, savedOrganizationDocument);
 
             // then
-            Optional<DocumentOrganizationDocumentLink> foundDocumentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
+            Optional<DocumentOrganizationLink> foundDocumentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
                     savedDocument, savedOrganizationDocument);
 
             assertThat(foundDocumentOrgDocLink).isEmpty();

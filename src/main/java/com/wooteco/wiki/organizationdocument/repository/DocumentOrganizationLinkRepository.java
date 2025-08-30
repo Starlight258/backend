@@ -1,21 +1,21 @@
 package com.wooteco.wiki.organizationdocument.repository;
 
 import com.wooteco.wiki.document.domain.Document;
-import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationDocumentLink;
+import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationLink;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DocumentOrganizationDocumentLinkRepository extends
-        JpaRepository<DocumentOrganizationDocumentLink, Long> {
+public interface DocumentOrganizationLinkRepository extends
+        JpaRepository<DocumentOrganizationLink, Long> {
 
-    Optional<DocumentOrganizationDocumentLink> findByDocumentAndOrganizationDocument(
+    Optional<DocumentOrganizationLink> findByDocumentAndOrganizationDocument(
             Document document,
             OrganizationDocument organizationDocument
     );
 
     void deleteByDocumentAndOrganizationDocument(Document document, OrganizationDocument organizationDocument);
 
-    List<DocumentOrganizationDocumentLink> findAllByDocument(Document document);
+    List<DocumentOrganizationLink> findAllByDocument(Document document);
 }

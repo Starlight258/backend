@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
                 name = "uk_doc_orgdoc", columnNames = {"document_id", "organization_document_id"}
         )
 )
-public class DocumentOrganizationDocumentLink {
+public class DocumentOrganizationLink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +43,7 @@ public class DocumentOrganizationDocumentLink {
             foreignKey = @ForeignKey(name = "fk_link_orgdoc"))
     private OrganizationDocument organizationDocument;
 
-    public DocumentOrganizationDocumentLink(Document document, OrganizationDocument organizationDocument) {
+    public DocumentOrganizationLink(Document document, OrganizationDocument organizationDocument) {
         this.document = document;
         this.organizationDocument = organizationDocument;
     }
