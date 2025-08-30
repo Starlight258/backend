@@ -9,7 +9,7 @@ public record OrganizationDocumentCreateRequest(
         String writer,
         Long documentBytes,
         UUID uuid,
-        UUID documentUUID
+        UUID documentUuid
 ) {
     public OrganizationDocument toOrganizationDocument() {
         return new OrganizationDocument(title, contents, writer, documentBytes, uuid);

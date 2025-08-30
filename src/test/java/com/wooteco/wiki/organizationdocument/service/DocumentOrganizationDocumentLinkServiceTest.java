@@ -41,7 +41,7 @@ class DocumentOrganizationDocumentLinkServiceTest {
 
         @DisplayName("특정 문서의 UUID로 조직 문서를 생성한다.")
         @Test
-        void createOrganizationDocument_success_byDocumentUUID() {
+        void createOrganizationDocument_success_byDocumentUuid() {
             // given
             Document document = DocumentFixture.createDefault();
             Document savedDocument = documentRepository.save(document);

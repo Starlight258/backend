@@ -23,11 +23,11 @@ public class DocumentRepositoryTest {
 
     @Nested
     @DisplayName("문서 제목으로 uuid를 조회하는 기능")
-    class findUUidByTitle {
+    class findUuidByTitle {
 
         @DisplayName("존재하지 않는 문서 제목으로 조회했을 때 Optional.empty를 반환한다")
         @Test
-        void findUUidByTitle_success_byNonExistsDocument() {
+        void findUuidByTitle_success_byNonExistsDocument() {
 
             // when
             Optional<UUID> actual = documentRepository.findUuidByTitle("nonExistsDocumentTitle");
@@ -38,7 +38,7 @@ public class DocumentRepositoryTest {
 
         @DisplayName("존재하는 문서 제목으로 조회했을 때 Optional(UUID)를 반환한다")
         @Test
-        void findUUidByTitle_success_byExistsDocument() {
+        void findUuidByTitle_success_byExistsDocument() {
             // given
             Document savedDocument = documentRepository.save(DocumentFixture.createDefault());
 

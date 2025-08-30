@@ -4,6 +4,7 @@ import com.wooteco.wiki.global.common.ApiResponse;
 import com.wooteco.wiki.global.common.ApiResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -23,5 +24,11 @@ public class WikiExceptionHandler {
         log.error(exception.getMessage(), exception);
         return ApiResponseGenerator.failure(ErrorCode.UNKNOWN_ERROR, "An unknown error occurred.",
                 HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ApiResponse<ApiResponse.FailureBody> handle(MethodArgumentNotValidException exception) {
+        log.error(exception.getMessage(), exception);
+        return ApiResponseGenerator.failure(ErrorCode.VALIDATION_ERROR);
     }
 }
