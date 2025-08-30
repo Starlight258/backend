@@ -77,13 +77,13 @@ class DocumentServiceJavaTest {
         @Test
         void searchOrganizationDocument_success_byExistingDocumentUuid() {
             // when
-            List<OrganizationDocumentSearchResponse> documentOrganizationSearchRespons = documentService.searchOrganizationDocument(
+            List<OrganizationDocumentSearchResponse> organizationDocumentSearchResponse = documentService.searchOrganizationDocument(
                     savedDocumentUuid);
 
             // then
             assertSoftly(softy -> {
-                        softy.assertThat(documentOrganizationSearchRespons.size()).isEqualTo(2);
-                        softy.assertThat(documentOrganizationSearchRespons.stream()
+                        softy.assertThat(organizationDocumentSearchResponse.size()).isEqualTo(2);
+                        softy.assertThat(organizationDocumentSearchResponse.stream()
                                 .map(OrganizationDocumentSearchResponse::title)
                         ).containsExactlyInAnyOrder("title1", "title2");
                     }
