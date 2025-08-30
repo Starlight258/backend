@@ -14,7 +14,7 @@ public record OrganizationEventCreateRequest(
         @NotNull LocalDate occurredAt,
         @NotNull UUID organizationDocumentUUID
 ) {
-    public OrganizationEvent toDomain(OrganizationDocument organizationDocument) {
+    public OrganizationEvent toOrganizationEvent(OrganizationDocument organizationDocument) {
         return OrganizationEvent.create(title, contents, writer, occurredAt, organizationDocument);
     }
 }

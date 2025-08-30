@@ -27,7 +27,7 @@ public class OrganizationEventService {
 
     public OrganizationEventCreateResponse post(OrganizationEventCreateRequest request) {
         OrganizationDocument organizationDocument = getOrganizationDocument(request);
-        OrganizationEvent event = request.toDomain(organizationDocument);
+        OrganizationEvent event = request.toOrganizationEvent(organizationDocument);
         OrganizationEvent savedEvent = organizationEventRepository.save(event);
         return OrganizationEventCreateResponse.from(savedEvent);
     }
