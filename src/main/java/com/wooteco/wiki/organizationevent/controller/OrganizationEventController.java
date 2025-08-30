@@ -37,20 +37,20 @@ public class OrganizationEventController {
     }
 
     @Operation(summary = "조직 이벤트 수정", description = "조직 이벤트를 수정합니다.")
-    @PutMapping("/{organizationEventUUID}")
+    @PutMapping("/{organizationEventUuid}")
     public ApiResponse<SuccessBody<OrganizationEventUpdateResponse>> put(
-            @PathVariable UUID organizationEventUUID,
+            @PathVariable UUID organizationEventUuid,
             @RequestBody @Valid OrganizationEventUpdateRequest organizationEventUpdateRequest) {
-        OrganizationEventUpdateResponse response = organizationEventService.put(organizationEventUUID,
+        OrganizationEventUpdateResponse response = organizationEventService.put(organizationEventUuid,
                 organizationEventUpdateRequest);
         return ApiResponseGenerator.success(response);
     }
 
     @Operation(summary = "조직 이벤트 삭제", description = "조직 이벤트를 삭제합니다.")
-    @DeleteMapping("/{organizationEventUUID}")
+    @DeleteMapping("/{organizationEventUuid}")
     public ApiResponse<SuccessBody<Void>> delete(
-            @PathVariable UUID organizationEventUUID) {
-        organizationEventService.delete(organizationEventUUID);
+            @PathVariable UUID organizationEventUuid) {
+        organizationEventService.delete(organizationEventUuid);
         return ApiResponseGenerator.success(HttpStatus.NO_CONTENT);
     }
 }

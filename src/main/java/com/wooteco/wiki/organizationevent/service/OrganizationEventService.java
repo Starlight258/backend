@@ -32,9 +32,9 @@ public class OrganizationEventService {
         return OrganizationEventCreateResponse.from(savedEvent);
     }
 
-    public OrganizationEventUpdateResponse put(UUID organizationEventUUID,
+    public OrganizationEventUpdateResponse put(UUID organizationEventUuid,
                                                OrganizationEventUpdateRequest request) {
-        OrganizationEvent organizationEvent = getOrganizationEvent(organizationEventUUID);
+        OrganizationEvent organizationEvent = getOrganizationEvent(organizationEventUuid);
         organizationEvent.update(
                 request.title(),
                 request.contents(),
@@ -44,8 +44,8 @@ public class OrganizationEventService {
         return OrganizationEventUpdateResponse.from(organizationEvent);
     }
 
-    public void delete(UUID organizationEventUUID) {
-        OrganizationEvent organizationEvent = getOrganizationEvent(organizationEventUUID);
+    public void delete(UUID organizationEventUuid) {
+        OrganizationEvent organizationEvent = getOrganizationEvent(organizationEventUuid);
 
         organizationEventRepository.delete(organizationEvent);
     }
@@ -53,7 +53,7 @@ public class OrganizationEventService {
     private OrganizationDocument getOrganizationDocument(
             OrganizationEventCreateRequest organizationEventCreateRequest) {
         return organizationDocumentRepository.findByUuid(
-                        organizationEventCreateRequest.organizationDocumentUUID())
+                        organizationEventCreateRequest.organizationDocumentUuid())
                 .orElseThrow(() -> new WikiException(ORGANIZATION_DOCUMENT_NOT_FOUND));
     }
 

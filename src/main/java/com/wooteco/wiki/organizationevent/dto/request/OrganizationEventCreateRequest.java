@@ -12,7 +12,7 @@ public record OrganizationEventCreateRequest(
         String contents,
         @NotBlank String writer,
         @NotNull LocalDate occurredAt,
-        @NotNull UUID organizationDocumentUUID
+        @NotNull UUID organizationDocumentUuid
 ) {
     public OrganizationEvent toOrganizationEvent(OrganizationDocument organizationDocument) {
         return OrganizationEvent.create(title, contents, writer, occurredAt, organizationDocument);

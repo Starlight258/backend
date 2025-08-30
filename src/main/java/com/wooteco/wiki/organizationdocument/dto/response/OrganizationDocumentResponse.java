@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public record OrganizationDocumentResponse(
         Long organizationDocumentId,
-        UUID organizationDocumentUUID,
+        UUID organizationDocumentUuid,
         String title,
         String contents,
         String writer,

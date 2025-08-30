@@ -59,11 +59,11 @@ class OrganizationEventServiceTest {
             OrganizationEventCreateResponse res = organizationEventService.post(req);
 
             // then
-            OrganizationEvent saved = organizationEventRepository.findByUuid(res.organizationEventUUID())
+            OrganizationEvent saved = organizationEventRepository.findByUuid(res.organizationEventUuid())
                     .orElseThrow();
 
             assertSoftly(softly -> {
-                softly.assertThat(saved.getUuid()).isEqualTo(res.organizationEventUUID());
+                softly.assertThat(saved.getUuid()).isEqualTo(res.organizationEventUuid());
                 softly.assertThat(saved.getTitle()).isEqualTo("분기 워크숍");
                 softly.assertThat(saved.getContents()).isEqualTo("OKR 점검");
                 softly.assertThat(saved.getWriter()).isEqualTo("밍트");
@@ -110,7 +110,7 @@ class OrganizationEventServiceTest {
                     LocalDate.now(),
                     orgDoc.getUuid()
             );
-            UUID eventUuid = organizationEventService.post(createReq).organizationEventUUID();
+            UUID eventUuid = organizationEventService.post(createReq).organizationEventUuid();
 
             OrganizationEventUpdateRequest updateReq = new OrganizationEventUpdateRequest(
                     "분기 워크숍(보강)",
@@ -126,7 +126,7 @@ class OrganizationEventServiceTest {
             OrganizationEvent found = organizationEventRepository.findByUuid(eventUuid).orElseThrow();
 
             assertSoftly(softly -> {
-                softly.assertThat(res.organizationEventUUID()).isEqualTo(eventUuid);
+                softly.assertThat(res.organizationEventUuid()).isEqualTo(eventUuid);
                 softly.assertThat(found.getTitle()).isEqualTo("분기 워크숍(보강)");
                 softly.assertThat(found.getContents()).isEqualTo("OKR + 액션아이템");
                 softly.assertThat(found.getWriter()).isEqualTo("밍트2");
@@ -168,7 +168,7 @@ class OrganizationEventServiceTest {
                     LocalDate.now(),
                     orgDoc.getUuid()
             );
-            UUID eventUuid = organizationEventService.post(createReq).organizationEventUUID();
+            UUID eventUuid = organizationEventService.post(createReq).organizationEventUuid();
 
             // when
             organizationEventService.delete(eventUuid);

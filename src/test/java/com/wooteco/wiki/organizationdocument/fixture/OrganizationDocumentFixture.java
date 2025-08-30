@@ -22,13 +22,13 @@ public class OrganizationDocumentFixture {
             String writer,
             Long documentBytes,
             UUID uuid,
-            UUID documentUUID
+            UUID documentUuid
     ) {
-        return new OrganizationDocumentCreateRequest(title, contents, writer, documentBytes, uuid, documentUUID);
+        return new OrganizationDocumentCreateRequest(title, contents, writer, documentBytes, uuid, documentUuid);
     }
 
-    public static OrganizationDocumentCreateRequest createOrganizationDocumentCreateRequestDefault(UUID documentUUID) {
+    public static OrganizationDocumentCreateRequest createOrganizationDocumentCreateRequestDefault(UUID documentUuid) {
         return createOrganizationDocumentCreateRequest("defaultTitle", "defaultContent", "defaultWriter", 10L,
-                UUID.randomUUID(), documentUUID);
+                UUID.randomUUID(), documentUuid);
     }
 }

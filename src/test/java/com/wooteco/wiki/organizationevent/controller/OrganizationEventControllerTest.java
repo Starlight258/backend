@@ -59,7 +59,7 @@ class OrganizationEventControllerTest {
                     "contents", "OKR 점검",
                     "writer", "밍트",
                     "occurredAt", LocalDate.now().toString(),
-                    "organizationDocumentUUID", doc.getUuid().toString()
+                    "organizationDocumentUuid", doc.getUuid().toString()
             );
 
             RestAssured.given().log().all()
@@ -69,7 +69,7 @@ class OrganizationEventControllerTest {
                     .post("/organization-events")
                     .then().log().all()
                     .statusCode(HttpStatus.CREATED.value())
-                    .body("data.organizationEventUUID", allOf(notNullValue(), matchesRegex("^[0-9a-fA-F-]{36}$")));
+                    .body("data.organizationEventUuid", allOf(notNullValue(), matchesRegex("^[0-9a-fA-F-]{36}$")));
         }
 
         @Test
@@ -80,7 +80,7 @@ class OrganizationEventControllerTest {
                     "contents", "메모",
                     "writer", "밍트",
                     "occurredAt", LocalDate.now().toString(),
-                    "organizationDocumentUUID", doc.getUuid().toString()
+                    "organizationDocumentUuid", doc.getUuid().toString()
             );
 
             RestAssured.given().log().all()
@@ -100,7 +100,7 @@ class OrganizationEventControllerTest {
                     "contents", "아젠다",
                     "writer", "밍트",
                     "occurredAt", LocalDate.now().toString(),
-                    "organizationDocumentUUID", UUID.randomUUID().toString()
+                    "organizationDocumentUuid", UUID.randomUUID().toString()
             );
 
             RestAssured.given().log().all()
@@ -138,7 +138,7 @@ class OrganizationEventControllerTest {
                     .put("/organization-events/{uuid}", eventUuid)
                     .then().log().all()
                     .statusCode(HttpStatus.OK.value())
-                    .body("data.organizationEventUUID", equalTo(eventUuid.toString()))
+                    .body("data.organizationEventUuid", equalTo(eventUuid.toString()))
                     .body("data.title", equalTo("분기 워크숍(보강)"))
                     .body("data.contents", equalTo("OKR + 액션아이템"));
         }
