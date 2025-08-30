@@ -5,7 +5,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.wooteco.wiki.document.domain.Document;
-import com.wooteco.wiki.document.dto.DocumentOrganizationAddRequest;
+import com.wooteco.wiki.document.dto.DocumentOrganizationMappingAddRequest;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.exception.ErrorCode;
@@ -104,11 +104,11 @@ class DocumentServiceJavaTest {
     @Nested
     class addOrganizationDocument {
 
-        private DocumentOrganizationAddRequest documentOrganizationAddRequest;
+        private DocumentOrganizationMappingAddRequest documentOrganizationMappingAddRequest;
 
         @BeforeEach
         void setUp() {
-            documentOrganizationAddRequest = OrganizationDocumentFixture.createDocumentOrganizationDocumentCreateRequest(
+            documentOrganizationMappingAddRequest = OrganizationDocumentFixture.createDocumentOrganizationDocumentCreateRequest(
                     "title1", "defaultContents", "defaultWriter", 10L, UUID.randomUUID());
         }
 
@@ -117,7 +117,7 @@ class DocumentServiceJavaTest {
         void addOrganizationDocument_success_byExistingDocumentUuid() {
             // when
             documentService.addOrganizationDocument(savedDocumentUuid,
-                    documentOrganizationAddRequest);
+                    documentOrganizationMappingAddRequest);
 
             // then
             List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
@@ -137,7 +137,8 @@ class DocumentServiceJavaTest {
         void addOrganizationDocument_error_byNonExistingDocumentUuid() {
             // when & then
             WikiException ex = assertThrows(WikiException.class,
-                    () -> documentService.addOrganizationDocument(UUID.randomUUID(), documentOrganizationAddRequest));
+                    () -> documentService.addOrganizationDocument(UUID.randomUUID(),
+                            documentOrganizationMappingAddRequest));
             Assertions.assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.DOCUMENT_NOT_FOUND);
         }
     }

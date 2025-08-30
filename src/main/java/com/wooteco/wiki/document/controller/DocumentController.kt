@@ -5,7 +5,7 @@ import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
-import com.wooteco.wiki.document.dto.DocumentOrganizationAddRequest
+import com.wooteco.wiki.document.dto.DocumentOrganizationMappingAddRequest
 import com.wooteco.wiki.document.service.DocumentServiceJava
 import com.wooteco.wiki.document.domain.dto.*
 import com.wooteco.wiki.document.service.DocumentSearchService
@@ -124,7 +124,7 @@ class DocumentController(
     @PostMapping("/{uuidText}/organization-documents")
     fun addOrganizationDocument(
         @PathVariable uuidText: String,
-        @RequestBody request: DocumentOrganizationAddRequest
+        @RequestBody request: DocumentOrganizationMappingAddRequest
     ): ApiResponse<SuccessBody<Void>> {
         val uuid = UUID.fromString(uuidText)
         documentServiceJava.addOrganizationDocument(uuid, request)

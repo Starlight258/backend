@@ -1,6 +1,6 @@
 package com.wooteco.wiki.organizationdocument.fixture;
 
-import com.wooteco.wiki.document.dto.DocumentOrganizationAddRequest;
+import com.wooteco.wiki.document.dto.DocumentOrganizationMappingAddRequest;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import com.wooteco.wiki.organizationdocument.dto.request.DocumentOrganizationDocumentLinkCreateRequest;
 import java.time.LocalDateTime;
@@ -39,11 +39,11 @@ public class OrganizationDocumentFixture {
                 UUID.randomUUID());
     }
 
-    public static DocumentOrganizationAddRequest createDocumentOrganizationDocumentCreateRequest(String title, String contents, String writer, Long documentBytes, UUID uuid) {
-        return new DocumentOrganizationAddRequest(title, contents, writer, documentBytes, uuid);
+    public static DocumentOrganizationMappingAddRequest createDocumentOrganizationDocumentCreateRequest(String title, String contents, String writer, Long documentBytes, UUID uuid) {
+        return new DocumentOrganizationMappingAddRequest(title, contents, writer, documentBytes, uuid);
     }
 
-    public static DocumentOrganizationAddRequest createDocumentOrganizationDocumentCreateRequestDefault() {
+    public static DocumentOrganizationMappingAddRequest createDocumentOrganizationDocumentCreateRequestDefault() {
         return createDocumentOrganizationDocumentCreateRequest("defaultTitle", "defaultContents", "defaultWriter", 10L,
                 UUID.randomUUID());
     }

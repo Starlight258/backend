@@ -3,7 +3,7 @@ package com.wooteco.wiki.document.dto;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import java.util.UUID;
 
-public record DocumentOrganizationAddRequest(
+public record DocumentOrganizationMappingAddRequest(
         String title,
         String contents,
         String writer,
