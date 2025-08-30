@@ -10,5 +10,4 @@ public class OrganizationEventFixture {
         return OrganizationEvent.create("defaultTitle", "defaultContent", "defaultWriter",
                 LocalDate.now(), organizationDocument);
     }
-
 }

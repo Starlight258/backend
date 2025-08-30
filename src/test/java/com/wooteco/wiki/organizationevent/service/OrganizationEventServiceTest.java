@@ -88,7 +88,7 @@ class OrganizationEventServiceTest {
             // then
             assertThatThrownBy(() -> organizationEventService.post(req))
                     .isInstanceOf(WikiException.class)
-                    .hasMessageContaining(ErrorCode.ORGANIZATION_DOCUMENT_NOT_FOUND.getMessage());
+                    .hasMessage(ErrorCode.ORGANIZATION_DOCUMENT_NOT_FOUND.getMessage());
         }
     }
 
@@ -146,11 +146,9 @@ class OrganizationEventServiceTest {
             assertThatThrownBy(() ->
                     organizationEventService.put(UUID.randomUUID(), updateReq))
                     .isInstanceOf(WikiException.class)
-                    .hasMessageContaining(ErrorCode.ORGANIZATION_EVENT_NOT_FOUND.getMessage());
+                    .hasMessage(ErrorCode.ORGANIZATION_EVENT_NOT_FOUND.getMessage());
         }
     }
-
-    // --- Delete ---
 
     @Nested
     @DisplayName("조직 이벤트 삭제 시")
@@ -187,8 +185,7 @@ class OrganizationEventServiceTest {
             // then
             assertThatThrownBy(() -> organizationEventService.delete(UUID.randomUUID()))
                     .isInstanceOf(WikiException.class)
-                    .hasMessageContaining(ErrorCode.ORGANIZATION_EVENT_NOT_FOUND.getMessage());
+                    .hasMessage(ErrorCode.ORGANIZATION_EVENT_NOT_FOUND.getMessage());
         }
     }
 }
-
