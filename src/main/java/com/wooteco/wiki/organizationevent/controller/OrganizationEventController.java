@@ -29,7 +29,7 @@ public class OrganizationEventController {
     private final OrganizationEventService organizationEventService;
 
     @Operation(summary = "조직 이벤트 생성", description = "조직 이벤트를 생성합니다.")
-    @PostMapping("")
+    @PostMapping
     public ApiResponse<SuccessBody<OrganizationEventCreateResponse>> post(
             @RequestBody @Valid OrganizationEventCreateRequest organizationEventCreateRequest) {
         OrganizationEventCreateResponse response = organizationEventService.post(organizationEventCreateRequest);
