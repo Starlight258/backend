@@ -29,7 +29,7 @@ dependencies {
     implementation 'software.amazon.awssdk:s3outposts:2.27.3'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.8'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
