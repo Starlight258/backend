@@ -3,7 +3,7 @@ package com.wooteco.wiki.log.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
@@ -40,20 +40,20 @@ public class LogServiceTest {
 
     @Nested
     @DisplayName("documentUuid로 요청 시 로그 리스트 반환하는 기능")
-    class findAllByDocumentUuid {
+    class findAllByCrewDocumentUuid {
 
         private PageRequestDto pageRequestDto = new PageRequestDto();
         private UUID documentUuid;
-        private Document savedDocument;
+        private CrewDocument savedCrewDocument;
 
         @BeforeEach
         void setUp() {
-            savedDocument = documentRepository.save(
+            savedCrewDocument = documentRepository.save(
                     DocumentFixture.create("title", "content", "writer", 100L, LocalDateTime.now(), UUID.randomUUID()));
-            documentUuid = savedDocument.getUuid();
+            documentUuid = savedCrewDocument.getUuid();
 
-            logRepository.save(LogFixture.create("t1", "c1", "w1", 10L, LocalDateTime.now(), savedDocument, 1L));
-            logRepository.save(LogFixture.create("t1", "c2", "w2", 20L, LocalDateTime.now(), savedDocument, 2L));
+            logRepository.save(LogFixture.create("t1", "c1", "w1", 10L, LocalDateTime.now(), savedCrewDocument, 1L));
+            logRepository.save(LogFixture.create("t1", "c2", "w2", 20L, LocalDateTime.now(), savedCrewDocument, 2L));
         }
 
         @DisplayName("documentUuid에 해당하는 로그들이 반환된다")
@@ -101,13 +101,13 @@ public class LogServiceTest {
         @Test
         void save_versionIsNumberedCorrectly() {
             // when
-            Document updatedDocument = savedDocument.update("test_document_2", "contents", "writer1", 120L,
+            CrewDocument updatedCrewDocument = savedCrewDocument.update("test_document_2", "contents", "writer1", 120L,
                     LocalDateTime.now());
-            documentRepository.save(updatedDocument);
-            logService.save(updatedDocument);
+            documentRepository.save(updatedCrewDocument);
+            logService.save(updatedCrewDocument);
 
             // then
-            Page<LogResponse> secondLogs = logService.findAllByDocumentUuid(savedDocument.getUuid(), pageRequestDto);
+            Page<LogResponse> secondLogs = logService.findAllByDocumentUuid(savedCrewDocument.getUuid(), pageRequestDto);
             assertThat(secondLogs.getContent()).hasSize(3);
             assertThat(secondLogs.getContent().get(0).version()).isEqualTo(1L);
             assertThat(secondLogs.getContent().get(2).version()).isEqualTo(3L);

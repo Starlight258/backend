@@ -1,6 +1,6 @@
 package com.wooteco.wiki.organizationdocument.domain;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -35,7 +35,7 @@ public class DocumentOrganizationLink {
     @JoinColumn(name = "document_id",
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_link_doc"))
-    private Document document;
+    private CrewDocument crewDocument;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organization_document_id",
@@ -43,8 +43,8 @@ public class DocumentOrganizationLink {
             foreignKey = @ForeignKey(name = "fk_link_orgdoc"))
     private OrganizationDocument organizationDocument;
 
-    public DocumentOrganizationLink(Document document, OrganizationDocument organizationDocument) {
-        this.document = document;
+    public DocumentOrganizationLink(CrewDocument crewDocument, OrganizationDocument organizationDocument) {
+        this.crewDocument = crewDocument;
         this.organizationDocument = organizationDocument;
     }
 }

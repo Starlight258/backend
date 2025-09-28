@@ -1,6 +1,6 @@
 package com.wooteco.wiki.document.repository;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-public class DocumentRepositoryTest {
+public class CrewDocumentRepositoryTest {
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -40,13 +40,13 @@ public class DocumentRepositoryTest {
         @Test
         void findUUidByTitle_success_byExistsDocument() {
             // given
-            Document savedDocument = documentRepository.save(DocumentFixture.createDefault());
+            CrewDocument savedCrewDocument = documentRepository.save(DocumentFixture.createDefault());
 
             // when
-            Optional<UUID> actual = documentRepository.findUuidByTitle(savedDocument.getTitle());
+            Optional<UUID> actual = documentRepository.findUuidByTitle(savedCrewDocument.getTitle());
 
             // then
-            Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getUuid());
+            Assertions.assertThat(actual.get()).isEqualTo(savedCrewDocument.getUuid());
         }
     }
 
@@ -64,20 +64,20 @@ public class DocumentRepositoryTest {
                     UUID.randomUUID()));
 
             // when
-            List<Document> documents = documentRepository.findAll();
+            List<CrewDocument> crewDocuments = documentRepository.findAll();
 
             // then
-            Assertions.assertThat(documents).hasSize(2);
+            Assertions.assertThat(crewDocuments).hasSize(2);
         }
 
         @DisplayName("저장된 문서가 없을 때 빈 List를 반환한다")
         @Test
         void findAll_success_byNoData() {
             // when
-            List<Document> documents = documentRepository.findAll();
+            List<CrewDocument> crewDocuments = documentRepository.findAll();
 
             // then
-            Assertions.assertThat(documents).hasSize(0);
+            Assertions.assertThat(crewDocuments).hasSize(0);
         }
     }
 
@@ -86,15 +86,15 @@ public class DocumentRepositoryTest {
     class findIdByUuid {
 
         private UUID uuid;
-        private Document savedDocument;
+        private CrewDocument savedCrewDocument;
 
         @BeforeEach
         void setUp() {
             uuid = UUID.randomUUID();
 
-            Document document = DocumentFixture.create("titl1", "content1", "writer1", 10L,
+            CrewDocument crewDocument = DocumentFixture.create("titl1", "content1", "writer1", 10L,
                     LocalDateTime.of(2024, 11, 11, 11, 11), uuid);
-            savedDocument = documentRepository.save(document);
+            savedCrewDocument = documentRepository.save(crewDocument);
 
         }
 
@@ -105,7 +105,7 @@ public class DocumentRepositoryTest {
             Optional<Long> actual = documentRepository.findIdByUuid(uuid);
 
             // then
-            Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getId());
+            Assertions.assertThat(actual.get()).isEqualTo(savedCrewDocument.getId());
         }
     }
 
@@ -117,15 +117,15 @@ public class DocumentRepositoryTest {
         @Test
         void findAllByUuidIn_success() {
             // given
-            Document doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
+            CrewDocument doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
                     LocalDateTime.now(), UUID.randomUUID()));
-            Document doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 20L,
+            CrewDocument doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 20L,
                     LocalDateTime.now(), UUID.randomUUID()));
 
             Set<UUID> uuids = Set.of(doc1.getUuid(), doc2.getUuid());
 
             // when
-            List<Document> result = documentRepository.findAllByUuidIn(uuids);
+            List<CrewDocument> result = documentRepository.findAllByUuidIn(uuids);
 
             // then
             Assertions.assertThat(result).hasSize(2);

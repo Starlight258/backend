@@ -1,6 +1,6 @@
 package com.wooteco.wiki.document.controller
 
-import com.wooteco.wiki.document.domain.Document
+import com.wooteco.wiki.document.domain.CrewDocument
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
@@ -51,7 +51,7 @@ class DocumentController(
 
     @Operation(summary = "위키 글 전체 조회", description = "페이지네이션을 통해 모든 위키 글을 조회합니다.")
     @GetMapping("")
-    fun findAll(@ModelAttribute pageRequestDto: PageRequestDto): ApiResponse<SuccessBody<ResponseDto<List<Document>>>> {
+    fun findAll(@ModelAttribute pageRequestDto: PageRequestDto): ApiResponse<SuccessBody<ResponseDto<List<CrewDocument>>>> {
         val pageResponses = documentService.findAll(pageRequestDto)
         return ApiResponseGenerator.success(convertToResponse(pageResponses))
     }

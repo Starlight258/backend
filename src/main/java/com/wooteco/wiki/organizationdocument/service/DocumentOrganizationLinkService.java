@@ -1,6 +1,6 @@
 package com.wooteco.wiki.organizationdocument.service;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationLink;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentResponse;
@@ -17,18 +17,19 @@ public class DocumentOrganizationLinkService {
 
     private final DocumentOrganizationLinkRepository documentOrgDocLinkRepository;
 
-    public void link(Document document, OrganizationDocument organizationDocument) {
-        DocumentOrganizationLink documentOrgDocLink = new DocumentOrganizationLink(document,
+    public void link(CrewDocument crewDocument, OrganizationDocument organizationDocument) {
+        DocumentOrganizationLink documentOrgDocLink = new DocumentOrganizationLink(crewDocument,
                 organizationDocument);
         documentOrgDocLinkRepository.save(documentOrgDocLink);
     }
 
-    public void unlink(Document document, OrganizationDocument organizationDocument) {
-        documentOrgDocLinkRepository.deleteByDocumentAndOrganizationDocument(document, organizationDocument);
+    public void unlink(CrewDocument crewDocument, OrganizationDocument organizationDocument) {
+        documentOrgDocLinkRepository.deleteByCrewDocumentAndOrganizationDocument(crewDocument, organizationDocument);
     }
 
-    public List<OrganizationDocumentResponse> findOrganizationDocumentResponsesByDocument(Document document) {
-        List<DocumentOrganizationLink> documentOrganizationLinks = documentOrgDocLinkRepository.findAllByDocument(document);
+    public List<OrganizationDocumentResponse> findOrganizationDocumentResponsesByDocument(CrewDocument crewDocument) {
+        List<DocumentOrganizationLink> documentOrganizationLinks = documentOrgDocLinkRepository.findAllByCrewDocument(
+                crewDocument);
         List<OrganizationDocument> organizationDocuments = documentOrganizationLinks.stream()
                 .map(DocumentOrganizationLink::getOrganizationDocument)
                 .toList();

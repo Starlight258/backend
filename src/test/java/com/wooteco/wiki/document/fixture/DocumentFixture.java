@@ -1,6 +1,6 @@
 package com.wooteco.wiki.document.fixture;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
 import java.time.LocalDateTime;
@@ -8,12 +8,12 @@ import java.util.UUID;
 
 public class DocumentFixture {
 
-    public static Document create(String title, String content, String writer, Long documentBytes,
-                                  LocalDateTime dateTime, UUID uuid) {
-        return new Document(null, title, content, writer, documentBytes, dateTime, uuid, 0);
+    public static CrewDocument create(String title, String content, String writer, Long documentBytes,
+                                      LocalDateTime dateTime, UUID uuid) {
+        return new CrewDocument(null, title, content, writer, documentBytes, dateTime, uuid, 0);
     }
 
-    public static Document createDefault() {
+    public static CrewDocument createDefault() {
         return create("defaultTitle", "defaultContent", "defaultWriter", 10L, LocalDateTime.now(), UUID.randomUUID());
     }
 

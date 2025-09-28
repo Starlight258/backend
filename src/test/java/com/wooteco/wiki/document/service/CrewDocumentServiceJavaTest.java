@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.dto.DocumentOrganizationMappingAddRequest;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
@@ -30,7 +30,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class DocumentServiceJavaTest {
+class CrewDocumentServiceJavaTest {
 
     @Autowired
     private DocumentServiceJava documentService;
@@ -44,19 +44,19 @@ class DocumentServiceJavaTest {
     @Autowired
     private OrganizationDocumentRepository organizationDocumentRepository;
 
-    private Document savedDocument;
+    private CrewDocument savedCrewDocument;
     private UUID savedDocumentUuid;
 
     @BeforeEach
     void setUp() {
-        Document document = DocumentFixture.createDefault();
-        savedDocument = documentRepository.save(document);
-        savedDocumentUuid = savedDocument.getUuid();
+        CrewDocument crewDocument = DocumentFixture.createDefault();
+        savedCrewDocument = documentRepository.save(crewDocument);
+        savedDocumentUuid = savedCrewDocument.getUuid();
     }
 
     @DisplayName("특정 문서에 대한 조직 문서 제목과 Uuid들을 조회할 때")
     @Nested
-    class searchOrganizationDocument {
+    class searchOrganizationCrewDocument {
 
         @BeforeEach
         void setUp() {
@@ -69,7 +69,7 @@ class DocumentServiceJavaTest {
             organizationDocumentRepository.saveAll(organizationDocuments);
 
             for (OrganizationDocument organizationDocument : organizationDocuments) {
-                documentOrganizationLinkService.link(savedDocument, organizationDocument);
+                documentOrganizationLinkService.link(savedCrewDocument, organizationDocument);
             }
         }
 
@@ -102,7 +102,7 @@ class DocumentServiceJavaTest {
 
     @DisplayName("특정 문서에 대해 조직 문서를 추가할 때에")
     @Nested
-    class addOrganizationDocument {
+    class addOrganizationCrewDocument {
 
         private DocumentOrganizationMappingAddRequest documentOrganizationMappingAddRequest;
 
@@ -121,7 +121,7 @@ class DocumentServiceJavaTest {
 
             // then
             List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
-                    savedDocument);
+                    savedCrewDocument);
             assertSoftly(softy -> {
                         softy.assertThat(organizationDocumentResponsesByDocument.size()).isEqualTo(1);
                         softy.assertThat(organizationDocumentResponsesByDocument.stream()
@@ -145,7 +145,7 @@ class DocumentServiceJavaTest {
 
     @DisplayName("특정 문서에 대해 조직 문서를 제거할 때에")
     @Nested
-    class deleteOrganizationDocument {
+    class deleteOrganizationCrewDocument {
 
         private UUID savedOrganizationDocumentUuid;
 
@@ -155,7 +155,7 @@ class DocumentServiceJavaTest {
                     "defaultWriter", 10L, UUID.randomUUID(),
                     LocalDateTime.now());
             OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
-            documentOrganizationLinkService.link(savedDocument, organizationDocument);
+            documentOrganizationLinkService.link(savedCrewDocument, organizationDocument);
 
             savedOrganizationDocumentUuid = savedOrganizationDocument.getUuid();
         }
@@ -168,7 +168,7 @@ class DocumentServiceJavaTest {
 
             // then
             List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
-                    savedDocument);
+                    savedCrewDocument);
 
             assertThat(organizationDocumentResponsesByDocument.size()).isEqualTo(0);
         }

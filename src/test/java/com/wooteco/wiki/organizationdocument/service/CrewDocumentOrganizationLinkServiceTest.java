@@ -3,7 +3,7 @@ package com.wooteco.wiki.organizationdocument.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationLink;
@@ -22,7 +22,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class DocumentOrganizationLinkServiceTest {
+class CrewDocumentOrganizationLinkServiceTest {
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -40,13 +40,13 @@ class DocumentOrganizationLinkServiceTest {
     @Nested
     class Link {
 
-        private Document savedDocument;
+        private CrewDocument savedCrewDocument;
         private OrganizationDocument savedOrganizationDocument;
 
         @BeforeEach
         void setUp() {
-            Document document = DocumentFixture.createDefault();
-            savedDocument = documentRepository.save(document);
+            CrewDocument crewDocument = DocumentFixture.createDefault();
+            savedCrewDocument = documentRepository.save(crewDocument);
 
             OrganizationDocument organizationDocument = OrganizationDocumentFixture.createDefault();
             savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
@@ -56,15 +56,15 @@ class DocumentOrganizationLinkServiceTest {
         @Test
         void link_success_byDocumentAndOrganizationDocument() {
             // when
-            documentOrgDocLinkService.link(savedDocument, savedOrganizationDocument);
+            documentOrgDocLinkService.link(savedCrewDocument, savedOrganizationDocument);
 
             // then
-            DocumentOrganizationLink documentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
-                    savedDocument, savedOrganizationDocument).get();
+            DocumentOrganizationLink documentOrgDocLink = documentOrgDocLinkRepository.findByCrewDocumentAndOrganizationDocument(
+                    savedCrewDocument, savedOrganizationDocument).get();
 
             assertSoftly(softly -> {
-                softly.assertThat(documentOrgDocLink.getDocument().getId())
-                        .isEqualTo(savedDocument.getId());
+                softly.assertThat(documentOrgDocLink.getCrewDocument().getId())
+                        .isEqualTo(savedCrewDocument.getId());
                 softly.assertThat(documentOrgDocLink.getOrganizationDocument().getId())
                         .isEqualTo(savedOrganizationDocument.getId());
             });
@@ -75,29 +75,29 @@ class DocumentOrganizationLinkServiceTest {
     @Nested
     class UnLink {
 
-        private Document savedDocument;
+        private CrewDocument savedCrewDocument;
         private OrganizationDocument savedOrganizationDocument;
 
         @BeforeEach
         void setUp() {
-            Document document = DocumentFixture.createDefault();
-            savedDocument = documentRepository.save(document);
+            CrewDocument crewDocument = DocumentFixture.createDefault();
+            savedCrewDocument = documentRepository.save(crewDocument);
 
             OrganizationDocument organizationDocument = OrganizationDocumentFixture.createDefault();
             savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
 
-            documentOrgDocLinkService.link(savedDocument, savedOrganizationDocument);
+            documentOrgDocLinkService.link(savedCrewDocument, savedOrganizationDocument);
         }
 
         @DisplayName("특정 문서와 특정 조직 문서의 연결을 해제한다")
         @Test
         void unLink_success_byDocumentAndOrganizationDocument() {
             // when
-            documentOrgDocLinkService.unlink(savedDocument, savedOrganizationDocument);
+            documentOrgDocLinkService.unlink(savedCrewDocument, savedOrganizationDocument);
 
             // then
-            Optional<DocumentOrganizationLink> foundDocumentOrgDocLink = documentOrgDocLinkRepository.findByDocumentAndOrganizationDocument(
-                    savedDocument, savedOrganizationDocument);
+            Optional<DocumentOrganizationLink> foundDocumentOrgDocLink = documentOrgDocLinkRepository.findByCrewDocumentAndOrganizationDocument(
+                    savedCrewDocument, savedOrganizationDocument);
 
             assertThat(foundDocumentOrgDocLink).isEmpty();
         }

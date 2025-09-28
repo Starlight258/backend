@@ -4,7 +4,7 @@ import static com.wooteco.wiki.global.exception.ErrorCode.DOCUMENT_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
@@ -35,7 +35,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class DocumentServiceTest {
+class CrewDocumentServiceTest {
 
     @Autowired
     private DocumentService documentService;
@@ -52,19 +52,19 @@ class DocumentServiceTest {
         @Test
         void getDocumentLatestVersion_success_byExistsDocument() {
             // given
-            Document document = DocumentFixture.createDefault();
-            Document savedDocument = documentRepository.save(document);
+            CrewDocument crewDocument = DocumentFixture.createDefault();
+            CrewDocument savedCrewDocument = documentRepository.save(crewDocument);
 
             Log log = LogFixture.create("test", "test", "tesst", 150, LocalDateTime.of(2025, 7, 15, 10, 0, 0),
-                    savedDocument, 20L);
+                    savedCrewDocument, 20L);
             logRepository.save(log);
 
             // when
             DocumentUpdateRequest documentUpdateRequest = new DocumentUpdateRequest("test", "test", "test", 150,
-                    savedDocument.getUuid());
+                    savedCrewDocument.getUuid());
 
-            documentService.put(savedDocument.getUuid(), documentUpdateRequest);
-            DocumentResponse documentResponse = documentService.getByUuid(savedDocument.getUuid());
+            documentService.put(savedCrewDocument.getUuid(), documentUpdateRequest);
+            DocumentResponse documentResponse = documentService.getByUuid(savedCrewDocument.getUuid());
 
             // then
             assertThat(documentResponse.getLatestVersion()).isEqualTo(21L);
@@ -189,7 +189,7 @@ class DocumentServiceTest {
                 }
 
                 // when
-                Page<@NotNull Document> documentPages = documentService.findAll(pageRequestDto);
+                Page<@NotNull CrewDocument> documentPages = documentService.findAll(pageRequestDto);
 
                 // then
                 SoftAssertions softAssertions = new SoftAssertions();
@@ -214,7 +214,7 @@ class DocumentServiceTest {
                 }
 
                 // when
-                Page<@NotNull Document> documentPages = documentService.findAll(pageRequestDto);
+                Page<@NotNull CrewDocument> documentPages = documentService.findAll(pageRequestDto);
 
                 // then
                 SoftAssertions softAssertions = new SoftAssertions();
@@ -284,9 +284,9 @@ class DocumentServiceTest {
         // given
         UUID uuid1 = UUID.randomUUID();
         UUID uuid2 = UUID.randomUUID();
-        Document doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
+        CrewDocument doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
                 LocalDateTime.now(), uuid1));
-        Document doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 10L,
+        CrewDocument doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 10L,
                 LocalDateTime.now(), uuid2));
 
         Map<UUID, Integer> viewMap = Map.of(
@@ -298,8 +298,8 @@ class DocumentServiceTest {
         documentService.flushViews(viewMap);
 
         // then
-        Document updated1 = documentRepository.findById(doc1.getId()).get();
-        Document updated2 = documentRepository.findById(doc2.getId()).get();
+        CrewDocument updated1 = documentRepository.findById(doc1.getId()).get();
+        CrewDocument updated2 = documentRepository.findById(doc2.getId()).get();
 
         Assertions.assertThat(updated1.getViewCount()).isEqualTo(5);
         Assertions.assertThat(updated2.getViewCount()).isEqualTo(10);

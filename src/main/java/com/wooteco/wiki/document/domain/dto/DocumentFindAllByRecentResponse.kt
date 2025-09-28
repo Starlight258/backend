@@ -1,13 +1,13 @@
 package com.wooteco.wiki.document.domain.dto
 
-import com.wooteco.wiki.document.domain.Document
+import com.wooteco.wiki.document.domain.CrewDocument
 
 data class DocumentFindAllByRecentResponse(
     val documents: List<DocumentRecentResponse>
 ) {
     companion object {
-        fun of(documents: List<Document?>): DocumentFindAllByRecentResponse {
-            val recentDocuments = documents.filterNotNull().map { DocumentRecentResponse.from(it) }
+        fun of(crewDocuments: List<CrewDocument?>): DocumentFindAllByRecentResponse {
+            val recentDocuments = crewDocuments.filterNotNull().map { DocumentRecentResponse.from(it) }
             return DocumentFindAllByRecentResponse(recentDocuments)
         }
     }

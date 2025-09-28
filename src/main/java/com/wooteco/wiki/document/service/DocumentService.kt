@@ -1,6 +1,6 @@
 package com.wooteco.wiki.document.service
 
-import com.wooteco.wiki.document.domain.Document
+import com.wooteco.wiki.document.domain.CrewDocument
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
 import com.wooteco.wiki.document.domain.dto.DocumentResponse
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
@@ -34,9 +34,9 @@ class DocumentService(
             throw WikiException(ErrorCode.DOCUMENT_DUPLICATE)
         }
 
-        val document = Document(null, title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
+        val crewDocument = CrewDocument(null, title, contents, writer, documentBytes, LocalDateTime.now(), uuid)
 
-        val savedDocument = documentRepository.save(document)
+        val savedDocument = documentRepository.save(crewDocument)
         logService.save(savedDocument)
         return mapToResponse(savedDocument);
     }
@@ -50,7 +50,7 @@ class DocumentService(
         return mapToResponse(document);
     }
 
-    fun findAll(requestDto: PageRequestDto): Page<Document> {
+    fun findAll(requestDto: PageRequestDto): Page<CrewDocument> {
         val pageable = requestDto.toPageable()
         return documentRepository.findAll(pageable)
     }
@@ -101,19 +101,19 @@ class DocumentService(
         documentRepository.saveAll(documents)
     }
 
-    private fun mapToResponse(document: Document): DocumentResponse {
-        val latestVersion = logService.findLatestVersionByDocument(document);
+    private fun mapToResponse(crewDocument: CrewDocument): DocumentResponse {
+        val latestVersion = logService.findLatestVersionByDocument(crewDocument);
         val organizationDocumentResponses =
-            organizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(document)
+            organizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(crewDocument)
 
         return DocumentResponse(
-            document.id ?: throw WikiException(ErrorCode.DOCUMENT_NOT_FOUND),
-            document.uuid,
-            document.title,
-            document.contents,
-            document.writer,
-            document.generateTime,
-            document.viewCount,
+            crewDocument.id ?: throw WikiException(ErrorCode.DOCUMENT_NOT_FOUND),
+            crewDocument.uuid,
+            crewDocument.title,
+            crewDocument.contents,
+            crewDocument.writer,
+            crewDocument.generateTime,
+            crewDocument.viewCount,
             latestVersion,
             organizationDocumentResponses
         )

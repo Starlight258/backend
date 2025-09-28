@@ -3,7 +3,7 @@ package com.wooteco.wiki.log.service;
 import static com.wooteco.wiki.global.exception.ErrorCode.DOCUMENT_NOT_FOUND;
 import static com.wooteco.wiki.global.exception.ErrorCode.VERSION_NOT_FOUND;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.WikiException;
@@ -29,12 +29,12 @@ public class LogService {
     private final LogRepository logRepository;
     private final DocumentRepository documentRepository;
 
-    public void save(Document document) {
-        Long maxVersion = logRepository.findMaxVersionByDocumentId(document.getId())
+    public void save(CrewDocument crewDocument) {
+        Long maxVersion = logRepository.findMaxVersionByDocumentId(crewDocument.getId())
                 .orElse(0L);
 
-        Log log = new Log(document.getTitle(), document.getContents(), document.getWriter(),
-                document.getDocumentBytes(), document.getGenerateTime(), document, maxVersion + 1);
+        Log log = new Log(crewDocument.getTitle(), crewDocument.getContents(), crewDocument.getWriter(),
+                crewDocument.getDocumentBytes(), crewDocument.getGenerateTime(), crewDocument, maxVersion + 1);
         logRepository.save(log);
     }
 
@@ -60,8 +60,8 @@ public class LogService {
         return new PageImpl<>(responses, pageable, logs.getTotalElements());
     }
 
-    public Long findLatestVersionByDocument(Document document) {
-        return logRepository.findMaxVersionByDocumentId(document.getId())
+    public Long findLatestVersionByDocument(CrewDocument crewDocument) {
+        return logRepository.findMaxVersionByDocumentId(crewDocument.getId())
                 .orElseThrow(() -> new WikiException(VERSION_NOT_FOUND));
     }
 }

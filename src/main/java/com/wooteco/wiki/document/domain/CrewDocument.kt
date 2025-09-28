@@ -6,8 +6,9 @@ import java.sql.Types
 import java.time.LocalDateTime
 import java.util.*
 
-@Entity
-class Document(
+@Entity(name = "Document")
+@Table(name = "document")
+class CrewDocument(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +49,7 @@ class Document(
     }
 
     override fun equals(other: Any?): Boolean =
-        other is Document && this.id == other.id;
+        other is CrewDocument && this.id == other.id;
 
     override fun hashCode(): Int = id?.hashCode() ?: 0
 }

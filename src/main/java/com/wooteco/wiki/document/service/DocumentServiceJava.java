@@ -1,6 +1,6 @@
 package com.wooteco.wiki.document.service;
 
-import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.dto.DocumentOrganizationMappingAddRequest;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.exception.ErrorCode;
@@ -24,26 +24,26 @@ public class DocumentServiceJava {
     private final OrganizationDocumentRepository organizationDocumentRepository;
 
     public List<OrganizationDocumentSearchResponse> searchOrganizationDocument(UUID documentUuid) {
-        Document document = getDocument(documentUuid);
+        CrewDocument crewDocument = getDocument(documentUuid);
         List<OrganizationDocumentResponse> organizationDocumentResponsesByDocument = documentOrganizationLinkService.findOrganizationDocumentResponsesByDocument(
-                document);
+                crewDocument);
 
         return toOrganizationDocumentTitleAndUuidResponses(organizationDocumentResponsesByDocument);
     }
 
     public void addOrganizationDocument(UUID documentUuid, DocumentOrganizationMappingAddRequest documentOrganizationMappingAddRequest) {
-        Document document = getDocument(documentUuid);
+        CrewDocument crewDocument = getDocument(documentUuid);
         OrganizationDocument organizationDocument = organizationDocumentRepository.save(
                 documentOrganizationMappingAddRequest.toOrganizationDocument());
 
-        documentOrganizationLinkService.link(document, organizationDocument);
+        documentOrganizationLinkService.link(crewDocument, organizationDocument);
     }
 
     public void deleteOrganizationDocument(UUID documentUuid, UUID organizationDocumentUuid) {
-        Document document = getDocument(documentUuid);
+        CrewDocument crewDocument = getDocument(documentUuid);
         OrganizationDocument organizationDocument = getOrganizationDocument(organizationDocumentUuid);
 
-        documentOrganizationLinkService.unlink(document, organizationDocument);
+        documentOrganizationLinkService.unlink(crewDocument, organizationDocument);
     }
 
     private List<OrganizationDocumentSearchResponse> toOrganizationDocumentTitleAndUuidResponses(
@@ -53,7 +53,7 @@ public class DocumentServiceJava {
                 .toList();
     }
 
-    private Document getDocument(UUID uuid) {
+    private CrewDocument getDocument(UUID uuid) {
         return documentRepository.findByUuid(uuid)
                 .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));
     }
