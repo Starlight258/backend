@@ -80,7 +80,7 @@ class DocumentServiceTest {
         @Test
         void getUuidByTitle_success_byExistsDocumentTitle() {
             // given
-            DocumentResponse documentResponse = documentService.post(
+            DocumentResponse documentResponse = documentService.postCrewDocument(
                     DocumentFixture.createDocumentCreateRequestDefault());
 
             // when
@@ -124,7 +124,7 @@ class DocumentServiceTest {
 
                 // when
                 for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
-                    documentService.post(documentRequestDto);
+                    documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // then
@@ -186,7 +186,7 @@ class DocumentServiceTest {
                 PageRequestDto pageRequestDto = new PageRequestDto();
 
                 for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
-                    documentService.post(documentRequestDto);
+                    documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // when
@@ -211,7 +211,7 @@ class DocumentServiceTest {
                 pageRequestDto.setSortDirection("DESC");
 
                 for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
-                    documentService.post(documentRequestDto);
+                    documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // when
@@ -234,7 +234,7 @@ class DocumentServiceTest {
                 pageRequestDto.setPageSize(5);
 
                 for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
-                    documentService.post(documentRequestDto);
+                    documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // when & then
@@ -253,7 +253,7 @@ class DocumentServiceTest {
         @Test
         void deleteById_success_byExistsId() {
             // given
-            DocumentResponse documentResponse = documentService.post(
+            DocumentResponse documentResponse = documentService.postCrewDocument(
                     DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L,
                             UUID.randomUUID()));
 

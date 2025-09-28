@@ -44,30 +44,19 @@ public class DocumentService {
         this.random = random;
     }
 
-    public DocumentResponse post(DocumentCreateRequest request) {
-        String title = request.getTitle();
-        String contents = request.getContents();
-        String writer = request.getWriter();
-        Long documentBytes = request.getDocumentBytes();
-        UUID uuid = request.getUuid();
-
+    public DocumentResponse postCrewDocument(DocumentCreateRequest request) {
+        String title = request.title();
         if (documentRepository.existsByTitle(title)) {
             throw new WikiException(ErrorCode.DOCUMENT_DUPLICATE);
         }
 
-        Document document = new CrewDocument(
-                title,
-                contents,
-                writer,
-                documentBytes,
-                uuid
-        );
-
-        Document savedDocument = documentRepository.save(document);
+        CrewDocument crewDocument = request.toCrewDocument();
+        Document savedDocument = documentRepository.save(crewDocument);
         historyService.save(savedDocument);
         return mapToResponse(savedDocument);
     }
 
+    @Transactional(readOnly = true)
     public DocumentResponse getRandom() {
         List<Document> documents = documentRepository.findAll();
         if (documents.isEmpty()) {
@@ -77,22 +66,26 @@ public class DocumentService {
         return mapToResponse(document);
     }
 
+    @Transactional(readOnly = true)
     public Page<Document> findAll(PageRequestDto requestDto) {
         return documentRepository.findAll(requestDto.toPageable());
     }
 
+    @Transactional(readOnly = true)
     public DocumentResponse get(String title) {
         Document document = documentRepository.findByTitle(title)
                 .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));
         return mapToResponse(document);
     }
 
+    @Transactional(readOnly = true)
     public DocumentUuidResponse getUuidByTitle(String title) {
         return documentRepository.findUuidByTitle(title)
                 .map(DocumentUuidResponse::new)
                 .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
     public DocumentResponse getByUuid(UUID uuid) {
         Document document = documentRepository.findByUuid(uuid)
                 .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));

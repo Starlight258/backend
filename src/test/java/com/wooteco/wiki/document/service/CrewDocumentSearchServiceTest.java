@@ -25,9 +25,9 @@ class CrewDocumentSearchServiceTest {
     @Test
     void search_success() {
         // given
-        documentService.post(
+        documentService.postCrewDocument(
                 DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L, UUID.randomUUID()));
-        documentService.post(
+        documentService.postCrewDocument(
                 DocumentFixture.createDocumentCreateRequest("title2", "content2", "writer2", 11L, UUID.randomUUID()));
 
         // when

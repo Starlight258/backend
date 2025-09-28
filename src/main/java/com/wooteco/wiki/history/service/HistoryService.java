@@ -38,6 +38,7 @@ public class HistoryService {
         historyRepository.save(history);
     }
 
+    @Transactional(readOnly = true)
     public HistoryDetailResponse getLogDetail(Long logId) {
         History history = historyRepository.findById(logId)
                 .orElseThrow(() -> new WikiException(DOCUMENT_NOT_FOUND));
@@ -45,6 +46,7 @@ public class HistoryService {
                 history.getGenerateTime());
     }
 
+    @Transactional(readOnly = true)
     public Page<HistoryResponse> findAllByDocumentUuid(UUID documentUuid, PageRequestDto pageRequestDto) {
         Long documentId = documentRepository.findIdByUuid(documentUuid)
                 .orElseThrow(() -> new WikiException(DOCUMENT_NOT_FOUND));
@@ -60,6 +62,7 @@ public class HistoryService {
         return new PageImpl<>(responses, pageable, logs.getTotalElements());
     }
 
+    @Transactional(readOnly = true)
     public Long findLatestVersionByDocument(Document document) {
         return historyRepository.findMaxVersionByDocumentId(document.getId())
                 .orElseThrow(() -> new WikiException(VERSION_NOT_FOUND));
