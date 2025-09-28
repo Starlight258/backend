@@ -10,10 +10,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface LogRepository extends JpaRepository<Log, Long> {
 
-    @Query("SELECT l FROM Log l WHERE l.crewDocument.id = :documentId")
+    @Query("SELECT l FROM Log l WHERE l.document.id = :documentId")
     Page<Log> findAllByDocumentId(Long documentId, Pageable pageable);
 
-    @Query("SELECT MAX(l.version) FROM Log l WHERE l.crewDocument.id = :documentId")
+    @Query("SELECT MAX(l.version) FROM Log l WHERE l.document.id = :documentId")
     Optional<Long> findMaxVersionByDocumentId(@Param("documentId") Long documentId);
 }
 

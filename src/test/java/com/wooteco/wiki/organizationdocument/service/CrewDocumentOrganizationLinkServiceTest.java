@@ -5,7 +5,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
-import com.wooteco.wiki.document.repository.DocumentRepository;
+import com.wooteco.wiki.document.repository.CrewDocumentRepository;
 import com.wooteco.wiki.organizationdocument.domain.DocumentOrganizationLink;
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
@@ -25,7 +25,7 @@ import org.springframework.test.annotation.DirtiesContext;
 class CrewDocumentOrganizationLinkServiceTest {
 
     @Autowired
-    private DocumentRepository documentRepository;
+    private CrewDocumentRepository crewDocumentRepository;
 
     @Autowired
     private DocumentOrganizationLinkService documentOrgDocLinkService;
@@ -45,8 +45,8 @@ class CrewDocumentOrganizationLinkServiceTest {
 
         @BeforeEach
         void setUp() {
-            CrewDocument crewDocument = DocumentFixture.createDefault();
-            savedCrewDocument = documentRepository.save(crewDocument);
+            CrewDocument crewDocument = DocumentFixture.createDefaultCrewDocument();
+            savedCrewDocument = crewDocumentRepository.save(crewDocument);
 
             OrganizationDocument organizationDocument = OrganizationDocumentFixture.createDefault();
             savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
@@ -80,8 +80,8 @@ class CrewDocumentOrganizationLinkServiceTest {
 
         @BeforeEach
         void setUp() {
-            CrewDocument crewDocument = DocumentFixture.createDefault();
-            savedCrewDocument = documentRepository.save(crewDocument);
+            CrewDocument crewDocument = DocumentFixture.createDefaultCrewDocument();
+            savedCrewDocument = crewDocumentRepository.save(crewDocument);
 
             OrganizationDocument organizationDocument = OrganizationDocumentFixture.createDefault();
             savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);

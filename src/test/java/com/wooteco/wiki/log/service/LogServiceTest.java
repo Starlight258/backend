@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.wooteco.wiki.document.domain.CrewDocument;
+import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
@@ -49,7 +50,7 @@ public class LogServiceTest {
         @BeforeEach
         void setUp() {
             savedCrewDocument = documentRepository.save(
-                    DocumentFixture.create("title", "content", "writer", 100L, LocalDateTime.now(), UUID.randomUUID()));
+                    DocumentFixture.createCrewDocument("title", "content", "writer", 100L, UUID.randomUUID()));
             documentUuid = savedCrewDocument.getUuid();
 
             logRepository.save(LogFixture.create("t1", "c1", "w1", 10L, LocalDateTime.now(), savedCrewDocument, 1L));
@@ -101,10 +102,10 @@ public class LogServiceTest {
         @Test
         void save_versionIsNumberedCorrectly() {
             // when
-            CrewDocument updatedCrewDocument = savedCrewDocument.update("test_document_2", "contents", "writer1", 120L,
+            Document updatedDocument = savedCrewDocument.update("test_document_2", "contents", "writer1", 120L,
                     LocalDateTime.now());
-            documentRepository.save(updatedCrewDocument);
-            logService.save(updatedCrewDocument);
+            documentRepository.save(updatedDocument);
+            logService.save(updatedDocument);
 
             // then
             Page<LogResponse> secondLogs = logService.findAllByDocumentUuid(savedCrewDocument.getUuid(), pageRequestDto);

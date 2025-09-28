@@ -1,6 +1,6 @@
 package com.wooteco.wiki.document.repository;
 
-import com.wooteco.wiki.document.domain.CrewDocument;
+import com.wooteco.wiki.document.domain.Document;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -9,15 +9,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface DocumentRepository extends JpaRepository<CrewDocument, Long> {
+public interface DocumentRepository extends JpaRepository<Document, Long> {
 
-    Optional<CrewDocument> findByTitle(String title);
+    Optional<Document> findByTitle(String title);
 
     Boolean existsByTitle(String title);
 
-    List<CrewDocument> findAllByTitleStartingWith(String keyWord);
+    List<Document> findAllByTitleStartingWith(String keyWord);
 
-    Optional<CrewDocument> findByUuid(UUID uuid);
+    Optional<Document> findByUuid(UUID uuid);
 
     @Query("SELECT d.uuid FROM Document d WHERE d.title = :title")
     Optional<UUID> findUuidByTitle(@Param("title") String title);
@@ -25,5 +25,5 @@ public interface DocumentRepository extends JpaRepository<CrewDocument, Long> {
     @Query("SELECT d.id FROM Document d WHERE d.uuid = :uuid")
     Optional<Long> findIdByUuid(@Param("uuid") UUID documentUuid);
 
-    List<CrewDocument> findAllByUuidIn(Set<UUID> uuids);
+    List<Document> findAllByUuidIn(Set<UUID> uuids);
 }

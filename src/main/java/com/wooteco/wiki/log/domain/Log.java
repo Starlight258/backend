@@ -1,6 +1,6 @@
 package com.wooteco.wiki.log.domain;
 
-import com.wooteco.wiki.document.domain.CrewDocument;
+import com.wooteco.wiki.document.domain.Document;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +31,7 @@ public class Log {
     private String contents;
 
     private String writer;
-    
+
     private Long documentBytes;
 
     private LocalDateTime generateTime;
@@ -39,7 +39,7 @@ public class Log {
     @ManyToOne(optional = false)
     @JoinColumn(name = "document_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private CrewDocument crewDocument;
+    private Document document;
 
     private Long version;
 
@@ -47,13 +47,13 @@ public class Log {
     }
 
     public Log(String title, String contents, String writer, Long documentBytes, LocalDateTime generateTime,
-               CrewDocument crewDocument, Long version) {
+               Document document, Long version) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;
         this.documentBytes = documentBytes;
         this.generateTime = generateTime;
-        this.crewDocument = crewDocument;
+        this.document = document;
         this.version = version;
     }
 

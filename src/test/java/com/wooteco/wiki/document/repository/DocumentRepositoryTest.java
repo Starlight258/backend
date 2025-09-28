@@ -1,8 +1,8 @@
 package com.wooteco.wiki.document.repository;
 
 import com.wooteco.wiki.document.domain.CrewDocument;
+import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-public class CrewDocumentRepositoryTest {
+public class DocumentRepositoryTest {
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -40,7 +40,7 @@ public class CrewDocumentRepositoryTest {
         @Test
         void findUUidByTitle_success_byExistsDocument() {
             // given
-            CrewDocument savedCrewDocument = documentRepository.save(DocumentFixture.createDefault());
+            CrewDocument savedCrewDocument = documentRepository.save(DocumentFixture.createDefaultCrewDocument());
 
             // when
             Optional<UUID> actual = documentRepository.findUuidByTitle(savedCrewDocument.getTitle());
@@ -58,13 +58,13 @@ public class CrewDocumentRepositoryTest {
         @Test
         void findAll_success_bySomeData() {
             // given
-            documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L, LocalDateTime.now(),
-                    UUID.randomUUID()));
-            documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 11L, LocalDateTime.now(),
-                    UUID.randomUUID()));
+            documentRepository.save(
+                    DocumentFixture.createCrewDocument("title1", "content1", "writer1", 10L, UUID.randomUUID()));
+            documentRepository.save(
+                    DocumentFixture.createCrewDocument("title2", "content2", "writer2", 11L, UUID.randomUUID()));
 
             // when
-            List<CrewDocument> crewDocuments = documentRepository.findAll();
+            List<Document> crewDocuments = documentRepository.findAll();
 
             // then
             Assertions.assertThat(crewDocuments).hasSize(2);
@@ -74,7 +74,7 @@ public class CrewDocumentRepositoryTest {
         @Test
         void findAll_success_byNoData() {
             // when
-            List<CrewDocument> crewDocuments = documentRepository.findAll();
+            List<Document> crewDocuments = documentRepository.findAll();
 
             // then
             Assertions.assertThat(crewDocuments).hasSize(0);
@@ -92,8 +92,7 @@ public class CrewDocumentRepositoryTest {
         void setUp() {
             uuid = UUID.randomUUID();
 
-            CrewDocument crewDocument = DocumentFixture.create("titl1", "content1", "writer1", 10L,
-                    LocalDateTime.of(2024, 11, 11, 11, 11), uuid);
+            CrewDocument crewDocument = DocumentFixture.createCrewDocument("titl1", "content1", "writer1", 10L, uuid);
             savedCrewDocument = documentRepository.save(crewDocument);
 
         }
@@ -117,15 +116,15 @@ public class CrewDocumentRepositoryTest {
         @Test
         void findAllByUuidIn_success() {
             // given
-            CrewDocument doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
-                    LocalDateTime.now(), UUID.randomUUID()));
-            CrewDocument doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 20L,
-                    LocalDateTime.now(), UUID.randomUUID()));
+            CrewDocument doc1 = documentRepository.save(
+                    DocumentFixture.createCrewDocument("title1", "content1", "writer1", 10L, UUID.randomUUID()));
+            CrewDocument doc2 = documentRepository.save(
+                    DocumentFixture.createCrewDocument("title2", "content2", "writer2", 20L, UUID.randomUUID()));
 
             Set<UUID> uuids = Set.of(doc1.getUuid(), doc2.getUuid());
 
             // when
-            List<CrewDocument> result = documentRepository.findAllByUuidIn(uuids);
+            List<Document> result = documentRepository.findAllByUuidIn(uuids);
 
             // then
             Assertions.assertThat(result).hasSize(2);

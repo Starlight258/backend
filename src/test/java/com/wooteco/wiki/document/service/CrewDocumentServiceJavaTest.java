@@ -16,7 +16,6 @@ import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentRe
 import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
 import com.wooteco.wiki.organizationdocument.repository.OrganizationDocumentRepository;
 import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationLinkService;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -49,7 +48,7 @@ class CrewDocumentServiceJavaTest {
 
     @BeforeEach
     void setUp() {
-        CrewDocument crewDocument = DocumentFixture.createDefault();
+        CrewDocument crewDocument = DocumentFixture.createDefaultCrewDocument();
         savedCrewDocument = documentRepository.save(crewDocument);
         savedDocumentUuid = savedCrewDocument.getUuid();
     }
@@ -62,9 +61,9 @@ class CrewDocumentServiceJavaTest {
         void setUp() {
             List<OrganizationDocument> organizationDocuments = List.of(
                     OrganizationDocumentFixture.create("title1", "defaultContent", "defaultWriter", 10L,
-                            UUID.randomUUID(), LocalDateTime.now()),
+                            UUID.randomUUID()),
                     OrganizationDocumentFixture.create("title2", "defaultContent", "defaultWriter", 10L,
-                            UUID.randomUUID(), LocalDateTime.now())
+                            UUID.randomUUID())
             );
             organizationDocumentRepository.saveAll(organizationDocuments);
 
@@ -152,8 +151,7 @@ class CrewDocumentServiceJavaTest {
         @BeforeEach
         void setUp() {
             OrganizationDocument organizationDocument = OrganizationDocumentFixture.create("title1", "defaultContent",
-                    "defaultWriter", 10L, UUID.randomUUID(),
-                    LocalDateTime.now());
+                    "defaultWriter", 10L, UUID.randomUUID());
             OrganizationDocument savedOrganizationDocument = organizationDocumentRepository.save(organizationDocument);
             documentOrganizationLinkService.link(savedCrewDocument, organizationDocument);
 

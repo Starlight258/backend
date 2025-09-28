@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.wooteco.wiki.document.domain.CrewDocument;
+import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
@@ -35,7 +36,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class CrewDocumentServiceTest {
+class DocumentServiceTest {
 
     @Autowired
     private DocumentService documentService;
@@ -52,7 +53,7 @@ class CrewDocumentServiceTest {
         @Test
         void getDocumentLatestVersion_success_byExistsDocument() {
             // given
-            CrewDocument crewDocument = DocumentFixture.createDefault();
+            CrewDocument crewDocument = DocumentFixture.createDefaultCrewDocument();
             CrewDocument savedCrewDocument = documentRepository.save(crewDocument);
 
             Log log = LogFixture.create("test", "test", "tesst", 150, LocalDateTime.of(2025, 7, 15, 10, 0, 0),
@@ -189,7 +190,7 @@ class CrewDocumentServiceTest {
                 }
 
                 // when
-                Page<@NotNull CrewDocument> documentPages = documentService.findAll(pageRequestDto);
+                Page<@NotNull Document> documentPages = documentService.findAll(pageRequestDto);
 
                 // then
                 SoftAssertions softAssertions = new SoftAssertions();
@@ -214,7 +215,7 @@ class CrewDocumentServiceTest {
                 }
 
                 // when
-                Page<@NotNull CrewDocument> documentPages = documentService.findAll(pageRequestDto);
+                Page<@NotNull Document> documentPages = documentService.findAll(pageRequestDto);
 
                 // then
                 SoftAssertions softAssertions = new SoftAssertions();
@@ -284,10 +285,10 @@ class CrewDocumentServiceTest {
         // given
         UUID uuid1 = UUID.randomUUID();
         UUID uuid2 = UUID.randomUUID();
-        CrewDocument doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
-                LocalDateTime.now(), uuid1));
-        CrewDocument doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 10L,
-                LocalDateTime.now(), uuid2));
+        CrewDocument doc1 = documentRepository.save(
+                DocumentFixture.createCrewDocument("title1", "content1", "writer1", 10L, uuid1));
+        CrewDocument doc2 = documentRepository.save(
+                DocumentFixture.createCrewDocument("title2", "content2", "writer2", 10L, uuid2));
 
         Map<UUID, Integer> viewMap = Map.of(
                 uuid1, 5,
@@ -298,8 +299,8 @@ class CrewDocumentServiceTest {
         documentService.flushViews(viewMap);
 
         // then
-        CrewDocument updated1 = documentRepository.findById(doc1.getId()).get();
-        CrewDocument updated2 = documentRepository.findById(doc2.getId()).get();
+        Document updated1 = documentRepository.findById(doc1.getId()).get();
+        Document updated2 = documentRepository.findById(doc2.getId()).get();
 
         Assertions.assertThat(updated1.getViewCount()).isEqualTo(5);
         Assertions.assertThat(updated2.getViewCount()).isEqualTo(10);
