@@ -15,9 +15,9 @@ import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
-import com.wooteco.wiki.log.domain.Log;
-import com.wooteco.wiki.log.fixture.LogFixture;
-import com.wooteco.wiki.log.repository.LogRepository;
+import com.wooteco.wiki.history.domain.History;
+import com.wooteco.wiki.history.fixture.HistoryFixture;
+import com.wooteco.wiki.history.repository.HistoryRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +43,7 @@ class DocumentServiceTest {
     @Autowired
     private DocumentRepository documentRepository;
     @Autowired
-    private LogRepository logRepository;
+    private HistoryRepository historyRepository;
 
     @DisplayName("문서 조회 기능")
     @Nested
@@ -56,9 +56,9 @@ class DocumentServiceTest {
             CrewDocument crewDocument = DocumentFixture.createDefaultCrewDocument();
             CrewDocument savedCrewDocument = documentRepository.save(crewDocument);
 
-            Log log = LogFixture.create("test", "test", "tesst", 150, LocalDateTime.of(2025, 7, 15, 10, 0, 0),
+            History history = HistoryFixture.create("test", "test", "tesst", 150, LocalDateTime.of(2025, 7, 15, 10, 0, 0),
                     savedCrewDocument, 20L);
-            logRepository.save(log);
+            historyRepository.save(history);
 
             // when
             DocumentUpdateRequest documentUpdateRequest = new DocumentUpdateRequest("test", "test", "test", 150,
@@ -259,14 +259,14 @@ class DocumentServiceTest {
 
             // before then
             assertThat(documentRepository.findAll()).hasSize(1);
-            assertThat(logRepository.findAll()).hasSize(1);
+            assertThat(historyRepository.findAll()).hasSize(1);
 
             // when
             documentService.deleteById(documentResponse.getDocumentId());
 
             // after then
             assertThat(documentRepository.findAll()).hasSize(0);
-            assertThat(logRepository.findAll()).hasSize(0);
+            assertThat(historyRepository.findAll()).hasSize(0);
         }
 
         @DisplayName("존재하지 않는 문서의 id일 경우 예외가 발생한다 : WikiException.DOCUMENT_NOT_FOUND")

@@ -1,4 +1,4 @@
-package com.wooteco.wiki.log.service;
+package com.wooteco.wiki.history.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,9 +10,9 @@ import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
-import com.wooteco.wiki.log.domain.dto.LogResponse;
-import com.wooteco.wiki.log.fixture.LogFixture;
-import com.wooteco.wiki.log.repository.LogRepository;
+import com.wooteco.wiki.history.domain.dto.HistoryResponse;
+import com.wooteco.wiki.history.fixture.HistoryFixture;
+import com.wooteco.wiki.history.repository.HistoryRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -30,14 +30,14 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-public class LogServiceTest {
+public class HistoryServiceTest {
 
     @Autowired
-    private LogService logService;
+    private HistoryService historyService;
     @Autowired
     private DocumentRepository documentRepository;
     @Autowired
-    private LogRepository logRepository;
+    private HistoryRepository historyRepository;
 
     @Nested
     @DisplayName("documentUuid로 요청 시 로그 리스트 반환하는 기능")
@@ -53,21 +53,23 @@ public class LogServiceTest {
                     DocumentFixture.createCrewDocument("title", "content", "writer", 100L, UUID.randomUUID()));
             documentUuid = savedCrewDocument.getUuid();
 
-            logRepository.save(LogFixture.create("t1", "c1", "w1", 10L, LocalDateTime.now(), savedCrewDocument, 1L));
-            logRepository.save(LogFixture.create("t1", "c2", "w2", 20L, LocalDateTime.now(), savedCrewDocument, 2L));
+            historyRepository.save(
+                    HistoryFixture.create("t1", "c1", "w1", 10L, LocalDateTime.now(), savedCrewDocument, 1L));
+            historyRepository.save(
+                    HistoryFixture.create("t1", "c2", "w2", 20L, LocalDateTime.now(), savedCrewDocument, 2L));
         }
 
         @DisplayName("documentUuid에 해당하는 로그들이 반환된다")
         @Test
         void findAllByDocumentUuid_success_bySomeData() {
             // when
-            Page<LogResponse> actual = logService.findAllByDocumentUuid(documentUuid, pageRequestDto);
+            Page<HistoryResponse> actual = historyService.findAllByDocumentUuid(documentUuid, pageRequestDto);
 
             // then
             SoftAssertions assertions = new SoftAssertions();
             assertions.assertThat(actual.getContent()).hasSize(2);
             assertions.assertThat(actual.getContent())
-                    .extracting(LogResponse::title)
+                    .extracting(HistoryResponse::title)
                     .containsExactly("t1", "t1");
             assertions.assertAll();
         }
@@ -76,10 +78,10 @@ public class LogServiceTest {
         @Test
         void findAllByDocumentUuid_versionsAreNumberedCorrectly() {
             // when
-            Page<LogResponse> actual = logService.findAllByDocumentUuid(documentUuid, pageRequestDto);
+            Page<HistoryResponse> actual = historyService.findAllByDocumentUuid(documentUuid, pageRequestDto);
 
             List<Long> versions = actual.getContent().stream()
-                    .map(LogResponse::version)
+                    .map(HistoryResponse::version)
                     .toList();
 
             // then
@@ -94,7 +96,7 @@ public class LogServiceTest {
 
             // when & then
             WikiException ex = assertThrows(WikiException.class,
-                    () -> logService.findAllByDocumentUuid(invalidUuid, pageRequestDto));
+                    () -> historyService.findAllByDocumentUuid(invalidUuid, pageRequestDto));
             assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.DOCUMENT_NOT_FOUND);
         }
 
@@ -105,10 +107,10 @@ public class LogServiceTest {
             Document updatedDocument = savedCrewDocument.update("test_document_2", "contents", "writer1", 120L,
                     LocalDateTime.now());
             documentRepository.save(updatedDocument);
-            logService.save(updatedDocument);
+            historyService.save(updatedDocument);
 
             // then
-            Page<LogResponse> secondLogs = logService.findAllByDocumentUuid(savedCrewDocument.getUuid(), pageRequestDto);
+            Page<HistoryResponse> secondLogs = historyService.findAllByDocumentUuid(savedCrewDocument.getUuid(), pageRequestDto);
             assertThat(secondLogs.getContent()).hasSize(3);
             assertThat(secondLogs.getContent().get(0).version()).isEqualTo(1L);
             assertThat(secondLogs.getContent().get(2).version()).isEqualTo(3L);

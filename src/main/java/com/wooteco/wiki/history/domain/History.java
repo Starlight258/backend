@@ -1,4 +1,4 @@
-package com.wooteco.wiki.log.domain;
+package com.wooteco.wiki.history.domain;
 
 import com.wooteco.wiki.document.domain.Document;
 import jakarta.persistence.Column;
@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.Getter;
@@ -17,7 +18,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
-public class Log {
+@Table(name = "log")
+public class History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,11 +45,11 @@ public class Log {
 
     private Long version;
 
-    protected Log() {
+    protected History() {
     }
 
-    public Log(String title, String contents, String writer, Long documentBytes, LocalDateTime generateTime,
-               Document document, Long version) {
+    public History(String title, String contents, String writer, Long documentBytes, LocalDateTime generateTime,
+                   Document document, Long version) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;
@@ -62,7 +64,7 @@ public class Log {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Log that)) {
+        if (!(o instanceof History that)) {
             return false;
         }
         if (this.id == null || that.id == null) {

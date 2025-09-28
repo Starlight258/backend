@@ -10,7 +10,7 @@ import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
-import com.wooteco.wiki.log.service.LogService;
+import com.wooteco.wiki.history.service.HistoryService;
 import com.wooteco.wiki.organizationdocument.dto.response.OrganizationDocumentResponse;
 import com.wooteco.wiki.organizationdocument.service.DocumentOrganizationLinkService;
 import java.time.LocalDateTime;
@@ -29,18 +29,18 @@ public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final DocumentOrganizationLinkService organizationDocumentLinkService;
-    private final LogService logService;
+    private final HistoryService historyService;
     private final Random random;
 
     public DocumentService(
             DocumentRepository documentRepository,
             DocumentOrganizationLinkService organizationDocumentLinkService,
-            LogService logService,
+            HistoryService historyService,
             Random random
     ) {
         this.documentRepository = documentRepository;
         this.organizationDocumentLinkService = organizationDocumentLinkService;
-        this.logService = logService;
+        this.historyService = historyService;
         this.random = random;
     }
 
@@ -64,7 +64,7 @@ public class DocumentService {
         );
 
         Document savedDocument = documentRepository.save(document);
-        logService.save(savedDocument);
+        historyService.save(savedDocument);
         return mapToResponse(savedDocument);
     }
 
@@ -109,7 +109,7 @@ public class DocumentService {
                 .orElseThrow(() -> new WikiException(ErrorCode.DOCUMENT_NOT_FOUND));
 
         Document updateData = document.update(title, contents, writer, documentBytes, LocalDateTime.now());
-        logService.save(updateData);
+        historyService.save(updateData);
         return mapToResponse(document);
     }
 
@@ -134,7 +134,7 @@ public class DocumentService {
     }
 
     private DocumentResponse mapToResponse(Document document) {
-        long latestVersion = logService.findLatestVersionByDocument(document);
+        long latestVersion = historyService.findLatestVersionByDocument(document);
         List<OrganizationDocumentResponse> organizationDocumentResponses =
                 (document instanceof CrewDocument crew)
                         ? organizationDocumentLinkService.findOrganizationDocumentResponsesByDocument(crew)

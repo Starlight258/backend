@@ -11,9 +11,9 @@ import com.wooteco.wiki.global.common.ApiResponse.SuccessBody
 import com.wooteco.wiki.global.common.ApiResponseGenerator
 import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.global.common.ResponseDto
-import com.wooteco.wiki.log.domain.dto.LogDetailResponse
-import com.wooteco.wiki.log.domain.dto.LogResponse
-import com.wooteco.wiki.log.service.LogService
+import com.wooteco.wiki.history.domain.dto.HistoryDetailResponse
+import com.wooteco.wiki.history.domain.dto.HistoryResponse
+import com.wooteco.wiki.history.service.HistoryService
 import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentSearchResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
@@ -26,7 +26,7 @@ import java.util.*
 @RequestMapping("/document")
 class DocumentController(
     private val documentService: DocumentService,
-    private val logService: LogService,
+    private val historyService: HistoryService,
     private val documentSearchService: DocumentSearchService,
     private val documentServiceJava: DocumentServiceJava
 ) {
@@ -79,16 +79,16 @@ class DocumentController(
     fun getLogs(
         @PathVariable uuidText: String,
         @ModelAttribute pageRequestDto: PageRequestDto
-    ): ApiResponse<SuccessBody<ResponseDto<List<LogResponse>>>> {
+    ): ApiResponse<SuccessBody<ResponseDto<List<HistoryResponse>>>> {
         val uuid = UUID.fromString(uuidText)
-        val pageResponses = logService.findAllByDocumentUuid(uuid, pageRequestDto)
+        val pageResponses = historyService.findAllByDocumentUuid(uuid, pageRequestDto)
         return ApiResponseGenerator.success(convertToResponse(pageResponses))
     }
 
     @Operation(summary = "로그 상세 조회", description = "로그 ID로 로그 상세 정보를 조회합니다.")
     @GetMapping("/log/{logId}")
-    fun getDocumentLogs(@PathVariable logId: Long): ApiResponse<SuccessBody<LogDetailResponse>> {
-        val logDetail = logService.getLogDetail(logId)
+    fun getDocumentLogs(@PathVariable logId: Long): ApiResponse<SuccessBody<HistoryDetailResponse>> {
+        val logDetail = historyService.getLogDetail(logId)
         return ApiResponseGenerator.success(logDetail)
     }
 
