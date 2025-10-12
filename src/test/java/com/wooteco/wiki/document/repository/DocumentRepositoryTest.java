@@ -1,8 +1,8 @@
 package com.wooteco.wiki.document.repository;
 
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -23,11 +23,11 @@ public class DocumentRepositoryTest {
 
     @Nested
     @DisplayName("문서 제목으로 uuid를 조회하는 기능")
-    class findUUidByTitle {
+    class findUuidByTitle {
 
         @DisplayName("존재하지 않는 문서 제목으로 조회했을 때 Optional.empty를 반환한다")
         @Test
-        void findUUidByTitle_success_byNonExistsDocument() {
+        void findUuidByTitle_success_byNonExistsDocument() {
 
             // when
             Optional<UUID> actual = documentRepository.findUuidByTitle("nonExistsDocumentTitle");
@@ -38,15 +38,15 @@ public class DocumentRepositoryTest {
 
         @DisplayName("존재하는 문서 제목으로 조회했을 때 Optional(UUID)를 반환한다")
         @Test
-        void findUUidByTitle_success_byExistsDocument() {
+        void findUuidByTitle_success_byExistsDocument() {
             // given
-            Document savedDocument = documentRepository.save(DocumentFixture.createDefault());
+            CrewDocument savedCrewDocument = documentRepository.save(DocumentFixture.createDefaultCrewDocument());
 
             // when
-            Optional<UUID> actual = documentRepository.findUuidByTitle(savedDocument.getTitle());
+            Optional<UUID> actual = documentRepository.findUuidByTitle(savedCrewDocument.getTitle());
 
             // then
-            Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getUuid());
+            Assertions.assertThat(actual.get()).isEqualTo(savedCrewDocument.getUuid());
         }
     }
 
@@ -58,26 +58,26 @@ public class DocumentRepositoryTest {
         @Test
         void findAll_success_bySomeData() {
             // given
-            documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L, LocalDateTime.now(),
-                    UUID.randomUUID()));
-            documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 11L, LocalDateTime.now(),
-                    UUID.randomUUID()));
+            documentRepository.save(
+                    DocumentFixture.createCrewDocument("title1", "content1", "writer1", 10L, UUID.randomUUID()));
+            documentRepository.save(
+                    DocumentFixture.createCrewDocument("title2", "content2", "writer2", 11L, UUID.randomUUID()));
 
             // when
-            List<Document> documents = documentRepository.findAll();
+            List<Document> crewDocuments = documentRepository.findAll();
 
             // then
-            Assertions.assertThat(documents).hasSize(2);
+            Assertions.assertThat(crewDocuments).hasSize(2);
         }
 
         @DisplayName("저장된 문서가 없을 때 빈 List를 반환한다")
         @Test
         void findAll_success_byNoData() {
             // when
-            List<Document> documents = documentRepository.findAll();
+            List<Document> crewDocuments = documentRepository.findAll();
 
             // then
-            Assertions.assertThat(documents).hasSize(0);
+            Assertions.assertThat(crewDocuments).hasSize(0);
         }
     }
 
@@ -86,15 +86,14 @@ public class DocumentRepositoryTest {
     class findIdByUuid {
 
         private UUID uuid;
-        private Document savedDocument;
+        private CrewDocument savedCrewDocument;
 
         @BeforeEach
         void setUp() {
             uuid = UUID.randomUUID();
 
-            Document document = DocumentFixture.create("titl1", "content1", "writer1", 10L,
-                    LocalDateTime.of(2024, 11, 11, 11, 11), uuid);
-            savedDocument = documentRepository.save(document);
+            CrewDocument crewDocument = DocumentFixture.createCrewDocument("titl1", "content1", "writer1", 10L, uuid);
+            savedCrewDocument = documentRepository.save(crewDocument);
 
         }
 
@@ -105,7 +104,7 @@ public class DocumentRepositoryTest {
             Optional<Long> actual = documentRepository.findIdByUuid(uuid);
 
             // then
-            Assertions.assertThat(actual.get()).isEqualTo(savedDocument.getId());
+            Assertions.assertThat(actual.get()).isEqualTo(savedCrewDocument.getId());
         }
     }
 
@@ -117,10 +116,10 @@ public class DocumentRepositoryTest {
         @Test
         void findAllByUuidIn_success() {
             // given
-            Document doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
-                    LocalDateTime.now(), UUID.randomUUID()));
-            Document doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 20L,
-                    LocalDateTime.now(), UUID.randomUUID()));
+            CrewDocument doc1 = documentRepository.save(
+                    DocumentFixture.createCrewDocument("title1", "content1", "writer1", 10L, UUID.randomUUID()));
+            CrewDocument doc2 = documentRepository.save(
+                    DocumentFixture.createCrewDocument("title2", "content2", "writer2", 20L, UUID.randomUUID()));
 
             Set<UUID> uuids = Set.of(doc1.getUuid(), doc2.getUuid());
 

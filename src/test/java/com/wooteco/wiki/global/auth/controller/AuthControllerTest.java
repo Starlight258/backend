@@ -26,6 +26,7 @@ class AuthControllerTest {
 
     @Autowired
     private AuthService authService;
+
     @Autowired
     private AdminRepository adminRepository;
 

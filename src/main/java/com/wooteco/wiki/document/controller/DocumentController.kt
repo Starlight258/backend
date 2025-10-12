@@ -1,23 +1,19 @@
 package com.wooteco.wiki.document.controller
 
 import com.wooteco.wiki.document.domain.Document
-import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest
-import com.wooteco.wiki.document.domain.dto.DocumentResponse
-import com.wooteco.wiki.document.domain.dto.DocumentSearchResponse
-import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest
-import com.wooteco.wiki.document.dto.DocumentOrganizationMappingAddRequest
-import com.wooteco.wiki.document.service.DocumentServiceJava
 import com.wooteco.wiki.document.domain.dto.*
+import com.wooteco.wiki.document.dto.DocumentOrganizationMappingAddRequest
 import com.wooteco.wiki.document.service.DocumentSearchService
 import com.wooteco.wiki.document.service.DocumentService
+import com.wooteco.wiki.document.service.DocumentServiceJava
 import com.wooteco.wiki.global.common.ApiResponse
 import com.wooteco.wiki.global.common.ApiResponse.SuccessBody
 import com.wooteco.wiki.global.common.ApiResponseGenerator
 import com.wooteco.wiki.global.common.PageRequestDto
 import com.wooteco.wiki.global.common.ResponseDto
-import com.wooteco.wiki.log.domain.dto.LogDetailResponse
-import com.wooteco.wiki.log.domain.dto.LogResponse
-import com.wooteco.wiki.log.service.LogService
+import com.wooteco.wiki.history.domain.dto.HistoryDetailResponse
+import com.wooteco.wiki.history.domain.dto.HistoryResponse
+import com.wooteco.wiki.history.service.HistoryService
 import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentSearchResponse
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page
@@ -30,15 +26,15 @@ import java.util.*
 @RequestMapping("/document")
 class DocumentController(
     private val documentService: DocumentService,
-    private val logService: LogService,
+    private val historyService: HistoryService,
     private val documentSearchService: DocumentSearchService,
     private val documentServiceJava: DocumentServiceJava
 ) {
 
     @Operation(summary = "위키 글 작성", description = "위키 글을 작성합니다.")
-    @PostMapping("")
-    fun post(@RequestBody documentCreateRequest: DocumentCreateRequest): ApiResponse<SuccessBody<DocumentResponse>> {
-        val response = documentService.post(documentCreateRequest)
+    @PostMapping
+    fun post(@RequestBody crewDocumentCreateRequest: CrewDocumentCreateRequest): ApiResponse<SuccessBody<DocumentResponse>> {
+        val response = documentService.postCrewDocument(crewDocumentCreateRequest)
         return ApiResponseGenerator.success(response)
     }
 
@@ -83,16 +79,16 @@ class DocumentController(
     fun getLogs(
         @PathVariable uuidText: String,
         @ModelAttribute pageRequestDto: PageRequestDto
-    ): ApiResponse<SuccessBody<ResponseDto<List<LogResponse>>>> {
+    ): ApiResponse<SuccessBody<ResponseDto<List<HistoryResponse>>>> {
         val uuid = UUID.fromString(uuidText)
-        val pageResponses = logService.findAllByDocumentUuid(uuid, pageRequestDto)
+        val pageResponses = historyService.findAllByDocumentUuid(uuid, pageRequestDto)
         return ApiResponseGenerator.success(convertToResponse(pageResponses))
     }
 
     @Operation(summary = "로그 상세 조회", description = "로그 ID로 로그 상세 정보를 조회합니다.")
     @GetMapping("/log/{logId}")
-    fun getDocumentLogs(@PathVariable logId: Long): ApiResponse<SuccessBody<LogDetailResponse>> {
-        val logDetail = logService.getLogDetail(logId)
+    fun getDocumentLogs(@PathVariable logId: Long): ApiResponse<SuccessBody<HistoryDetailResponse>> {
+        val logDetail = historyService.getLogDetail(logId)
         return ApiResponseGenerator.success(logDetail)
     }
 
