@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.domain.Document;
-import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
+import com.wooteco.wiki.document.domain.dto.CrewDocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
@@ -115,7 +115,7 @@ class DocumentServiceTest {
             @Test
             void findAll_success_bySomeData() {
                 // given
-                List<DocumentCreateRequest> documentCreateRequests = List.of(
+                List<CrewDocumentCreateRequest> crewDocumentCreateRequests = List.of(
                         DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L,
                                 UUID.randomUUID()),
                         DocumentFixture.createDocumentCreateRequest("title2", "content2", "writer2", 11L,
@@ -123,12 +123,12 @@ class DocumentServiceTest {
                 );
 
                 // when
-                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
+                for (CrewDocumentCreateRequest documentRequestDto : crewDocumentCreateRequests) {
                     documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // then
-                assertThat(documentService.findAll(pageRequestDto)).hasSize(documentCreateRequests.size());
+                assertThat(documentService.findAll(pageRequestDto)).hasSize(crewDocumentCreateRequests.size());
             }
 
             @DisplayName("저장된 문서가 존재하지 않을 때 요청 시 예외 없이 빈 리스트를 반환한다")
@@ -143,11 +143,11 @@ class DocumentServiceTest {
         @DisplayName("문서 전체 조회 기능 : Pageable")
         class findAll_pageable {
 
-            List<DocumentCreateRequest> documentCreateRequests;
+            List<CrewDocumentCreateRequest> crewDocumentCreateRequests;
 
             @BeforeEach
             public void beforeEach() {
-                documentCreateRequests = List.of(
+                crewDocumentCreateRequests = List.of(
                         DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L,
                                 UUID.randomUUID()),
                         DocumentFixture.createDocumentCreateRequest("title2", "content2", "writer2", 11L,
@@ -185,7 +185,7 @@ class DocumentServiceTest {
                 // given
                 PageRequestDto pageRequestDto = new PageRequestDto();
 
-                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
+                for (CrewDocumentCreateRequest documentRequestDto : crewDocumentCreateRequests) {
                     documentService.postCrewDocument(documentRequestDto);
                 }
 
@@ -194,7 +194,7 @@ class DocumentServiceTest {
 
                 // then
                 SoftAssertions softAssertions = new SoftAssertions();
-                softAssertions.assertThat(documentPages.getTotalElements()).isEqualTo(documentCreateRequests.size());
+                softAssertions.assertThat(documentPages.getTotalElements()).isEqualTo(crewDocumentCreateRequests.size());
                 softAssertions.assertThat(documentPages.getNumber()).isEqualTo(0);
                 softAssertions.assertThat(documentPages.getTotalPages()).isEqualTo(2);
                 softAssertions.assertAll();
@@ -210,7 +210,7 @@ class DocumentServiceTest {
                 pageRequestDto.setSort("uuid");
                 pageRequestDto.setSortDirection("DESC");
 
-                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
+                for (CrewDocumentCreateRequest documentRequestDto : crewDocumentCreateRequests) {
                     documentService.postCrewDocument(documentRequestDto);
                 }
 
@@ -219,7 +219,7 @@ class DocumentServiceTest {
 
                 // then
                 SoftAssertions softAssertions = new SoftAssertions();
-                softAssertions.assertThat(documentPages.getTotalElements()).isEqualTo(documentCreateRequests.size());
+                softAssertions.assertThat(documentPages.getTotalElements()).isEqualTo(crewDocumentCreateRequests.size());
                 softAssertions.assertThat(documentPages.getNumber()).isEqualTo(1);
                 softAssertions.assertThat(documentPages.getTotalPages()).isEqualTo(3);
                 softAssertions.assertAll();
@@ -233,7 +233,7 @@ class DocumentServiceTest {
                 pageRequestDto.setPageNumber(-1);
                 pageRequestDto.setPageSize(5);
 
-                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
+                for (CrewDocumentCreateRequest documentRequestDto : crewDocumentCreateRequests) {
                     documentService.postCrewDocument(documentRequestDto);
                 }
 

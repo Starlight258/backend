@@ -33,8 +33,8 @@ class DocumentController(
 
     @Operation(summary = "위키 글 작성", description = "위키 글을 작성합니다.")
     @PostMapping
-    fun post(@RequestBody documentCreateRequest: DocumentCreateRequest): ApiResponse<SuccessBody<DocumentResponse>> {
-        val response = documentService.postCrewDocument(documentCreateRequest)
+    fun post(@RequestBody crewDocumentCreateRequest: CrewDocumentCreateRequest): ApiResponse<SuccessBody<DocumentResponse>> {
+        val response = documentService.postCrewDocument(crewDocumentCreateRequest)
         return ApiResponseGenerator.success(response)
     }
 

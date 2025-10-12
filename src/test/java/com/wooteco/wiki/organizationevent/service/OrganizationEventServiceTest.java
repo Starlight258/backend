@@ -64,9 +64,9 @@ class OrganizationEventServiceTest {
 
             assertSoftly(softly -> {
                 softly.assertThat(saved.getUuid()).isEqualTo(res.organizationEventUuid());
-                softly.assertThat(saved.getTitle()).isEqualTo("분기 워크숍");
-                softly.assertThat(saved.getContents()).isEqualTo("OKR 점검");
-                softly.assertThat(saved.getWriter()).isEqualTo("밍트");
+                softly.assertThat(saved.getTitle()).isEqualTo(req.title());
+                softly.assertThat(saved.getContents()).isEqualTo(req.contents());
+                softly.assertThat(saved.getWriter()).isEqualTo(req.writer());
                 softly.assertThat(saved.getOccurredAt()).isEqualTo(req.occurredAt());
                 softly.assertThat(saved.getOrganizationDocument().getId())
                         .isEqualTo(orgDoc.getId());
@@ -111,7 +111,7 @@ class OrganizationEventServiceTest {
                 );
                 UUID eventUuid = organizationEventService.post(createReq).organizationEventUuid();
 
-                OrganizationEventUpdateRequest updateReq = new OrganizationEventUpdateRequest(
+                OrganizationEventUpdateRequest req = new OrganizationEventUpdateRequest(
                         "분기 워크숍(보강)",
                         "OKR + 액션아이템",
                         "밍트2",
@@ -119,17 +119,17 @@ class OrganizationEventServiceTest {
                 );
 
                 // when
-                OrganizationEventUpdateResponse res = organizationEventService.put(eventUuid, updateReq);
+                OrganizationEventUpdateResponse res = organizationEventService.put(eventUuid, req);
 
                 // then
                 OrganizationEvent found = organizationEventRepository.findByUuid(eventUuid).orElseThrow();
 
                 assertSoftly(softly -> {
                     softly.assertThat(res.organizationEventUuid()).isEqualTo(eventUuid);
-                    softly.assertThat(found.getTitle()).isEqualTo("분기 워크숍(보강)");
-                    softly.assertThat(found.getContents()).isEqualTo("OKR + 액션아이템");
-                    softly.assertThat(found.getWriter()).isEqualTo("밍트2");
-                    softly.assertThat(found.getOccurredAt()).isEqualTo(updateReq.occurredAt());
+                    softly.assertThat(found.getTitle()).isEqualTo(req.title());
+                    softly.assertThat(found.getContents()).isEqualTo(req.contents());
+                    softly.assertThat(found.getWriter()).isEqualTo(req.writer());
+                    softly.assertThat(found.getOccurredAt()).isEqualTo(req.occurredAt());
                 });
             }
 

@@ -2,7 +2,7 @@ package com.wooteco.wiki.document.service;
 
 import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.domain.Document;
-import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
+import com.wooteco.wiki.document.domain.dto.CrewDocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
@@ -44,7 +44,7 @@ public class DocumentService {
         this.random = random;
     }
 
-    public DocumentResponse postCrewDocument(DocumentCreateRequest request) {
+    public DocumentResponse postCrewDocument(CrewDocumentCreateRequest request) {
         String title = request.title();
         if (documentRepository.existsByTitle(title)) {
             throw new WikiException(ErrorCode.DOCUMENT_DUPLICATE);

@@ -1,7 +1,7 @@
 package com.wooteco.wiki.document.fixture;
 
 import com.wooteco.wiki.document.domain.CrewDocument;
-import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
+import com.wooteco.wiki.document.domain.dto.CrewDocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
 import java.util.UUID;
 
@@ -16,12 +16,12 @@ public class DocumentFixture {
         return createCrewDocument("defaultCrewTitle", "defaultContent", "defaultWriter", 10L, UUID.randomUUID());
     }
 
-    public static DocumentCreateRequest createDocumentCreateRequest(String title, String contents, String writer,
-                                                                    Long documentBytes, UUID uuid) {
-        return new DocumentCreateRequest(title, contents, writer, documentBytes, uuid);
+    public static CrewDocumentCreateRequest createDocumentCreateRequest(String title, String contents, String writer,
+                                                                        Long documentBytes, UUID uuid) {
+        return new CrewDocumentCreateRequest(title, contents, writer, documentBytes, uuid);
     }
 
-    public static DocumentCreateRequest createDocumentCreateRequestDefault() {
+    public static CrewDocumentCreateRequest createDocumentCreateRequestDefault() {
         return createDocumentCreateRequest("defaultTitle", "defaultContent", "defaultWriter", 10L, UUID.randomUUID());
     }
 

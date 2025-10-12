@@ -3,7 +3,7 @@ package com.wooteco.wiki.document.domain.dto;
 import com.wooteco.wiki.document.domain.CrewDocument;
 import java.util.UUID;
 
-public record DocumentCreateRequest(
+public record CrewDocumentCreateRequest(
         String title,
         String contents,
         String writer,

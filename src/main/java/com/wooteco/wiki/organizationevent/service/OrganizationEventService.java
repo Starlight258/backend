@@ -26,7 +26,7 @@ public class OrganizationEventService {
     private final OrganizationDocumentRepository organizationDocumentRepository;
 
     public OrganizationEventCreateResponse post(OrganizationEventCreateRequest request) {
-        OrganizationDocument organizationDocument = getOrganizationDocument(request);
+        OrganizationDocument organizationDocument = getOrganizationDocumentByUuid(request.organizationDocumentUuid());
         OrganizationEvent event = request.toOrganizationEvent(organizationDocument);
         OrganizationEvent savedEvent = organizationEventRepository.save(event);
         return OrganizationEventCreateResponse.from(savedEvent);
@@ -50,10 +50,8 @@ public class OrganizationEventService {
         organizationEventRepository.delete(organizationEvent);
     }
 
-    private OrganizationDocument getOrganizationDocument(
-            OrganizationEventCreateRequest organizationEventCreateRequest) {
-        return organizationDocumentRepository.findByUuid(
-                        organizationEventCreateRequest.organizationDocumentUuid())
+    private OrganizationDocument getOrganizationDocumentByUuid(UUID uuid) {
+        return organizationDocumentRepository.findByUuid(uuid)
                 .orElseThrow(() -> new WikiException(ORGANIZATION_DOCUMENT_NOT_FOUND));
     }
 
