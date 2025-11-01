@@ -21,3 +21,9 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+swagger:
+  server-url: http://localhost:8080
+
+cors:
+  allowed-origins: "*"
