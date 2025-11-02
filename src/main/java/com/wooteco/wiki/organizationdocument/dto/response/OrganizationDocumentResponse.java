@@ -1,6 +1,7 @@
 package com.wooteco.wiki.organizationdocument.dto.response;
 
 import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
+import com.wooteco.wiki.organizationdocument.dto.OrganizationDocumentSearchResponse;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,6 +23,13 @@ public record OrganizationDocumentResponse(
                 organizationDocument.getContents(),
                 organizationDocument.getWriter(),
                 organizationDocument.getGenerateTime()
+        );
+    }
+
+    public OrganizationDocumentSearchResponse toOrganizationDocumentTitleAndUuidResponse() {
+        return new OrganizationDocumentSearchResponse(
+                organizationDocumentUuid,
+                title
         );
     }
 }

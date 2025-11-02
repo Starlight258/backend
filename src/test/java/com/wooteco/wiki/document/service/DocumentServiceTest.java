@@ -4,8 +4,9 @@ import static com.wooteco.wiki.global.exception.ErrorCode.DOCUMENT_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.domain.Document;
-import com.wooteco.wiki.document.domain.dto.DocumentCreateRequest;
+import com.wooteco.wiki.document.domain.dto.CrewDocumentCreateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentResponse;
 import com.wooteco.wiki.document.domain.dto.DocumentUpdateRequest;
 import com.wooteco.wiki.document.domain.dto.DocumentUuidResponse;
@@ -14,9 +15,9 @@ import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.ErrorCode;
 import com.wooteco.wiki.global.exception.WikiException;
-import com.wooteco.wiki.log.domain.Log;
-import com.wooteco.wiki.log.fixture.LogFixture;
-import com.wooteco.wiki.log.repository.LogRepository;
+import com.wooteco.wiki.history.domain.History;
+import com.wooteco.wiki.history.fixture.HistoryFixture;
+import com.wooteco.wiki.history.repository.HistoryRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ class DocumentServiceTest {
     @Autowired
     private DocumentRepository documentRepository;
     @Autowired
-    private LogRepository logRepository;
+    private HistoryRepository historyRepository;
 
     @DisplayName("문서 조회 기능")
     @Nested
@@ -52,19 +53,19 @@ class DocumentServiceTest {
         @Test
         void getDocumentLatestVersion_success_byExistsDocument() {
             // given
-            Document document = DocumentFixture.createDefault();
-            Document savedDocument = documentRepository.save(document);
+            CrewDocument crewDocument = DocumentFixture.createDefaultCrewDocument();
+            CrewDocument savedCrewDocument = documentRepository.save(crewDocument);
 
-            Log log = LogFixture.create("test", "test", "tesst", 150, LocalDateTime.of(2025, 7, 15, 10, 0, 0),
-                    savedDocument, 20L);
-            logRepository.save(log);
+            History history = HistoryFixture.create("test", "test", "tesst", 150, LocalDateTime.of(2025, 7, 15, 10, 0, 0),
+                    savedCrewDocument, 20L);
+            historyRepository.save(history);
 
             // when
             DocumentUpdateRequest documentUpdateRequest = new DocumentUpdateRequest("test", "test", "test", 150,
-                    savedDocument.getUuid());
+                    savedCrewDocument.getUuid());
 
-            documentService.put(savedDocument.getUuid(), documentUpdateRequest);
-            DocumentResponse documentResponse = documentService.getByUuid(savedDocument.getUuid());
+            documentService.put(savedCrewDocument.getUuid(), documentUpdateRequest);
+            DocumentResponse documentResponse = documentService.getByUuid(savedCrewDocument.getUuid());
 
             // then
             assertThat(documentResponse.getLatestVersion()).isEqualTo(21L);
@@ -79,7 +80,7 @@ class DocumentServiceTest {
         @Test
         void getUuidByTitle_success_byExistsDocumentTitle() {
             // given
-            DocumentResponse documentResponse = documentService.post(
+            DocumentResponse documentResponse = documentService.postCrewDocument(
                     DocumentFixture.createDocumentCreateRequestDefault());
 
             // when
@@ -114,7 +115,7 @@ class DocumentServiceTest {
             @Test
             void findAll_success_bySomeData() {
                 // given
-                List<DocumentCreateRequest> documentCreateRequests = List.of(
+                List<CrewDocumentCreateRequest> crewDocumentCreateRequests = List.of(
                         DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L,
                                 UUID.randomUUID()),
                         DocumentFixture.createDocumentCreateRequest("title2", "content2", "writer2", 11L,
@@ -122,12 +123,12 @@ class DocumentServiceTest {
                 );
 
                 // when
-                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
-                    documentService.post(documentRequestDto);
+                for (CrewDocumentCreateRequest documentRequestDto : crewDocumentCreateRequests) {
+                    documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // then
-                assertThat(documentService.findAll(pageRequestDto)).hasSize(documentCreateRequests.size());
+                assertThat(documentService.findAll(pageRequestDto)).hasSize(crewDocumentCreateRequests.size());
             }
 
             @DisplayName("저장된 문서가 존재하지 않을 때 요청 시 예외 없이 빈 리스트를 반환한다")
@@ -142,11 +143,11 @@ class DocumentServiceTest {
         @DisplayName("문서 전체 조회 기능 : Pageable")
         class findAll_pageable {
 
-            List<DocumentCreateRequest> documentCreateRequests;
+            List<CrewDocumentCreateRequest> crewDocumentCreateRequests;
 
             @BeforeEach
             public void beforeEach() {
-                documentCreateRequests = List.of(
+                crewDocumentCreateRequests = List.of(
                         DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L,
                                 UUID.randomUUID()),
                         DocumentFixture.createDocumentCreateRequest("title2", "content2", "writer2", 11L,
@@ -184,8 +185,8 @@ class DocumentServiceTest {
                 // given
                 PageRequestDto pageRequestDto = new PageRequestDto();
 
-                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
-                    documentService.post(documentRequestDto);
+                for (CrewDocumentCreateRequest documentRequestDto : crewDocumentCreateRequests) {
+                    documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // when
@@ -193,7 +194,7 @@ class DocumentServiceTest {
 
                 // then
                 SoftAssertions softAssertions = new SoftAssertions();
-                softAssertions.assertThat(documentPages.getTotalElements()).isEqualTo(documentCreateRequests.size());
+                softAssertions.assertThat(documentPages.getTotalElements()).isEqualTo(crewDocumentCreateRequests.size());
                 softAssertions.assertThat(documentPages.getNumber()).isEqualTo(0);
                 softAssertions.assertThat(documentPages.getTotalPages()).isEqualTo(2);
                 softAssertions.assertAll();
@@ -209,8 +210,8 @@ class DocumentServiceTest {
                 pageRequestDto.setSort("uuid");
                 pageRequestDto.setSortDirection("DESC");
 
-                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
-                    documentService.post(documentRequestDto);
+                for (CrewDocumentCreateRequest documentRequestDto : crewDocumentCreateRequests) {
+                    documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // when
@@ -218,7 +219,7 @@ class DocumentServiceTest {
 
                 // then
                 SoftAssertions softAssertions = new SoftAssertions();
-                softAssertions.assertThat(documentPages.getTotalElements()).isEqualTo(documentCreateRequests.size());
+                softAssertions.assertThat(documentPages.getTotalElements()).isEqualTo(crewDocumentCreateRequests.size());
                 softAssertions.assertThat(documentPages.getNumber()).isEqualTo(1);
                 softAssertions.assertThat(documentPages.getTotalPages()).isEqualTo(3);
                 softAssertions.assertAll();
@@ -232,8 +233,8 @@ class DocumentServiceTest {
                 pageRequestDto.setPageNumber(-1);
                 pageRequestDto.setPageSize(5);
 
-                for (DocumentCreateRequest documentRequestDto : documentCreateRequests) {
-                    documentService.post(documentRequestDto);
+                for (CrewDocumentCreateRequest documentRequestDto : crewDocumentCreateRequests) {
+                    documentService.postCrewDocument(documentRequestDto);
                 }
 
                 // when & then
@@ -252,20 +253,20 @@ class DocumentServiceTest {
         @Test
         void deleteById_success_byExistsId() {
             // given
-            DocumentResponse documentResponse = documentService.post(
+            DocumentResponse documentResponse = documentService.postCrewDocument(
                     DocumentFixture.createDocumentCreateRequest("title1", "content1", "writer1", 10L,
                             UUID.randomUUID()));
 
             // before then
             assertThat(documentRepository.findAll()).hasSize(1);
-            assertThat(logRepository.findAll()).hasSize(1);
+            assertThat(historyRepository.findAll()).hasSize(1);
 
             // when
             documentService.deleteById(documentResponse.getDocumentId());
 
             // after then
             assertThat(documentRepository.findAll()).hasSize(0);
-            assertThat(logRepository.findAll()).hasSize(0);
+            assertThat(historyRepository.findAll()).hasSize(0);
         }
 
         @DisplayName("존재하지 않는 문서의 id일 경우 예외가 발생한다 : WikiException.DOCUMENT_NOT_FOUND")
@@ -284,10 +285,10 @@ class DocumentServiceTest {
         // given
         UUID uuid1 = UUID.randomUUID();
         UUID uuid2 = UUID.randomUUID();
-        Document doc1 = documentRepository.save(DocumentFixture.create("title1", "content1", "writer1", 10L,
-                LocalDateTime.now(), uuid1));
-        Document doc2 = documentRepository.save(DocumentFixture.create("title2", "content2", "writer2", 10L,
-                LocalDateTime.now(), uuid2));
+        CrewDocument doc1 = documentRepository.save(
+                DocumentFixture.createCrewDocument("title1", "content1", "writer1", 10L, uuid1));
+        CrewDocument doc2 = documentRepository.save(
+                DocumentFixture.createCrewDocument("title2", "content2", "writer2", 10L, uuid2));
 
         Map<UUID, Integer> viewMap = Map.of(
                 uuid1, 5,

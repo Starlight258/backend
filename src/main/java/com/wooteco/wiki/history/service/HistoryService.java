@@ -1,4 +1,4 @@
-package com.wooteco.wiki.log.service;
+package com.wooteco.wiki.history.service;
 
 import static com.wooteco.wiki.global.exception.ErrorCode.DOCUMENT_NOT_FOUND;
 import static com.wooteco.wiki.global.exception.ErrorCode.VERSION_NOT_FOUND;
@@ -7,10 +7,10 @@ import com.wooteco.wiki.document.domain.Document;
 import com.wooteco.wiki.document.repository.DocumentRepository;
 import com.wooteco.wiki.global.common.PageRequestDto;
 import com.wooteco.wiki.global.exception.WikiException;
-import com.wooteco.wiki.log.domain.Log;
-import com.wooteco.wiki.log.domain.dto.LogDetailResponse;
-import com.wooteco.wiki.log.domain.dto.LogResponse;
-import com.wooteco.wiki.log.repository.LogRepository;
+import com.wooteco.wiki.history.domain.History;
+import com.wooteco.wiki.history.domain.dto.HistoryDetailResponse;
+import com.wooteco.wiki.history.domain.dto.HistoryResponse;
+import com.wooteco.wiki.history.repository.HistoryRepository;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,44 +24,47 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class LogService {
+public class HistoryService {
 
-    private final LogRepository logRepository;
+    private final HistoryRepository historyRepository;
     private final DocumentRepository documentRepository;
 
     public void save(Document document) {
-        Long maxVersion = logRepository.findMaxVersionByDocumentId(document.getId())
+        Long maxVersion = historyRepository.findMaxVersionByDocumentId(document.getId())
                 .orElse(0L);
 
-        Log log = new Log(document.getTitle(), document.getContents(), document.getWriter(),
+        History history = new History(document.getTitle(), document.getContents(), document.getWriter(),
                 document.getDocumentBytes(), document.getGenerateTime(), document, maxVersion + 1);
-        logRepository.save(log);
+        historyRepository.save(history);
     }
 
-    public LogDetailResponse getLogDetail(Long logId) {
-        Log log = logRepository.findById(logId)
+    @Transactional(readOnly = true)
+    public HistoryDetailResponse getLogDetail(Long logId) {
+        History history = historyRepository.findById(logId)
                 .orElseThrow(() -> new WikiException(DOCUMENT_NOT_FOUND));
-        return new LogDetailResponse(logId, log.getTitle(), log.getContents(), log.getWriter(),
-                log.getGenerateTime());
+        return new HistoryDetailResponse(logId, history.getTitle(), history.getContents(), history.getWriter(),
+                history.getGenerateTime());
     }
 
-    public Page<LogResponse> findAllByDocumentUuid(UUID documentUuid, PageRequestDto pageRequestDto) {
+    @Transactional(readOnly = true)
+    public Page<HistoryResponse> findAllByDocumentUuid(UUID documentUuid, PageRequestDto pageRequestDto) {
         Long documentId = documentRepository.findIdByUuid(documentUuid)
                 .orElseThrow(() -> new WikiException(DOCUMENT_NOT_FOUND));
 
         Pageable pageable = pageRequestDto.toPageable();
-        Page<Log> logs = logRepository.findAllByDocumentId(documentId, pageable);
-        List<Log> content = logs.getContent();
+        Page<History> logs = historyRepository.findAllByDocumentId(documentId, pageable);
+        List<History> content = logs.getContent();
 
-        List<LogResponse> responses = content.stream()
-                .map(LogResponse::of)
+        List<HistoryResponse> responses = content.stream()
+                .map(HistoryResponse::of)
                 .collect(Collectors.toList());
 
         return new PageImpl<>(responses, pageable, logs.getTotalElements());
     }
 
+    @Transactional(readOnly = true)
     public Long findLatestVersionByDocument(Document document) {
-        return logRepository.findMaxVersionByDocumentId(document.getId())
+        return historyRepository.findMaxVersionByDocumentId(document.getId())
                 .orElseThrow(() -> new WikiException(VERSION_NOT_FOUND));
     }
 }

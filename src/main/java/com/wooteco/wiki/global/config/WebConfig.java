@@ -5,6 +5,7 @@ import com.wooteco.wiki.global.config.interceptor.LoginCheckInterceptor;
 import com.wooteco.wiki.global.config.resolver.LoginMemberArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -17,6 +18,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final LoginMemberArgumentResolver loginMemberArgumentResolver;
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Value("${cors.allowed-origins}")
+    private String[] allowedOrigins;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -32,8 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost:3000", "https://dev.crew-wiki.site", "https://crew-wiki.site",
-                        "https://www.crew-wiki.site")
+                .allowedOriginPatterns(allowedOrigins)
                 .allowCredentials(true)
                 .allowedMethods("*");
     }
