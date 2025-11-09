@@ -51,7 +51,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DEV_SERVER_EIP }}
-          username: ${{ secrets.SERVER_USERNAME }}
+          username: ${{ secrets.DEV_SERVER_USERNAME }}
           key: ${{ secrets.DEV_SERVER_PEM }}
           script: |
             cd ~/crew-wiki
