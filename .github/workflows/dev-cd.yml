@@ -58,6 +58,7 @@ jobs:
 
           mkdir -p "$BASE_DIR"
           cat > "$BASE_DIR/.env" <<'EOF'
+          SPRING_PROFILES_ACTIVE=dev
           LOG_PATH=${{ secrets.LOG_PATH }}
           JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
           JWT_SECRET_EXPIRE_LENGTH=${{ secrets.JWT_SECRET_EXPIRE_LENGTH }}
