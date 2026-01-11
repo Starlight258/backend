@@ -1,8 +1,13 @@
 package com.wooteco.wiki.document.repository;
 
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
 import com.wooteco.wiki.document.domain.CrewDocument;
 import com.wooteco.wiki.document.domain.Document;
+import com.wooteco.wiki.document.domain.DocumentType;
 import com.wooteco.wiki.document.fixture.DocumentFixture;
+import com.wooteco.wiki.organizationdocument.domain.OrganizationDocument;
+import com.wooteco.wiki.organizationdocument.fixture.OrganizationDocumentFixture;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,6 +58,66 @@ public class DocumentRepositoryTest {
     @Nested
     @DisplayName("문서 전체 조회 기능")
     class findAll {
+
+        @DisplayName("DocumentRepository로 조회 시 CrewDocument와 OrganizationDocument가 모두 조회된다")
+        @Test
+        void findAll_success_returnsBothCrewAndOrganizationDocuments() {
+            // given
+            CrewDocument crewDocument = documentRepository.save(
+                    DocumentFixture.createCrewDocument("crew문서", "content1", "writer1", 10L, UUID.randomUUID()));
+            OrganizationDocument organizationDocument = documentRepository.save(
+                    OrganizationDocumentFixture.create("org문서", "content2", "writer2", 15L, UUID.randomUUID()));
+
+            // when
+            List<Document> result = documentRepository.findAll();
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(result).hasSize(2);
+                softly.assertThat(result).extracting(Document::type)
+                        .containsExactlyInAnyOrder(DocumentType.CREW, DocumentType.ORGANIZATION);
+                softly.assertThat(result).extracting(Document::getTitle)
+                        .containsExactlyInAnyOrder("crew문서", "org문서");
+            });
+        }
+
+        @DisplayName("CrewDocument만 저장했을 때는 CrewDocument만 조회된다")
+        @Test
+        void findAll_success_returnsOnlyCrewDocuments() {
+            // given
+            documentRepository.save(
+                    DocumentFixture.createCrewDocument("crew1", "content1", "writer1", 10L, UUID.randomUUID()));
+            documentRepository.save(
+                    DocumentFixture.createCrewDocument("crew2", "content2", "writer2", 15L, UUID.randomUUID()));
+
+            // when
+            List<Document> result = documentRepository.findAll();
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(result).hasSize(2);
+                softly.assertThat(result).allMatch(doc -> doc.type() == DocumentType.CREW);
+            });
+        }
+
+        @DisplayName("OrganizationDocument만 저장했을 때는 OrganizationDocument만 조회된다")
+        @Test
+        void findAll_success_returnsOnlyOrganizationDocuments() {
+            // given
+            documentRepository.save(
+                    OrganizationDocumentFixture.create("org1", "content1", "writer1", 10L, UUID.randomUUID()));
+            documentRepository.save(
+                    OrganizationDocumentFixture.create("org2", "content2", "writer2", 15L, UUID.randomUUID()));
+
+            // when
+            List<Document> result = documentRepository.findAll();
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(result).hasSize(2);
+                softly.assertThat(result).allMatch(doc -> doc.type() == DocumentType.ORGANIZATION);
+            });
+        }
 
         @DisplayName("문서가 여러개 존재했을 때 List 형태로 반환한다")
         @Test
