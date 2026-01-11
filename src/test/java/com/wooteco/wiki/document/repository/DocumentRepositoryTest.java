@@ -63,9 +63,9 @@ public class DocumentRepositoryTest {
         @Test
         void findAll_success_returnsBothCrewAndOrganizationDocuments() {
             // given
-            CrewDocument crewDocument = documentRepository.save(
+            documentRepository.save(
                     DocumentFixture.createCrewDocument("crew문서", "content1", "writer1", 10L, UUID.randomUUID()));
-            OrganizationDocument organizationDocument = documentRepository.save(
+            documentRepository.save(
                     OrganizationDocumentFixture.create("org문서", "content2", "writer2", 15L, UUID.randomUUID()));
 
             // when
